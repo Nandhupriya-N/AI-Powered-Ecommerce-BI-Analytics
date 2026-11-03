@@ -1,0 +1,222 @@
+{
+    "training_dataset_summary": {
+        "total_transactions": 6000,
+        "unique_customers": 1193,
+        "baseline_churn_rate": 15.51,
+        "total_revenue": 1847241.78,
+        "avg_order_value": 307.87,
+        "overall_profit": 359409.03
+    },
+    "churn_models": {
+        "comparison": {
+            "Random Forest": {
+                "Accuracy": 0.9231,
+                "Precision": 0.963,
+                "Recall": 0.5417,
+                "F1_Score": 0.6933,
+                "ROC_AUC": 0.939
+            },
+            "Gradient Boosting": {
+                "Accuracy": 0.8395,
+                "Precision": 0.0,
+                "Recall": 0.0,
+                "F1_Score": 0.0,
+                "ROC_AUC": 0.9122
+            },
+            "Logistic Regression": {
+                "Accuracy": 0.8395,
+                "Precision": 0.0,
+                "Recall": 0.0,
+                "F1_Score": 0.0,
+                "ROC_AUC": 0.9277
+            }
+        },
+        "best_model": "Random Forest",
+        "feature_importance": {
+            "Recency_Days": 0.181,
+            "Customer_Service_Calls": 0.1468,
+            "Website_Visits_Per_Month": 0.0961,
+            "Age": 0.0926,
+            "Frequency_Orders": 0.0926,
+            "Avg_Order_Value": 0.0849,
+            "Return_Rate": 0.0772,
+            "Membership_Type_Gold": 0.0354,
+            "Membership_Type_Silver": 0.0336,
+            "Gender_Non-Binary": 0.0307,
+            "Region_South": 0.0289,
+            "Membership_Type_Platinum": 0.0271,
+            "Region_North": 0.0254,
+            "Gender_Male": 0.0242,
+            "Region_West": 0.0236
+        }
+    },
+    "forecasting_models": {
+        "comparison": {
+            "Amazon Chronos-Bolt": {
+                "Model_Name": "Amazon Chronos-Bolt Foundation Model (Zero-Shot)",
+                "MAE": 1781.52,
+                "RMSE": 2152.42,
+                "R2": -0.0410,
+                "MAPE": 32.51,
+                "Coverage_80_CI": 86.89,
+                "RAM_Footprint": "~73 MB",
+                "Inference_Latency": "< 85 ms",
+                "Features_Count": "Zero-Shot Raw Sequence"
+            },
+            "Chronos-Bolt (Rolling)": {
+                "Model_Name": "Chronos-Bolt (Rolling Weekly Re-Anchored)",
+                "MAE": 1780.68,
+                "RMSE": 2161.10,
+                "R2": -0.0494,
+                "MAPE": 32.96,
+                "Coverage_80_CI": 85.20,
+                "RAM_Footprint": "~73 MB",
+                "Inference_Latency": "< 120 ms",
+                "Features_Count": "Autoregressive Stream"
+            },
+            "Random Forest (IEEE 7&8)": {
+                "Model_Name": "Enhanced Random Forest Demand Forecaster",
+                "MAE": 1777.38,
+                "RMSE": 2155.91,
+                "R2": -0.0443,
+                "MAPE": 34.13,
+                "Coverage_95_CI": 82.0,
+                "RAM_Footprint": "< 18 MB",
+                "Inference_Latency": "< 8 ms",
+                "Features_Count": 13,
+                "Top_Features": [
+                    "Lag_2_Revenue",
+                    "Day_of_Month",
+                    "Rolling_7_Std",
+                    "Rolling_7_Avg",
+                    "Lag_14_Revenue"
+                ]
+            },
+            "Baseline Ridge": {
+                "Model_Name": "Baseline AutoRegressive Ridge",
+                "MAE": 2040.99,
+                "RMSE": 2468.71,
+                "R2": -0.3694,
+                "MAPE": 38.68,
+                "Coverage_CI": "N/A (Point forecast)",
+                "RAM_Footprint": "< 2 MB",
+                "Inference_Latency": "< 2 ms",
+                "Features_Count": 7
+            }
+        },
+        "best_model": "Amazon Chronos-Bolt",
+        "rf_feature_importance": {
+            "Lag_2_Revenue": 0.1443,
+            "Day_of_Month": 0.1184,
+            "Rolling_7_Std": 0.102,
+            "Rolling_7_Avg": 0.1013,
+            "Lag_14_Revenue": 0.0884,
+            "Lag_7_Revenue": 0.0786,
+            "Rolling_14_Avg": 0.0769,
+            "Lag_1_Revenue": 0.0765,
+            "Rolling_7_Discount": 0.071,
+            "Rolling_7_Orders": 0.0665,
+            "Day_of_Week": 0.0346,
+            "Month": 0.0324,
+            "Is_Weekend": 0.0091
+        },
+        "training_split": {
+            "train_days": 243,
+            "test_days": 61,
+            "split_ratio": "80/20 Chronological"
+        }
+    },
+    "customer_clusters": [
+        {
+            "Cluster": 0,
+            "Recency_Days": 45.026595744680854,
+            "Frequency_Orders": 3.4095744680851063,
+            "Monetary_Spend": 875.2121808510639,
+            "Customer_Count": 376,
+            "Cluster_Name": "Loyal Customers"
+        },
+        {
+            "Cluster": 1,
+            "Recency_Days": 34.8891454965358,
+            "Frequency_Orders": 6.157043879907621,
+            "Monetary_Spend": 1573.3201616628176,
+            "Customer_Count": 433,
+            "Cluster_Name": "Champions"
+        },
+        {
+            "Cluster": 2,
+            "Recency_Days": 156.15422885572139,
+            "Frequency_Orders": 3.1691542288557213,
+            "Monetary_Spend": 829.7995024875622,
+            "Customer_Count": 201,
+            "Cluster_Name": "Hibernating / At-Risk"
+        },
+        {
+            "Cluster": 3,
+            "Recency_Days": 36.36612021857923,
+            "Frequency_Orders": 7.73224043715847,
+            "Monetary_Spend": 3661.883442622951,
+            "Customer_Count": 183,
+            "Cluster_Name": "Champions"
+        }
+    ],
+    "kaggle_churn_models": {
+        "comparison": {
+            "Random Forest": {
+                "Accuracy": 0.9227,
+                "Precision": 0.8912,
+                "Recall": 0.6485,
+                "F1_Score": 0.7507,
+                "ROC_AUC": 0.9703
+            },
+            "Gradient Boosting": {
+                "Accuracy": 0.8472,
+                "Precision": 1.0,
+                "Recall": 0.1485,
+                "F1_Score": 0.2586,
+                "ROC_AUC": 0.9046
+            },
+            "Logistic Regression": {
+                "Accuracy": 0.8206,
+                "Precision": 0.0,
+                "Recall": 0.0,
+                "F1_Score": 0.0,
+                "ROC_AUC": 0.8922
+            }
+        },
+        "best_model": "Random Forest",
+        "best_accuracy": 0.9227,
+        "feature_importance": {
+            "Tenure": 0.0683,
+            "OrderPerTenure": 0.0675,
+            "CashbackAmount": 0.0674,
+            "NumberOfAddress": 0.0648,
+            "CashbackPerOrder": 0.0625,
+            "WarehouseToHome": 0.0596,
+            "DaySinceLastOrder": 0.0564,
+            "OrderAmountHikeFromlastYear": 0.0541,
+            "SatisfactionScore": 0.0475,
+            "App_Per_Device": 0.043,
+            "NumberOfDeviceRegistered": 0.0391,
+            "OrderCount": 0.0311,
+            "CityTier": 0.031,
+            "Complain_Risk": 0.0282,
+            "MaritalStatus_Single": 0.0266,
+            "CouponUsed": 0.0264,
+            "Gender_Male": 0.0249,
+            "PreferredPaymentMode_Credit Card": 0.0228,
+            "HourSpendOnApp": 0.0208,
+            "PreferedOrderCat_Laptop & Accessory": 0.0197,
+            "PreferredPaymentMode_Debit Card": 0.0192,
+            "PreferredPaymentMode_E wallet": 0.0188,
+            "PreferredLoginDevice_Mobile Phone": 0.0177,
+            "MaritalStatus_Married": 0.017,
+            "PreferredLoginDevice_Phone": 0.0159,
+            "PreferedOrderCat_Mobile Phone": 0.0156,
+            "Complain": 0.0137,
+            "PreferredPaymentMode_UPI": 0.0115,
+            "PreferedOrderCat_Grocery": 0.0046,
+            "PreferedOrderCat_Others": 0.0041
+        }
+    }
+}

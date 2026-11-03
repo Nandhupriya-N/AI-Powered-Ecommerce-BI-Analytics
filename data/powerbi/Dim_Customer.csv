@@ -1,0 +1,689 @@
+Customer_ID,Age,Gender,Region,Membership_Type,Segment_Name,Cluster_ID
+CUST_2000,18,Female,North,Bronze,Champions,1
+CUST_2001,20,Male,East,Silver,Loyal Customers,0
+CUST_2002,38,Male,North,Bronze,Champions,3
+CUST_2003,49,Male,West,Silver,Champions,3
+CUST_2004,51,Female,South,Bronze,Champions,1
+CUST_2005,55,Non-Binary,West,Gold,Hibernating / At-Risk,2
+CUST_2006,44,Male,North,Silver,Champions,1
+CUST_2007,39,Non-Binary,West,Gold,Loyal Customers,0
+CUST_2008,40,Non-Binary,East,Bronze,Champions,3
+CUST_2009,35,Non-Binary,West,Silver,Champions,1
+CUST_2010,46,Female,South,Bronze,Loyal Customers,0
+CUST_2011,31,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2012,40,Female,North,Bronze,Loyal Customers,0
+CUST_2013,39,Female,South,Silver,Loyal Customers,0
+CUST_2014,28,Male,South,Gold,Loyal Customers,0
+CUST_2015,27,Male,East,Bronze,Loyal Customers,0
+CUST_2016,52,Male,North,Silver,Loyal Customers,0
+CUST_2017,48,Non-Binary,West,Bronze,Hibernating / At-Risk,2
+CUST_2018,32,Female,West,Gold,Loyal Customers,0
+CUST_2019,43,Non-Binary,North,Bronze,Champions,1
+CUST_2020,50,Non-Binary,East,Gold,Loyal Customers,0
+CUST_2021,49,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2022,42,Male,North,Bronze,Loyal Customers,0
+CUST_2023,50,Non-Binary,East,Bronze,Champions,1
+CUST_2024,31,Female,South,Gold,Champions,1
+CUST_2025,45,Male,North,Silver,Champions,1
+CUST_2026,36,Female,East,Silver,Hibernating / At-Risk,2
+CUST_2027,35,Male,North,Silver,Loyal Customers,0
+CUST_2028,42,Female,West,Gold,Champions,1
+CUST_2029,41,Female,North,Silver,Champions,1
+CUST_2030,51,Non-Binary,West,Platinum,Loyal Customers,0
+CUST_2031,49,Non-Binary,East,Gold,Champions,1
+CUST_2032,48,Female,South,Bronze,Champions,1
+CUST_2033,28,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2034,48,Male,East,Bronze,Loyal Customers,0
+CUST_2035,44,Male,East,Bronze,Loyal Customers,0
+CUST_2036,27,Female,East,Silver,Loyal Customers,0
+CUST_2037,39,Male,South,Bronze,Hibernating / At-Risk,2
+CUST_2038,30,Female,South,Bronze,Champions,1
+CUST_2039,31,Male,South,Silver,Champions,1
+CUST_2040,30,Female,East,Bronze,Loyal Customers,0
+CUST_2041,51,Female,North,Gold,Hibernating / At-Risk,2
+CUST_2042,42,Male,North,Bronze,Champions,1
+CUST_2043,45,Female,West,Bronze,Loyal Customers,0
+CUST_2044,51,Female,South,Bronze,Loyal Customers,0
+CUST_2045,35,Non-Binary,South,Bronze,Champions,1
+CUST_2046,38,Male,West,Bronze,Loyal Customers,0
+CUST_2047,43,Female,North,Silver,Champions,1
+CUST_2048,52,Male,West,Bronze,Loyal Customers,0
+CUST_2049,42,Male,South,Gold,Loyal Customers,0
+CUST_2050,30,Male,South,Bronze,Loyal Customers,0
+CUST_2052,51,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2053,41,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2054,52,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2055,38,Male,South,Silver,Loyal Customers,0
+CUST_2056,43,Female,North,Bronze,Loyal Customers,0
+CUST_2057,18,Male,East,Bronze,Loyal Customers,0
+CUST_2058,38,Non-Binary,South,Platinum,Champions,1
+CUST_2059,35,Female,East,Gold,Champions,1
+CUST_2060,55,Female,West,Gold,Champions,1
+CUST_2061,38,Female,North,Bronze,Hibernating / At-Risk,2
+CUST_2062,33,Female,West,Silver,Loyal Customers,0
+CUST_2064,24,Female,West,Bronze,Loyal Customers,0
+CUST_2065,37,Male,South,Silver,Champions,1
+CUST_2066,29,Female,North,Silver,Loyal Customers,0
+CUST_2067,44,Male,West,Bronze,Loyal Customers,0
+CUST_2068,57,Female,East,Silver,Loyal Customers,0
+CUST_2069,22,Male,North,Bronze,Loyal Customers,0
+CUST_2070,36,Female,North,Bronze,Hibernating / At-Risk,2
+CUST_2071,18,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2072,49,Male,West,Bronze,Loyal Customers,0
+CUST_2073,37,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2074,33,Non-Binary,South,Gold,Champions,1
+CUST_2075,20,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2076,37,Male,East,Bronze,Loyal Customers,0
+CUST_2077,41,Female,West,Gold,Champions,1
+CUST_2078,38,Male,East,Silver,Loyal Customers,0
+CUST_2079,46,Male,North,Bronze,Hibernating / At-Risk,2
+CUST_2080,51,Non-Binary,East,Bronze,Champions,3
+CUST_2081,39,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2082,38,Female,East,Bronze,Loyal Customers,0
+CUST_2083,41,Non-Binary,North,Bronze,Hibernating / At-Risk,2
+CUST_2084,30,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2085,56,Female,West,Bronze,Champions,1
+CUST_2086,31,Female,East,Silver,Loyal Customers,0
+CUST_2087,18,Non-Binary,West,Silver,Champions,1
+CUST_2088,49,Non-Binary,East,Bronze,Champions,1
+CUST_2089,49,Male,North,Silver,Loyal Customers,0
+CUST_2090,28,Female,North,Bronze,Champions,1
+CUST_2091,26,Non-Binary,West,Bronze,Champions,1
+CUST_2093,47,Male,East,Silver,Loyal Customers,0
+CUST_2094,38,Male,South,Silver,Loyal Customers,0
+CUST_2095,34,Male,East,Silver,Champions,1
+CUST_2096,37,Female,East,Platinum,Champions,1
+CUST_2097,32,Male,East,Silver,Champions,1
+CUST_2098,33,Male,South,Silver,Loyal Customers,0
+CUST_2099,34,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2100,34,Male,North,Silver,Champions,1
+CUST_2101,18,Non-Binary,North,Silver,Loyal Customers,0
+CUST_2102,18,Non-Binary,South,Bronze,Champions,1
+CUST_2103,50,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2104,30,Female,South,Silver,Champions,1
+CUST_2105,20,Non-Binary,North,Bronze,Champions,1
+CUST_2106,49,Male,East,Gold,Champions,3
+CUST_2107,28,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2108,35,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2109,28,Non-Binary,North,Silver,Loyal Customers,0
+CUST_2110,41,Non-Binary,West,Platinum,Champions,1
+CUST_2111,32,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2112,39,Male,West,Bronze,Loyal Customers,0
+CUST_2113,32,Female,South,Bronze,Loyal Customers,0
+CUST_2114,49,Non-Binary,East,Gold,Loyal Customers,0
+CUST_2115,41,Male,West,Bronze,Loyal Customers,0
+CUST_2116,26,Female,West,Gold,Hibernating / At-Risk,2
+CUST_2117,30,Non-Binary,South,Bronze,Champions,1
+CUST_2118,56,Male,South,Bronze,Champions,1
+CUST_2119,18,Female,West,Bronze,Loyal Customers,0
+CUST_2120,31,Male,South,Silver,Loyal Customers,0
+CUST_2121,36,Male,South,Platinum,Champions,1
+CUST_2122,24,Non-Binary,West,Silver,Hibernating / At-Risk,2
+CUST_2123,31,Female,East,Platinum,Loyal Customers,0
+CUST_2124,18,Male,North,Silver,Loyal Customers,0
+CUST_2125,50,Female,West,Bronze,Hibernating / At-Risk,2
+CUST_2126,44,Male,West,Bronze,Loyal Customers,0
+CUST_2127,44,Male,South,Bronze,Loyal Customers,0
+CUST_2128,24,Male,North,Gold,Loyal Customers,0
+CUST_2129,38,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2130,36,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2131,18,Male,North,Silver,Champions,1
+CUST_2132,39,Male,South,Bronze,Loyal Customers,0
+CUST_2133,23,Non-Binary,South,Platinum,Loyal Customers,0
+CUST_2134,36,Female,West,Gold,Champions,1
+CUST_2135,57,Male,North,Silver,Champions,1
+CUST_2136,51,Female,East,Silver,Loyal Customers,0
+CUST_2137,32,Non-Binary,East,Silver,Hibernating / At-Risk,2
+CUST_2138,44,Non-Binary,North,Bronze,Hibernating / At-Risk,2
+CUST_2139,29,Female,South,Platinum,Champions,1
+CUST_2140,42,Female,South,Silver,Champions,1
+CUST_2141,48,Male,North,Silver,Loyal Customers,0
+CUST_2142,39,Male,West,Bronze,Loyal Customers,0
+CUST_2143,33,Male,East,Silver,Champions,1
+CUST_2144,42,Female,South,Platinum,Champions,1
+CUST_2145,19,Male,North,Bronze,Loyal Customers,0
+CUST_2146,33,Female,South,Silver,Loyal Customers,0
+CUST_2147,40,Non-Binary,West,Bronze,Champions,1
+CUST_2148,50,Non-Binary,North,Gold,Champions,1
+CUST_2149,54,Female,West,Bronze,Loyal Customers,0
+CUST_2150,41,Female,East,Silver,Champions,3
+CUST_2151,38,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2152,37,Female,West,Bronze,Champions,1
+CUST_2153,39,Non-Binary,North,Bronze,Champions,1
+CUST_2154,39,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2155,40,Non-Binary,South,Silver,Champions,1
+CUST_2156,24,Male,West,Gold,Loyal Customers,0
+CUST_2157,32,Male,East,Silver,Loyal Customers,0
+CUST_2158,49,Female,North,Silver,Loyal Customers,0
+CUST_2159,26,Non-Binary,East,Silver,Champions,1
+CUST_2160,38,Non-Binary,South,Bronze,Champions,3
+CUST_2161,20,Non-Binary,East,Bronze,Champions,1
+CUST_2162,34,Female,West,Bronze,Loyal Customers,0
+CUST_2163,50,Female,West,Silver,Loyal Customers,0
+CUST_2164,27,Male,West,Bronze,Loyal Customers,0
+CUST_2165,34,Male,South,Bronze,Hibernating / At-Risk,2
+CUST_2166,22,Female,West,Silver,Hibernating / At-Risk,2
+CUST_2167,30,Male,East,Bronze,Champions,1
+CUST_2168,47,Male,North,Silver,Champions,1
+CUST_2169,40,Male,West,Gold,Champions,3
+CUST_2170,38,Male,East,Silver,Hibernating / At-Risk,2
+CUST_2171,48,Male,South,Silver,Hibernating / At-Risk,2
+CUST_2172,34,Female,West,Bronze,Hibernating / At-Risk,2
+CUST_2173,29,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2174,47,Male,South,Silver,Loyal Customers,0
+CUST_2175,35,Female,West,Bronze,Loyal Customers,0
+CUST_2176,48,Male,East,Gold,Loyal Customers,0
+CUST_2177,56,Male,West,Gold,Loyal Customers,0
+CUST_2178,26,Male,North,Silver,Hibernating / At-Risk,2
+CUST_2179,34,Female,West,Silver,Loyal Customers,0
+CUST_2180,31,Male,West,Silver,Loyal Customers,0
+CUST_2181,48,Male,East,Bronze,Loyal Customers,0
+CUST_2182,59,Male,South,Silver,Loyal Customers,0
+CUST_2183,18,Non-Binary,North,Bronze,Hibernating / At-Risk,2
+CUST_2185,59,Female,North,Silver,Loyal Customers,0
+CUST_2186,44,Non-Binary,North,Silver,Loyal Customers,0
+CUST_2187,36,Male,South,Bronze,Loyal Customers,0
+CUST_2188,28,Non-Binary,North,Bronze,Champions,1
+CUST_2189,29,Non-Binary,North,Gold,Loyal Customers,0
+CUST_2190,39,Male,North,Gold,Champions,1
+CUST_2191,25,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2192,31,Non-Binary,North,Gold,Champions,1
+CUST_2193,31,Male,East,Silver,Champions,1
+CUST_2194,33,Male,North,Bronze,Hibernating / At-Risk,2
+CUST_2195,37,Non-Binary,East,Gold,Loyal Customers,0
+CUST_2196,20,Female,South,Gold,Champions,1
+CUST_2197,49,Non-Binary,South,Platinum,Hibernating / At-Risk,2
+CUST_2198,38,Female,East,Platinum,Loyal Customers,0
+CUST_2199,45,Non-Binary,West,Gold,Hibernating / At-Risk,2
+CUST_2200,27,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2201,29,Male,North,Silver,Champions,1
+CUST_2202,33,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2203,22,Female,North,Gold,Loyal Customers,0
+CUST_2205,23,Male,South,Gold,Loyal Customers,0
+CUST_2206,18,Female,East,Platinum,Loyal Customers,0
+CUST_2207,20,Female,East,Silver,Loyal Customers,0
+CUST_2209,49,Female,East,Silver,Loyal Customers,0
+CUST_2210,33,Non-Binary,South,Bronze,Hibernating / At-Risk,2
+CUST_2211,31,Male,East,Gold,Loyal Customers,0
+CUST_2212,34,Female,East,Silver,Champions,3
+CUST_2213,27,Non-Binary,East,Gold,Champions,1
+CUST_2214,37,Female,South,Platinum,Champions,1
+CUST_2215,42,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2216,36,Male,North,Silver,Loyal Customers,0
+CUST_2217,43,Non-Binary,North,Silver,Loyal Customers,0
+CUST_2218,35,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2219,30,Female,East,Bronze,Loyal Customers,0
+CUST_2220,47,Non-Binary,South,Silver,Champions,3
+CUST_2221,55,Female,East,Silver,Champions,3
+CUST_2222,29,Female,West,Silver,Champions,1
+CUST_2223,30,Female,South,Bronze,Champions,1
+CUST_2224,34,Male,East,Gold,Loyal Customers,0
+CUST_2225,37,Male,North,Bronze,Champions,3
+CUST_2226,33,Female,West,Bronze,Champions,1
+CUST_2227,33,Male,East,Bronze,Loyal Customers,0
+CUST_2228,34,Non-Binary,West,Gold,Champions,1
+CUST_2229,36,Female,North,Bronze,Loyal Customers,0
+CUST_2230,36,Male,West,Silver,Loyal Customers,0
+CUST_2231,20,Male,West,Bronze,Loyal Customers,0
+CUST_2232,23,Male,East,Silver,Loyal Customers,0
+CUST_2233,24,Non-Binary,West,Silver,Champions,1
+CUST_2234,27,Male,West,Silver,Champions,1
+CUST_2235,44,Male,East,Gold,Champions,1
+CUST_2236,21,Female,South,Bronze,Loyal Customers,0
+CUST_2237,53,Female,West,Silver,Champions,1
+CUST_2238,58,Male,South,Bronze,Loyal Customers,0
+CUST_2239,18,Male,East,Gold,Loyal Customers,0
+CUST_2240,22,Male,East,Gold,Loyal Customers,0
+CUST_2241,36,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2242,50,Male,North,Bronze,Loyal Customers,0
+CUST_2243,31,Female,South,Silver,Champions,3
+CUST_2244,39,Non-Binary,North,Platinum,Loyal Customers,0
+CUST_2245,48,Male,West,Silver,Champions,1
+CUST_2246,27,Male,North,Bronze,Loyal Customers,0
+CUST_2247,34,Female,West,Bronze,Champions,1
+CUST_2248,39,Male,East,Silver,Champions,1
+CUST_2249,18,Female,North,Bronze,Champions,1
+CUST_2250,23,Female,West,Gold,Loyal Customers,0
+CUST_2251,22,Non-Binary,North,Silver,Champions,1
+CUST_2252,41,Female,South,Bronze,Loyal Customers,0
+CUST_2253,32,Male,East,Bronze,Loyal Customers,0
+CUST_2254,32,Female,North,Gold,Champions,1
+CUST_2255,22,Male,South,Bronze,Champions,1
+CUST_2256,39,Non-Binary,East,Gold,Champions,1
+CUST_2257,18,Female,West,Bronze,Loyal Customers,0
+CUST_2258,26,Non-Binary,East,Bronze,Champions,1
+CUST_2259,29,Male,West,Gold,Loyal Customers,0
+CUST_2260,27,Female,East,Silver,Hibernating / At-Risk,2
+CUST_2261,40,Male,North,Silver,Loyal Customers,0
+CUST_2262,25,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2263,48,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2264,37,Non-Binary,North,Gold,Champions,1
+CUST_2265,49,Female,West,Bronze,Champions,1
+CUST_2266,37,Male,North,Bronze,Loyal Customers,0
+CUST_2267,55,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2268,24,Female,East,Silver,Champions,1
+CUST_2269,52,Non-Binary,West,Silver,Champions,1
+CUST_2270,30,Non-Binary,South,Silver,Champions,3
+CUST_2271,30,Female,East,Bronze,Hibernating / At-Risk,2
+CUST_2272,28,Female,North,Platinum,Loyal Customers,0
+CUST_2273,26,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2274,33,Male,East,Silver,Champions,1
+CUST_2275,31,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2276,48,Female,West,Bronze,Loyal Customers,0
+CUST_2277,49,Female,North,Bronze,Champions,1
+CUST_2278,25,Female,West,Bronze,Loyal Customers,0
+CUST_2279,39,Male,South,Bronze,Champions,1
+CUST_2280,42,Male,West,Bronze,Champions,1
+CUST_2281,54,Female,North,Silver,Champions,1
+CUST_2282,47,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2283,32,Male,North,Bronze,Loyal Customers,0
+CUST_2284,42,Non-Binary,North,Silver,Champions,1
+CUST_2285,30,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2286,31,Male,North,Silver,Loyal Customers,0
+CUST_2287,26,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2288,28,Female,West,Platinum,Loyal Customers,0
+CUST_2289,42,Male,South,Bronze,Loyal Customers,0
+CUST_2290,24,Male,South,Bronze,Loyal Customers,0
+CUST_2291,29,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2292,38,Male,South,Bronze,Loyal Customers,0
+CUST_2293,33,Male,West,Silver,Hibernating / At-Risk,2
+CUST_2294,32,Female,East,Gold,Champions,1
+CUST_2295,60,Male,South,Bronze,Loyal Customers,0
+CUST_2296,23,Non-Binary,South,Silver,Champions,1
+CUST_2297,27,Female,South,Silver,Loyal Customers,0
+CUST_2298,27,Male,West,Bronze,Loyal Customers,0
+CUST_2299,34,Female,West,Silver,Loyal Customers,0
+CUST_2300,39,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2301,57,Female,South,Silver,Hibernating / At-Risk,2
+CUST_2302,18,Female,West,Bronze,Champions,1
+CUST_2303,30,Male,South,Silver,Champions,1
+CUST_2304,34,Male,East,Bronze,Loyal Customers,0
+CUST_2305,34,Non-Binary,South,Silver,Champions,3
+CUST_2306,21,Male,South,Platinum,Champions,1
+CUST_2307,42,Male,South,Platinum,Champions,3
+CUST_2308,25,Male,North,Silver,Loyal Customers,0
+CUST_2309,31,Female,North,Bronze,Loyal Customers,0
+CUST_2310,38,Male,West,Gold,Loyal Customers,0
+CUST_2311,37,Non-Binary,South,Bronze,Champions,3
+CUST_2312,27,Male,South,Bronze,Hibernating / At-Risk,2
+CUST_2313,21,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2314,32,Female,South,Gold,Loyal Customers,0
+CUST_2316,45,Female,North,Silver,Loyal Customers,0
+CUST_2317,32,Non-Binary,South,Silver,Champions,1
+CUST_2318,24,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2319,32,Non-Binary,West,Silver,Champions,1
+CUST_2320,21,Female,East,Silver,Champions,1
+CUST_2321,50,Male,East,Silver,Loyal Customers,0
+CUST_2322,36,Female,East,Silver,Hibernating / At-Risk,2
+CUST_2323,33,Male,West,Bronze,Hibernating / At-Risk,2
+CUST_2324,29,Male,West,Bronze,Champions,1
+CUST_2325,30,Female,West,Bronze,Loyal Customers,0
+CUST_2326,18,Non-Binary,North,Bronze,Champions,1
+CUST_2327,20,Male,South,Bronze,Champions,3
+CUST_2328,41,Male,North,Gold,Champions,1
+CUST_2329,42,Male,West,Silver,Loyal Customers,0
+CUST_2330,41,Female,South,Gold,Hibernating / At-Risk,2
+CUST_2331,23,Male,South,Silver,Champions,1
+CUST_2332,18,Male,West,Gold,Champions,1
+CUST_2333,43,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2334,24,Male,West,Gold,Loyal Customers,0
+CUST_2335,49,Female,West,Silver,Loyal Customers,0
+CUST_2336,44,Female,South,Silver,Loyal Customers,0
+CUST_2337,31,Male,North,Bronze,Champions,1
+CUST_2338,62,Female,North,Bronze,Champions,1
+CUST_2339,46,Female,West,Bronze,Champions,1
+CUST_2340,42,Female,West,Bronze,Loyal Customers,0
+CUST_2341,33,Male,West,Bronze,Loyal Customers,0
+CUST_2342,28,Male,South,Gold,Champions,1
+CUST_2343,38,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2344,54,Male,South,Bronze,Champions,1
+CUST_2345,27,Female,North,Bronze,Loyal Customers,0
+CUST_2346,34,Female,East,Bronze,Champions,1
+CUST_2347,46,Male,East,Bronze,Loyal Customers,0
+CUST_2348,40,Male,East,Silver,Champions,1
+CUST_2349,36,Male,North,Silver,Champions,1
+CUST_2350,45,Non-Binary,West,Platinum,Loyal Customers,0
+CUST_2351,23,Non-Binary,East,Silver,Hibernating / At-Risk,2
+CUST_2352,34,Non-Binary,North,Bronze,Champions,1
+CUST_2353,54,Male,West,Bronze,Champions,1
+CUST_2354,57,Female,North,Silver,Hibernating / At-Risk,2
+CUST_2355,26,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2356,26,Female,East,Platinum,Loyal Customers,0
+CUST_2357,30,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2358,59,Female,West,Gold,Loyal Customers,0
+CUST_2359,18,Female,South,Bronze,Champions,1
+CUST_2360,28,Female,North,Bronze,Hibernating / At-Risk,2
+CUST_2361,26,Female,South,Silver,Hibernating / At-Risk,2
+CUST_2362,36,Male,North,Silver,Hibernating / At-Risk,2
+CUST_2363,18,Male,West,Silver,Hibernating / At-Risk,2
+CUST_2364,42,Male,East,Gold,Champions,1
+CUST_2365,36,Non-Binary,West,Platinum,Champions,1
+CUST_2366,33,Female,West,Silver,Champions,1
+CUST_2367,40,Non-Binary,North,Bronze,Champions,1
+CUST_2368,28,Female,West,Bronze,Loyal Customers,0
+CUST_2369,36,Female,East,Bronze,Champions,1
+CUST_2370,32,Non-Binary,West,Silver,Champions,1
+CUST_2371,59,Non-Binary,South,Bronze,Champions,1
+CUST_2372,51,Male,South,Platinum,Champions,1
+CUST_2373,47,Non-Binary,West,Gold,Champions,1
+CUST_2374,35,Non-Binary,East,Bronze,Champions,1
+CUST_2375,41,Non-Binary,North,Silver,Champions,1
+CUST_2376,41,Female,West,Gold,Loyal Customers,0
+CUST_2377,34,Male,East,Silver,Loyal Customers,0
+CUST_2378,34,Female,North,Bronze,Loyal Customers,0
+CUST_2379,34,Female,South,Bronze,Champions,3
+CUST_2380,28,Male,West,Bronze,Loyal Customers,0
+CUST_2381,56,Female,East,Gold,Champions,1
+CUST_2382,42,Male,South,Bronze,Champions,1
+CUST_2383,24,Male,South,Gold,Champions,1
+CUST_2385,32,Female,North,Bronze,Loyal Customers,0
+CUST_2386,35,Male,North,Silver,Loyal Customers,0
+CUST_2387,51,Male,North,Bronze,Champions,3
+CUST_2388,50,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2389,43,Female,East,Silver,Champions,3
+CUST_2390,38,Non-Binary,East,Silver,Hibernating / At-Risk,2
+CUST_2391,34,Male,East,Silver,Champions,1
+CUST_2392,35,Male,North,Silver,Hibernating / At-Risk,2
+CUST_2393,36,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2394,29,Male,West,Bronze,Champions,3
+CUST_2395,32,Female,South,Bronze,Champions,1
+CUST_2396,31,Male,South,Gold,Champions,3
+CUST_2397,21,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2398,23,Female,East,Bronze,Champions,1
+CUST_2399,61,Male,South,Silver,Champions,3
+CUST_2400,24,Female,West,Bronze,Loyal Customers,0
+CUST_2401,45,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2402,45,Non-Binary,West,Platinum,Loyal Customers,0
+CUST_2403,39,Male,South,Bronze,Loyal Customers,0
+CUST_2404,32,Male,South,Bronze,Loyal Customers,0
+CUST_2405,41,Female,West,Gold,Loyal Customers,0
+CUST_2406,50,Male,East,Bronze,Loyal Customers,0
+CUST_2407,47,Non-Binary,East,Silver,Champions,1
+CUST_2408,41,Male,West,Silver,Loyal Customers,0
+CUST_2409,63,Non-Binary,North,Bronze,Champions,3
+CUST_2410,45,Female,North,Gold,Loyal Customers,0
+CUST_2411,62,Non-Binary,South,Bronze,Champions,1
+CUST_2412,40,Non-Binary,East,Silver,Champions,1
+CUST_2413,38,Non-Binary,East,Gold,Champions,1
+CUST_2414,43,Female,East,Gold,Champions,1
+CUST_2415,32,Female,East,Gold,Hibernating / At-Risk,2
+CUST_2416,41,Female,North,Silver,Champions,1
+CUST_2417,25,Non-Binary,East,Platinum,Champions,1
+CUST_2418,35,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2419,18,Non-Binary,West,Gold,Loyal Customers,0
+CUST_2420,46,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2421,48,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2422,19,Male,South,Bronze,Champions,1
+CUST_2423,19,Male,West,Bronze,Champions,1
+CUST_2424,51,Male,South,Bronze,Loyal Customers,0
+CUST_2425,40,Female,North,Bronze,Loyal Customers,0
+CUST_2426,38,Male,North,Bronze,Champions,3
+CUST_2427,28,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2428,35,Female,North,Bronze,Champions,1
+CUST_2429,42,Female,West,Bronze,Loyal Customers,0
+CUST_2430,27,Male,North,Silver,Loyal Customers,0
+CUST_2431,23,Male,West,Silver,Hibernating / At-Risk,2
+CUST_2432,30,Female,East,Bronze,Hibernating / At-Risk,2
+CUST_2433,44,Female,West,Bronze,Loyal Customers,0
+CUST_2434,45,Non-Binary,West,Silver,Champions,1
+CUST_2435,31,Female,East,Gold,Loyal Customers,0
+CUST_2436,24,Female,West,Bronze,Loyal Customers,0
+CUST_2437,52,Female,East,Platinum,Champions,1
+CUST_2438,41,Female,West,Bronze,Champions,1
+CUST_2439,21,Female,North,Bronze,Champions,1
+CUST_2440,34,Male,East,Platinum,Hibernating / At-Risk,2
+CUST_2441,27,Female,West,Bronze,Loyal Customers,0
+CUST_2442,32,Female,North,Bronze,Champions,1
+CUST_2443,26,Male,North,Gold,Loyal Customers,0
+CUST_2444,29,Female,West,Gold,Loyal Customers,0
+CUST_2445,47,Female,West,Silver,Loyal Customers,0
+CUST_2446,31,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2447,23,Female,North,Silver,Hibernating / At-Risk,2
+CUST_2448,26,Female,North,Platinum,Champions,1
+CUST_2449,24,Female,West,Silver,Loyal Customers,0
+CUST_2450,18,Female,East,Bronze,Loyal Customers,0
+CUST_2451,49,Female,North,Silver,Hibernating / At-Risk,2
+CUST_2452,46,Male,South,Bronze,Loyal Customers,0
+CUST_2453,33,Female,East,Platinum,Champions,1
+CUST_2454,28,Female,North,Bronze,Loyal Customers,0
+CUST_2455,39,Non-Binary,West,Bronze,Champions,1
+CUST_2456,53,Female,North,Bronze,Loyal Customers,0
+CUST_2457,18,Male,South,Bronze,Loyal Customers,0
+CUST_2458,23,Male,West,Silver,Loyal Customers,0
+CUST_2459,32,Non-Binary,West,Gold,Loyal Customers,0
+CUST_2460,33,Male,South,Bronze,Champions,1
+CUST_2461,45,Female,West,Gold,Loyal Customers,0
+CUST_2462,48,Male,North,Silver,Champions,3
+CUST_2463,34,Female,North,Gold,Loyal Customers,0
+CUST_2464,39,Male,West,Silver,Loyal Customers,0
+CUST_2465,30,Male,North,Bronze,Champions,1
+CUST_2466,21,Non-Binary,East,Bronze,Champions,1
+CUST_2467,42,Female,South,Bronze,Hibernating / At-Risk,2
+CUST_2468,18,Male,West,Bronze,Champions,1
+CUST_2469,39,Male,South,Bronze,Champions,1
+CUST_2470,41,Male,East,Bronze,Loyal Customers,0
+CUST_2471,42,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2472,35,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2473,27,Male,East,Bronze,Champions,1
+CUST_2474,32,Non-Binary,North,Bronze,Champions,1
+CUST_2475,31,Male,East,Silver,Loyal Customers,0
+CUST_2476,36,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2477,58,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2478,22,Non-Binary,North,Platinum,Loyal Customers,0
+CUST_2479,37,Non-Binary,West,Bronze,Champions,1
+CUST_2480,30,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2481,46,Non-Binary,West,Bronze,Champions,1
+CUST_2482,26,Male,East,Bronze,Champions,1
+CUST_2483,50,Female,South,Bronze,Champions,1
+CUST_2484,28,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2485,40,Male,South,Silver,Champions,3
+CUST_2486,27,Female,West,Bronze,Loyal Customers,0
+CUST_2487,35,Non-Binary,East,Gold,Loyal Customers,0
+CUST_2488,32,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2489,44,Female,East,Silver,Champions,1
+CUST_2490,60,Male,West,Gold,Champions,1
+CUST_2491,33,Male,East,Silver,Champions,1
+CUST_2492,39,Female,West,Bronze,Champions,1
+CUST_2493,42,Female,North,Bronze,Champions,1
+CUST_2494,18,Non-Binary,East,Gold,Loyal Customers,0
+CUST_2495,31,Female,South,Silver,Loyal Customers,0
+CUST_2496,38,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2497,29,Non-Binary,North,Silver,Champions,3
+CUST_2498,41,Female,North,Bronze,Champions,1
+CUST_2499,41,Male,West,Platinum,Champions,1
+CUST_2500,18,Male,South,Bronze,Loyal Customers,0
+CUST_2501,24,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2502,40,Female,South,Silver,Champions,1
+CUST_2503,52,Non-Binary,North,Gold,Loyal Customers,0
+CUST_2504,25,Male,North,Bronze,Loyal Customers,0
+CUST_2505,28,Female,South,Silver,Loyal Customers,0
+CUST_2506,35,Female,East,Gold,Hibernating / At-Risk,2
+CUST_2507,38,Non-Binary,North,Bronze,Champions,1
+CUST_2508,18,Female,South,Silver,Loyal Customers,0
+CUST_2510,25,Male,South,Bronze,Champions,1
+CUST_2511,63,Male,West,Silver,Hibernating / At-Risk,2
+CUST_2512,20,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2513,27,Female,East,Bronze,Loyal Customers,0
+CUST_2514,51,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2515,39,Female,East,Bronze,Loyal Customers,0
+CUST_2516,25,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2517,49,Male,East,Platinum,Loyal Customers,0
+CUST_2518,40,Male,West,Gold,Loyal Customers,0
+CUST_2519,34,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2520,36,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2521,32,Male,North,Bronze,Hibernating / At-Risk,2
+CUST_2522,40,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2523,25,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2524,50,Non-Binary,West,Gold,Loyal Customers,0
+CUST_2525,44,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2526,49,Male,West,Gold,Loyal Customers,0
+CUST_2527,19,Male,South,Silver,Champions,1
+CUST_2528,35,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2529,39,Male,West,Gold,Champions,1
+CUST_2530,44,Male,East,Bronze,Loyal Customers,0
+CUST_2531,31,Non-Binary,West,Bronze,Champions,1
+CUST_2532,27,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2533,56,Male,West,Gold,Champions,1
+CUST_2534,18,Female,West,Bronze,Loyal Customers,0
+CUST_2535,44,Female,South,Bronze,Champions,1
+CUST_2536,45,Male,West,Gold,Champions,1
+CUST_2537,41,Male,North,Bronze,Loyal Customers,0
+CUST_2538,64,Female,West,Bronze,Champions,1
+CUST_2539,36,Male,South,Silver,Loyal Customers,0
+CUST_2540,43,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2541,25,Female,North,Bronze,Loyal Customers,0
+CUST_2542,37,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2543,35,Female,South,Silver,Champions,1
+CUST_2544,42,Female,South,Bronze,Loyal Customers,0
+CUST_2545,55,Female,East,Silver,Loyal Customers,0
+CUST_2546,34,Female,East,Silver,Loyal Customers,0
+CUST_2547,47,Female,North,Bronze,Champions,1
+CUST_2548,49,Female,South,Bronze,Loyal Customers,0
+CUST_2549,29,Male,South,Gold,Loyal Customers,0
+CUST_2550,47,Female,South,Bronze,Loyal Customers,0
+CUST_2551,39,Male,West,Bronze,Champions,1
+CUST_2552,53,Male,West,Gold,Hibernating / At-Risk,2
+CUST_2553,49,Non-Binary,North,Gold,Champions,1
+CUST_2554,47,Male,South,Gold,Loyal Customers,0
+CUST_2555,49,Male,West,Silver,Champions,3
+CUST_2556,26,Non-Binary,North,Gold,Loyal Customers,0
+CUST_2557,35,Male,West,Bronze,Loyal Customers,0
+CUST_2558,34,Female,East,Bronze,Hibernating / At-Risk,2
+CUST_2559,46,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2560,46,Male,East,Gold,Hibernating / At-Risk,2
+CUST_2561,35,Female,West,Silver,Champions,1
+CUST_2562,38,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2563,42,Non-Binary,East,Bronze,Champions,1
+CUST_2564,65,Male,West,Silver,Loyal Customers,0
+CUST_2565,18,Female,West,Bronze,Champions,1
+CUST_2566,30,Female,East,Bronze,Hibernating / At-Risk,2
+CUST_2567,48,Male,North,Bronze,Champions,1
+CUST_2568,35,Non-Binary,North,Silver,Champions,3
+CUST_2569,28,Female,South,Bronze,Hibernating / At-Risk,2
+CUST_2570,26,Female,North,Bronze,Loyal Customers,0
+CUST_2571,18,Female,North,Gold,Champions,1
+CUST_2572,26,Female,West,Bronze,Champions,3
+CUST_2573,50,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2574,27,Non-Binary,East,Bronze,Hibernating / At-Risk,2
+CUST_2575,61,Female,West,Gold,Champions,1
+CUST_2576,33,Male,West,Bronze,Loyal Customers,0
+CUST_2577,23,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2578,55,Non-Binary,East,Bronze,Champions,1
+CUST_2579,28,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2581,49,Non-Binary,North,Gold,Champions,1
+CUST_2582,31,Male,North,Bronze,Loyal Customers,0
+CUST_2583,26,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2584,52,Female,North,Gold,Loyal Customers,0
+CUST_2585,27,Male,South,Bronze,Champions,1
+CUST_2586,26,Non-Binary,West,Gold,Champions,3
+CUST_2587,38,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2588,54,Male,North,Bronze,Champions,1
+CUST_2589,18,Non-Binary,North,Bronze,Loyal Customers,0
+CUST_2590,33,Non-Binary,East,Bronze,Champions,1
+CUST_2591,35,Non-Binary,North,Bronze,Champions,1
+CUST_2592,42,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2593,47,Male,West,Bronze,Loyal Customers,0
+CUST_2594,25,Non-Binary,North,Silver,Champions,1
+CUST_2595,39,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2596,29,Male,West,Bronze,Loyal Customers,0
+CUST_2597,49,Male,West,Bronze,Champions,1
+CUST_2598,42,Female,North,Silver,Hibernating / At-Risk,2
+CUST_2599,49,Male,North,Silver,Champions,1
+CUST_2600,23,Female,South,Bronze,Champions,1
+CUST_2601,36,Male,West,Bronze,Loyal Customers,0
+CUST_2602,49,Male,South,Bronze,Loyal Customers,0
+CUST_2603,25,Female,South,Bronze,Loyal Customers,0
+CUST_2604,35,Male,East,Gold,Loyal Customers,0
+CUST_2605,57,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2606,40,Non-Binary,East,Silver,Champions,1
+CUST_2607,26,Non-Binary,West,Gold,Champions,1
+CUST_2608,51,Male,South,Gold,Champions,1
+CUST_2609,42,Non-Binary,East,Bronze,Champions,1
+CUST_2610,56,Male,West,Silver,Loyal Customers,0
+CUST_2611,25,Female,East,Bronze,Champions,1
+CUST_2612,71,Female,West,Bronze,Loyal Customers,0
+CUST_2614,41,Male,East,Bronze,Loyal Customers,0
+CUST_2615,41,Female,West,Bronze,Hibernating / At-Risk,2
+CUST_2616,62,Male,West,Gold,Loyal Customers,0
+CUST_2617,30,Female,South,Silver,Champions,1
+CUST_2618,42,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2619,45,Male,South,Gold,Champions,1
+CUST_2620,41,Male,East,Bronze,Champions,1
+CUST_2621,27,Female,East,Silver,Champions,1
+CUST_2622,45,Non-Binary,North,Silver,Loyal Customers,0
+CUST_2623,44,Non-Binary,East,Bronze,Champions,1
+CUST_2624,38,Female,North,Bronze,Loyal Customers,0
+CUST_2625,48,Female,South,Silver,Loyal Customers,0
+CUST_2626,32,Non-Binary,North,Bronze,Hibernating / At-Risk,2
+CUST_2627,28,Non-Binary,West,Silver,Champions,1
+CUST_2628,40,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2629,18,Non-Binary,East,Silver,Champions,1
+CUST_2630,32,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2631,55,Female,North,Platinum,Loyal Customers,0
+CUST_2632,28,Female,East,Silver,Loyal Customers,0
+CUST_2633,34,Non-Binary,South,Gold,Loyal Customers,0
+CUST_2634,20,Male,North,Bronze,Champions,1
+CUST_2635,26,Female,North,Bronze,Loyal Customers,0
+CUST_2636,41,Female,West,Gold,Loyal Customers,0
+CUST_2637,35,Male,North,Silver,Loyal Customers,0
+CUST_2638,47,Male,South,Silver,Loyal Customers,0
+CUST_2639,47,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2640,28,Male,South,Gold,Loyal Customers,0
+CUST_2641,34,Female,West,Silver,Champions,1
+CUST_2642,19,Male,East,Platinum,Loyal Customers,0
+CUST_2643,38,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2644,41,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2646,25,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2647,37,Female,West,Bronze,Loyal Customers,0
+CUST_2648,35,Non-Binary,North,Gold,Champions,1
+CUST_2649,70,Male,South,Silver,Loyal Customers,0
+CUST_2650,32,Non-Binary,East,Bronze,Champions,1
+CUST_2651,22,Non-Binary,East,Platinum,Loyal Customers,0
+CUST_2652,23,Female,West,Gold,Loyal Customers,0
+CUST_2653,26,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2654,32,Female,West,Bronze,Loyal Customers,0
+CUST_2655,28,Female,East,Gold,Hibernating / At-Risk,2
+CUST_2656,31,Male,South,Silver,Champions,1
+CUST_2657,37,Female,West,Silver,Hibernating / At-Risk,2
+CUST_2658,30,Female,North,Silver,Loyal Customers,0
+CUST_2659,57,Male,West,Bronze,Loyal Customers,0
+CUST_2660,23,Male,South,Silver,Champions,3
+CUST_2661,18,Non-Binary,East,Platinum,Champions,1
+CUST_2662,21,Female,South,Bronze,Loyal Customers,0
+CUST_2663,43,Female,South,Silver,Loyal Customers,0
+CUST_2664,70,Male,East,Gold,Champions,1
+CUST_2665,34,Non-Binary,West,Bronze,Champions,1
+CUST_2666,49,Female,West,Silver,Hibernating / At-Risk,2
+CUST_2667,42,Non-Binary,South,Gold,Loyal Customers,0
+CUST_2668,21,Non-Binary,South,Bronze,Loyal Customers,0
+CUST_2669,35,Non-Binary,West,Gold,Champions,1
+CUST_2670,18,Male,North,Silver,Loyal Customers,0
+CUST_2671,19,Non-Binary,West,Bronze,Loyal Customers,0
+CUST_2672,28,Non-Binary,South,Silver,Loyal Customers,0
+CUST_2673,46,Non-Binary,North,Silver,Champions,1
+CUST_2674,36,Male,North,Gold,Champions,1
+CUST_2675,44,Female,East,Gold,Hibernating / At-Risk,2
+CUST_2676,59,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2677,18,Non-Binary,South,Silver,Champions,1
+CUST_2678,40,Male,South,Silver,Loyal Customers,0
+CUST_2679,46,Male,East,Bronze,Loyal Customers,0
+CUST_2680,39,Male,West,Bronze,Champions,1
+CUST_2681,18,Non-Binary,East,Bronze,Champions,1
+CUST_2682,47,Male,East,Gold,Loyal Customers,0
+CUST_2683,48,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2684,51,Non-Binary,South,Gold,Loyal Customers,0
+CUST_2685,40,Non-Binary,West,Gold,Hibernating / At-Risk,2
+CUST_2686,31,Female,North,Silver,Loyal Customers,0
+CUST_2687,45,Female,South,Gold,Champions,1
+CUST_2688,34,Female,East,Bronze,Loyal Customers,0
+CUST_2689,52,Female,West,Bronze,Loyal Customers,0
+CUST_2690,42,Non-Binary,East,Bronze,Loyal Customers,0
+CUST_2691,35,Female,South,Silver,Champions,1
+CUST_2692,42,Non-Binary,North,Silver,Champions,1
+CUST_2693,55,Female,East,Gold,Champions,3
+CUST_2694,42,Non-Binary,East,Silver,Loyal Customers,0
+CUST_2695,47,Non-Binary,North,Silver,Hibernating / At-Risk,2
+CUST_2696,37,Non-Binary,West,Silver,Loyal Customers,0
+CUST_2697,24,Female,North,Bronze,Loyal Customers,0
+CUST_2698,36,Female,North,Silver,Loyal Customers,0
+CUST_2699,35,Female,North,Gold,Champions,3

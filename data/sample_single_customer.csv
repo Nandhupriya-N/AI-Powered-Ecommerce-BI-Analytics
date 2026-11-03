@@ -1,0 +1,2 @@
+Customer_ID,Age,Gender,Region,Membership_Type,Customer_Service_Calls,Website_Visits_Per_Month,Recency_Days,Frequency_Orders,Avg_Order_Value,Return_Rate
+CUST_TEST_999,38,Female,South,Silver,4,8,75,3,145.5,15.0

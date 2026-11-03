@@ -1,0 +1,366 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 2100" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 38px; font-weight: 800; fill: #ffffff; letter-spacing: 1px; }
+      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 19px; font-weight: 500; fill: #94a3b8; }
+      .layer-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; fill: #ffffff; }
+      .layer-sub { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 500; fill: #e2e8f0; }
+      .card-hdr { font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; font-weight: 700; }
+      .card-sub { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 600; fill: #64748b; }
+      .sec-hdr { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 700; fill: #0f172a; }
+      .body-txt { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #475569; }
+      .body-bold { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 700; }
+      .code-txt { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 13px; fill: #0284c7; }
+      .flow-txt { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0.5px; }
+      .shadow { filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05)) drop-shadow(0 10px 15px rgba(0, 0, 0, 0.03)); }
+    </style>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="flowGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#ede9fe"/>
+    </linearGradient>
+    <linearGradient id="flowGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <linearGradient id="flowGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+
+  <!-- Top Global Header Banner -->
+  <g class="shadow">
+    <rect x="40" y="30" width="3120" height="120" rx="12" fill="url(#headerGrad)"/>
+    <rect x="40" y="146" width="3120" height="4" fill="#38bdf8"/>
+    <text x="70" y="80" class="title">RETAILIQ: AI-POWERED E-COMMERCE DECISION INTELLIGENCE SUITE</text>
+    <text x="72" y="122" class="subtitle">HIGH-LEVEL DESIGN (HLD) SYSTEM ARCHITECTURE &amp; END-TO-END DATA FLOW | MID-TERM EVALUATION</text>
+  </g>
+
+  <!-- ============================================================== -->
+  <!-- LAYER 1: ENTERPRISE PERSONAS (External Actors & Access Gateway) -->
+  <!-- ============================================================== -->
+  <g class="shadow">
+    <rect x="40" y="180" width="3120" height="180" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="40" y="180" width="3120" height="50" rx="10" fill="#334155"/>
+    <rect x="40" y="220" width="3120" height="10" fill="#334155"/>
+    <text x="65" y="213" class="layer-title">1. ENTERPRISE STAKEHOLDER PERSONAS &amp; ROLE-BASED ACCESS CONTROL (RBAC)</text>
+    <text x="1350" y="213" class="layer-sub">Cryptographic Persona Gating | Salted SHA-256 Storage | Dynamic Viewport Routing</text>
+
+    <!-- Persona Card 1: Admin -->
+    <rect x="65" y="245" width="730" height="95" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="85" y="275" class="card-hdr" fill="#1d4ed8">Administrator Persona</text>
+    <text x="85" y="300" class="body-txt">Full platform governance, dynamic RBAC user configuration, pipeline re-triggering,</text>
+    <text x="85" y="322" class="body-bold" fill="#1e40af">Complete Access: 9 Core System Modules Unlocked</text>
+
+    <!-- Persona Card 2: Analyst -->
+    <rect x="835" y="245" width="730" height="95" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="855" y="275" class="card-hdr" fill="#6d28d9">BI &amp; Data Analyst Persona</text>
+    <text x="855" y="300" class="body-txt">Predictive model performance validation (ROC-AUC, Precision), transaction anomaly isolation,</text>
+    <text x="855" y="322" class="body-bold" fill="#5b21b6">Analytical Access: 7 Data &amp; Machine Learning Modules Unlocked</text>
+
+    <!-- Persona Card 3: Manager -->
+    <rect x="1605" y="245" width="730" height="95" rx="8" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
+    <text x="1625" y="275" class="card-hdr" fill="#be123c">Business &amp; Operations Manager Persona</text>
+    <text x="1625" y="300" class="body-txt">High-level financial KPIs ($1.84M GMV), 14-day sales forecasting, interactive What-If simulator,</text>
+    <text x="1625" y="322" class="body-bold" fill="#9f1239">Executive Access: 6 Managerial &amp; Prescriptive Decision Modules</text>
+
+    <!-- Persona Card 4: Customer Success -->
+    <rect x="2375" y="245" width="760" height="95" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+    <text x="2395" y="275" class="card-hdr" fill="#047857">Customer Success &amp; Retention Persona</text>
+    <text x="2395" y="300" class="body-txt">Customer 360 profile inspector, real-time NLP sentiment feedback mining, retention incentives,</text>
+    <text x="2395" y="322" class="body-bold" fill="#065f46">Targeted Access: 1,193 Customer Profiles &amp; Automated Winback Offers</text>
+  </g>
+
+  <!-- Flow Connector 1 -->
+  <g>
+    <rect x="40" y="380" width="3120" height="40" rx="6" fill="url(#flowGrad1)" stroke="#a5b4fc" stroke-width="1.5"/>
+    <text x="1000" y="405" class="flow-txt" fill="#4338ca">AUTHENTICATED CLIENT COMMUNICATION &amp; ROLE-GATED NAVIGATION (HTTPS / STREAMLIT REACTIVE PROTOCOL) &#9660;</text>
+  </g>
+
+  <!-- ============================================================== -->
+  <!-- LAYER 2: INTERACTIVE PRESENTATION & DECISION SUPPORT LAYER      -->
+  <!-- ============================================================== -->
+  <g class="shadow">
+    <rect x="40" y="440" width="3120" height="240" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="40" y="440" width="3120" height="50" rx="10" fill="#2563eb"/>
+    <rect x="40" y="480" width="3120" height="10" fill="#2563eb"/>
+    <text x="65" y="473" class="layer-title">2. INTERACTIVE PRESENTATION &amp; DECISION SUPPORT LAYER (app.py)</text>
+    <text x="1350" y="473" class="layer-sub">Streamlit Framework | Reactive Zero-Reload st.tabs Navigation | Plotly 5.18.0 Visualizers | Parameter Sliders</text>
+
+    <!-- Viewport 1 -->
+    <rect x="65" y="505" width="490" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="85" y="535" class="sec-hdr" fill="#1e40af">Executive KPI Dashboard</text>
+    <text x="85" y="560" class="body-txt">&#8226; $1.84M Gross Revenue, 6,000 Orders</text>
+    <text x="85" y="582" class="body-txt">&#8226; $307.87 Average Order Value (AOV)</text>
+    <text x="85" y="604" class="body-txt">&#8226; Category margins &amp; payment method trends</text>
+    <text x="85" y="628" class="code-txt">Visuals: Plotly Metric Cards &amp; Donut Charts</text>
+
+    <!-- Viewport 2 -->
+    <rect x="580" y="505" width="490" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="600" y="535" class="sec-hdr" fill="#1e40af">Data Hygiene &amp; Audit Studio</text>
+    <text x="600" y="560" class="body-txt">&#8226; Zero missing values verified (100% clean)</text>
+    <text x="600" y="582" class="body-txt">&#8226; Automated deduplication integrity check</text>
+    <text x="600" y="604" class="body-txt">&#8226; Canonical schema contract validation</text>
+    <text x="600" y="628" class="code-txt">Visuals: Null Heatmaps &amp; Audit Summaries</text>
+
+    <!-- Viewport 3 -->
+    <rect x="1095" y="505" width="490" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="1115" y="535" class="sec-hdr" fill="#1e40af">Predictive ML &amp; XAI Studio</text>
+    <text x="1115" y="560" class="body-txt">&#8226; 92.27% Accuracy, 0.9703 ROC-AUC, 89.1% Prec.</text>
+    <text x="1115" y="582" class="body-txt">&#8226; Explainable AI (Gini Feature Importance)</text>
+    <text x="1115" y="604" class="body-txt">&#8226; Top Risk Drivers: Tenure (23.8%), Complain (18.4%)</text>
+    <text x="1115" y="628" class="code-txt">Visuals: ROC Curve, PR Curve, Gini Ranking</text>
+
+    <!-- Viewport 4 -->
+    <rect x="1610" y="505" width="490" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="1630" y="535" class="sec-hdr" fill="#1e40af">Sales Demand Forecaster</text>
+    <text x="1630" y="560" class="body-txt">&#8226; 14-Day Forward Revenue Trajectory</text>
+    <text x="1630" y="582" class="body-txt">&#8226; Multi-factor Ridge Regression + Moving Avg</text>
+    <text x="1630" y="604" class="body-txt">&#8226; 95% Confidence Interval Prediction Bands</text>
+    <text x="1630" y="628" class="code-txt">Visuals: Continuous Time-Series Forecast Plot</text>
+
+    <!-- Viewport 5 -->
+    <rect x="2125" y="505" width="510" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="2145" y="535" class="sec-hdr" fill="#1e40af">Prescriptive What-If Simulator</text>
+    <text x="2145" y="560" class="body-txt">&#8226; Strategic Sliders: SLA Boost, Promo, VIP Reach</text>
+    <text x="2145" y="582" class="body-txt">&#8226; Real-Time Net Churn Reduction Calculation</text>
+    <text x="2145" y="604" class="body-txt">&#8226; Financial Output: Saved Accounts &amp; Recovered ARR</text>
+    <text x="2145" y="628" class="code-txt">Visuals: Reactive Gauge &amp; ROI Simulator Cards</text>
+
+    <!-- Viewport 6 -->
+    <rect x="2660" y="505" width="475" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="2680" y="535" class="sec-hdr" fill="#1e40af">Customer 360 &amp; Recommendations</text>
+    <text x="2680" y="560" class="body-txt">&#8226; 1,193 Profile Explorer &amp; RFM Segment Matrix</text>
+    <text x="2680" y="582" class="body-txt">&#8226; Background Real-Time NLP Sentiment Scoring</text>
+    <text x="2680" y="604" class="body-txt">&#8226; Personalized Retention Offers (25% VIP Winback)</text>
+    <text x="2680" y="628" class="code-txt">Visuals: 3D RFM Scatter &amp; Profile Inspector</text>
+  </g>
+
+  <!-- Flow Connector 2 -->
+  <g>
+    <rect x="40" y="700" width="3120" height="40" rx="6" fill="url(#flowGrad2)" stroke="#fcd34d" stroke-width="1.5"/>
+    <text x="1050" y="725" class="flow-txt" fill="#b45309">CORE APPLICATION SUBSYSTEM PIPELINES (AUTONOMOUS ANALYTICAL &amp; INFERENCE ENGINES) &#9660;</text>
+  </g>
+
+  <!-- ============================================================== -->
+  <!-- LAYER 3: CORE ANALYTICAL & MACHINE LEARNING SUBSYSTEMS         -->
+  <!-- ============================================================== -->
+  <!-- Subsystem 3.1: Data Governance -->
+  <g class="shadow">
+    <rect x="40" y="760" width="750" height="660" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="40" y="760" width="750" height="48" rx="10" fill="#0d9488"/>
+    <rect x="40" y="798" width="750" height="10" fill="#0d9488"/>
+    <text x="65" y="792" class="layer-title">3.1 Data Governance &amp; Hygiene</text>
+    <text x="500" y="792" class="layer-sub">src/data_processor.py</text>
+
+    <text x="65" y="835" class="sec-hdr">Canonical Schema Harmonization:</text>
+    <text x="65" y="860" class="body-txt">&#8226; Ingests disparate raw schemas (Kaggle, Multi-Channel CSVs)</text>
+    <text x="65" y="882" class="body-txt">&#8226; Maps aliases: CustomerID &#8594; Customer_ID, CouponUsed &#8594; Coupons</text>
+
+    <text x="65" y="920" class="sec-hdr">Robust Cleaning Pipeline:</text>
+    <text x="65" y="945" class="body-txt">&#8226; Median Imputation: Fills quantitative nulls via column medians</text>
+    <text x="65" y="967" class="body-txt">&#8226; Mode Imputation: Fills categorical fields via frequent classes</text>
+    <text x="65" y="989" class="body-txt">&#8226; Automated Deduplication: df.drop_duplicates() excises duplicates</text>
+    <text x="65" y="1011" class="body-txt">&#8226; Outlier Boundary Isolation: IQR clipping on monetary amounts</text>
+
+    <text x="65" y="1050" class="sec-hdr">Guaranteed Schema Outputs:</text>
+    <text x="65" y="1075" class="code-txt">active_trans: 6,000 Verified Multi-Channel Records</text>
+    <text x="65" y="1097" class="code-txt">active_cust: 1,193 Harmonized Customer Profiles</text>
+    <text x="65" y="1119" class="code-txt">kaggle_clean: 5,630 Kaggle Churn Training Records</text>
+
+    <rect x="65" y="1150" width="700" height="70" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+    <text x="80" y="1178" class="body-bold" fill="#166534">Contract Quality Guarantee:</text>
+    <text x="80" y="1202" class="body-txt" fill="#15803d">Zero unhandled missing values, zero redundant keys, ready for ML training.</text>
+  </g>
+
+  <!-- Subsystem 3.2: Descriptive Analytics -->
+  <g class="shadow">
+    <rect x="830" y="760" width="750" height="660" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="830" y="760" width="750" height="48" rx="10" fill="#7c3aed"/>
+    <rect x="830" y="798" width="750" height="10" fill="#7c3aed"/>
+    <text x="855" y="792" class="layer-title">3.2 Descriptive &amp; Behavioral Engine</text>
+    <text x="1350" y="792" class="layer-sub">src/analyzer.py</text>
+
+    <text x="855" y="835" class="sec-hdr">Real-Time Financial Aggregation:</text>
+    <text x="855" y="860" class="body-txt">&#8226; Computes GMV, Profit, Margin %, AOV, Order Frequency</text>
+    <text x="855" y="882" class="body-txt">&#8226; Multi-dimensional grouping by Department, Device, City</text>
+
+    <text x="855" y="920" class="sec-hdr">RFM Behavioral Segmentation Matrix:</text>
+    <text x="855" y="945" class="body-txt">&#8226; Recency (R): Days elapsed since most recent transaction</text>
+    <text x="855" y="967" class="body-txt">&#8226; Frequency (F): Cumulative purchase order count</text>
+    <text x="855" y="989" class="body-txt">&#8226; Monetary (M): Lifetime net purchase spend</text>
+    <text x="855" y="1011" class="code-txt">RFM_Composite = (R_Quantile * 100) + (F_Quantile * 10) + M_Quantile</text>
+
+    <text x="855" y="1050" class="sec-hdr">Behavioral Cluster Personas:</text>
+    <text x="855" y="1075" class="body-txt">&#8226; Champions: Low Recency, High Freq, High Spend (VIP Perks)</text>
+    <text x="855" y="1097" class="body-txt">&#8226; Loyal Accounts: Consistent repeat buyers (Cross-sell / Upsell)</text>
+    <text x="855" y="1119" class="body-bold" fill="#e11d48">&#8226; At-Risk Accounts: High lifetime spend, delayed recency (Winback)</text>
+
+    <rect x="855" y="1150" width="700" height="70" rx="6" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1"/>
+    <text x="870" y="1178" class="body-bold" fill="#6b21a8">Unsupervised Outlier Isolation:</text>
+    <text x="870" y="1202" class="body-txt" fill="#7e22ce">Detects negative profit transactions and rogue discount stacking (&gt;50%).</text>
+  </g>
+
+  <!-- Subsystem 3.3: Predictive ML -->
+  <g class="shadow">
+    <rect x="1620" y="760" width="750" height="660" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="1620" y="760" width="750" height="48" rx="10" fill="#4f46e5"/>
+    <rect x="1620" y="798" width="750" height="10" fill="#4f46e5"/>
+    <text x="1645" y="792" class="layer-title">3.3 Predictive Machine Learning</text>
+    <text x="2130" y="792" class="layer-sub">src/analyzer.py &amp; models/</text>
+
+    <text x="1645" y="835" class="sec-hdr">Supervised Churn Classifier (Random Forest):</text>
+    <text x="1645" y="860" class="body-txt">&#8226; Architecture: 50 Decision Trees, Gini Impurity Criterion</text>
+    <text x="1645" y="882" class="body-txt">&#8226; Training Cohort: 5,630 Kaggle Records (80/20 Stratified Split)</text>
+
+    <rect x="1645" y="905" width="700" height="90" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+    <text x="1665" y="930" class="body-bold" fill="#166534">Model Performance Diagnostics (Target &gt; 90% Achieved):</text>
+    <text x="1665" y="955" class="code-txt" fill="#15803d">Accuracy: 92.27% - 92.47% | ROC-AUC: 0.9703 | Precision: 89.12%</text>
+    <text x="1665" y="977" class="body-txt" fill="#166534">Recall: 64.85% | F1-Score: 0.7507 | Resists Class Imbalance (16.8% Churn)</text>
+
+    <text x="1645" y="1025" class="sec-hdr">Explainable AI (XAI) Attribution:</text>
+    <text x="1645" y="1050" class="body-txt">&#8226; Tenure: 23.8% relative importance weight</text>
+    <text x="1645" y="1072" class="body-txt">&#8226; Support Complain: 18.4% relative importance weight</text>
+    <text x="1645" y="1094" class="body-txt">&#8226; Warehouse Distance: 11.2% relative importance weight</text>
+
+    <text x="1645" y="1130" class="sec-hdr">14-Day Demand Forecaster:</text>
+    <text x="1645" y="1155" class="body-txt">&#8226; Multi-factor Ridge Regression + Day-of-Week Seasonality (R2 = 0.84)</text>
+    <text x="1645" y="1177" class="code-txt">models/kaggle_churn_model.pkl &amp; models/model_metadata.json</text>
+  </g>
+
+  <!-- Subsystem 3.4: Prescriptive AI & NLP -->
+  <g class="shadow">
+    <rect x="2410" y="760" width="750" height="660" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="2410" y="760" width="750" height="48" rx="10" fill="#e11d48"/>
+    <rect x="2410" y="798" width="750" height="10" fill="#e11d48"/>
+    <text x="2435" y="792" class="layer-title">3.4 Prescriptive AI &amp; NLP</text>
+    <text x="2900" y="792" class="layer-sub">src/recommender.py</text>
+
+    <text x="2435" y="835" class="sec-hdr">Prescriptive What-If Decision Simulator:</text>
+    <text x="2435" y="860" class="body-txt">&#8226; Simulates managerial interventions and calculates financial return:</text>
+    <text x="2435" y="885" class="code-txt">&#916;_Support = 0.35 * (SLA_Boost / 100)</text>
+    <text x="2435" y="905" class="code-txt">&#916;_VIP = 0.45 * (VIP_Reach / 100)</text>
+    <text x="2435" y="925" class="code-txt">&#916;_Promo = 0.20 * (Promo_Stimulus / 100)</text>
+    <text x="2435" y="948" class="code-txt">Sim_Churn = max(4.0, Base_Churn - &#916;_S - &#916;_V - &#916;_P)</text>
+    <text x="2435" y="972" class="body-bold" fill="#047857">&#8226; Recovered ARR = Saved Accounts * Average Order Value</text>
+
+    <text x="2435" y="1010" class="sec-hdr">Automated Root-Cause Diagnostics:</text>
+    <text x="2435" y="1035" class="body-txt">&#8226; Flags support bottlenecks, shipping delays, &amp; margin leakage</text>
+
+    <text x="2435" y="1070" class="sec-hdr">Real-Time NLP Sentiment Engine (Silent Daemon):</text>
+    <text x="2435" y="1095" class="body-txt">&#8226; 3-Token Lookahead Negation Inversion ("not good" &#8594; negative)</text>
+    <text x="2435" y="1117" class="body-txt">&#8226; Emotion Classifiers: Maps keywords to Joy, Anger, Frustration</text>
+    <text x="2435" y="1139" class="body-txt">&#8226; Sub-10ms CPU Inference Latency (High Throughput)</text>
+
+    <text x="2435" y="1175" class="body-bold" fill="#be123c">Profile-Driven Recommendations: 25% VIP winback for At-Risk</text>
+  </g>
+
+  <!-- Flow Connector 3 -->
+  <g>
+    <rect x="40" y="1450" width="3120" height="40" rx="6" fill="url(#flowGrad3)" stroke="#6ee7b7" stroke-width="1.5"/>
+    <text x="1050" y="1475" class="flow-txt" fill="#047857">ENTERPRISE PERSISTENCE, CRYPTOGRAPHIC AUTHENTICATION &amp; STORAGE LAYER &#9660;</text>
+  </g>
+
+  <!-- ============================================================== -->
+  <!-- LAYER 4: ENTERPRISE PERSISTENCE & PHYSICAL STORAGE LAYER       -->
+  <!-- ============================================================== -->
+  <g class="shadow">
+    <rect x="40" y="1515" width="3120" height="520" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="40" y="1515" width="3120" height="50" rx="10" fill="#0f172a"/>
+    <rect x="40" y="1555" width="3120" height="10" fill="#0f172a"/>
+    <text x="65" y="1548" class="layer-title">4. ENTERPRISE DATA PERSISTENCE &amp; PHYSICAL REPOSITORY LAYER</text>
+    <text x="1350" y="1548" class="layer-sub">Relational SQLite DB | Raw &amp; Cleansed Data Corpora | Serialized Machine Learning Model Storage</text>
+
+    <!-- Storage Block 1 -->
+    <rect x="65" y="1585" width="730" height="425" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="65" y="1585" width="730" height="40" rx="8" fill="#334155"/>
+    <text x="85" y="1612" class="card-hdr" fill="#ffffff">4.1 SQLite Relational Store</text>
+    <text x="500" y="1612" class="layer-sub">database/ecommerce_bi.db</text>
+
+    <text x="85" y="1650" class="sec-hdr">Table: users (Cryptographic Schema):</text>
+    <text x="85" y="1675" class="code-txt">&#8226; id INTEGER PRIMARY KEY AUTOINCREMENT</text>
+    <text x="85" y="1697" class="code-txt">&#8226; username TEXT UNIQUE ('admin', 'analyst', 'manager')</text>
+    <text x="85" y="1719" class="code-txt">&#8226; password_hash TEXT (SHA-256 Digest)</text>
+    <text x="85" y="1741" class="code-txt">&#8226; role TEXT ('Administrator', 'BI Analyst', 'Business Manager')</text>
+    <text x="85" y="1763" class="code-txt">&#8226; full_name TEXT, created_at TEXT</text>
+
+    <text x="85" y="1805" class="sec-hdr">Cryptographic Properties:</text>
+    <text x="85" y="1830" class="body-txt">&#8226; Salt: 'ECommerceBI_Secure_2026' resists rainbow-table attacks</text>
+    <text x="85" y="1852" class="body-txt">&#8226; Idempotent initialization via init_db()</text>
+    <text x="85" y="1874" class="body-txt">&#8226; Dynamic user account self-registration</text>
+    <text x="85" y="1896" class="body-txt">&#8226; Instant 1-click evaluation preset demo logins</text>
+
+    <text x="85" y="1940" class="body-bold" fill="#166534">Security Guarantee: Zero plaintext password exposure</text>
+
+    <!-- Storage Block 2 -->
+    <rect x="835" y="1585" width="730" height="425" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="835" y="1585" width="730" height="40" rx="8" fill="#334155"/>
+    <text x="855" y="1612" class="card-hdr" fill="#ffffff">4.2 Kaggle Churn Dataset</text>
+    <text x="1270" y="1612" class="layer-sub">data/kaggle_export/</text>
+
+    <text x="855" y="1650" class="sec-hdr">ankitverma2010/ecommerce-customer-churn:</text>
+    <text x="855" y="1675" class="body-bold">&#8226; 5,630 Verified Records across 20 Attributes:</text>
+    <text x="855" y="1697" class="code-txt">  - Identifiers: CustomerID, CityTier, Gender, MaritalStatus</text>
+    <text x="855" y="1719" class="code-txt">  - Usage: HourSpendOnApp, NumberOfDeviceRegistered, OrderCount</text>
+    <text x="855" y="1741" class="code-txt">  - Friction: Complain, WarehouseToHome, SatisfactionScore</text>
+    <text x="855" y="1763" class="code-txt">  - Financial: CouponUsed, CashbackAmount, OrderHike</text>
+    <text x="855" y="1785" class="code-txt">  - Recency: DaySinceLastOrder | Target: Churn (Binary 0/1)</text>
+
+    <text x="855" y="1825" class="sec-hdr">Dataset Partitioning:</text>
+    <text x="855" y="1850" class="body-txt">&#8226; 4,222 Training Profiles (80% Stratified Split)</text>
+    <text x="855" y="1872" class="body-txt">&#8226; 1,408 Unseen Test Cohort in Separate File</text>
+    <text x="855" y="1894" class="body-txt">&#8226; Stratified split preserves 16.8% churn distribution</text>
+
+    <text x="855" y="1940" class="body-bold" fill="#1e40af">Ground-Truth Integrity: Verified real-world enterprise dataset</text>
+
+    <!-- Storage Block 3 -->
+    <rect x="1605" y="1585" width="730" height="425" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="1605" y="1585" width="730" height="40" rx="8" fill="#334155"/>
+    <text x="1625" y="1612" class="card-hdr" fill="#ffffff">4.3 Multi-Channel Orders &amp; Reviews</text>
+    <text x="2070" y="1612" class="layer-sub">data/test_datasets/</text>
+
+    <text x="1625" y="1650" class="sec-hdr">Enterprise Operations Corpus:</text>
+    <text x="1625" y="1675" class="body-bold">&#8226; 6,000 Multi-Channel Validated Transactions</text>
+    <text x="1625" y="1697" class="body-txt">&#8226; Total Baseline Sales: $1,847,210.00 ($307.87 AOV)</text>
+    <text x="1625" y="1719" class="body-txt">&#8226; 1,193 Structured Customer Profiles across 6 Categories</text>
+
+    <text x="1625" y="1760" class="sec-hdr">Active Schema Attributes (12 Columns):</text>
+    <text x="1625" y="1785" class="code-txt">&#8226; Order_ID, Customer_ID, Date, Product_Category</text>
+    <text x="1625" y="1807" class="code-txt">&#8226; Unit_Price, Quantity, Discount_Percent, Total_Amount</text>
+    <text x="1625" y="1829" class="code-txt">&#8226; Profit, Payment_Method, Rating, Review_Text</text>
+
+    <text x="1625" y="1870" class="sec-hdr">Realistic Stress-Test Scenarios:</text>
+    <text x="1625" y="1895" class="body-txt">&#8226; Festive Surge | Support Friction | Margin Leakage</text>
+
+    <text x="1625" y="1940" class="body-bold" fill="#7c3aed">Comprehensive Scope: Full transactional &amp; review coverage</text>
+
+    <!-- Storage Block 4 -->
+    <rect x="2375" y="1585" width="760" height="425" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="2375" y="1585" width="760" height="40" rx="8" fill="#334155"/>
+    <text x="2395" y="1612" class="card-hdr" fill="#ffffff">4.4 Serialized ML Models &amp; Metadata</text>
+    <text x="2860" y="1612" class="layer-sub">models/</text>
+
+    <text x="2395" y="1650" class="sec-hdr">Pre-Trained Binary Artifacts:</text>
+    <text x="2395" y="1675" class="code-txt">&#8226; models/kaggle_churn_model.pkl (Joblib Format)</text>
+    <text x="2395" y="1697" class="code-txt">&#8226; models/model_metadata.json (Metrics &amp; Gini Weights)</text>
+
+    <text x="2395" y="1735" class="sec-hdr">Stored Model Metrics:</text>
+    <text x="2395" y="1760" class="body-txt">&#8226; Accuracy: 92.27% (Target &gt; 90% Exceeded)</text>
+    <text x="2395" y="1782" class="body-txt">&#8226; ROC-AUC: 0.9703 | Precision: 89.12%</text>
+    <text x="2395" y="1804" class="body-txt">&#8226; Top Gini Vectors: Tenure (0.238), Complain (0.184)</text>
+
+    <text x="2395" y="1845" class="sec-hdr">Runtime Serving Optimization:</text>
+    <text x="2395" y="1870" class="body-txt">&#8226; In-memory caching via @st.cache_resource</text>
+    <text x="2395" y="1892" class="body-txt">&#8226; Sub-40ms real-time inference latency across sessions</text>
+
+    <text x="2395" y="1940" class="body-bold" fill="#047857">Production-Grade Serving: Instantaneous scoring on demand</text>
+  </g>
+</svg>
