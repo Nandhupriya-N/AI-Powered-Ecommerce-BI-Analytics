@@ -80,9 +80,6 @@ if 'authenticated' not in st.session_state:
     st.session_state['active_view_role'] = 'Administrator'
     st.session_state['last_logged_in_user'] = 'admin'
 
-# =========================================================================
-# PROFESSIONAL EXECUTIVE LIGHT BUSINESS BACKGROUND & STYLING CSS
-# =========================================================================
 st.markdown("""
 <style>
     /* Full Page Business Background Image with Executive Light Overlay */
@@ -415,9 +412,6 @@ def get_nl_assistant():
 
 analyzer = get_analyzer()
 
-# =========================================================================
-# TOP-LEFT SIDEBAR: DATABASE AUTHENTICATION & TEST DATASETS
-# =========================================================================
 with st.sidebar:
     if os.path.exists("assets/logo.png"):
         st.image("assets/logo.png", width=72)
@@ -2218,7 +2212,5 @@ if "📑 Export Report" in tab_map:
             st.markdown("##### Copy-Ready Executive Briefing Memo")
             st.code(md_summary, language="markdown")
 
-
-# Footer
 st.markdown("<hr style='margin-top: 36px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
 st.caption("Enterprise AI-Powered E-Commerce Decision Intelligence Suite | Production Release v2.4")
