@@ -1929,10 +1929,6 @@ if "📦 Inventory & Stockout Risk" in tab_map:
             mime="text/csv"
         )
 
-
-# =========================================================================
-# SECTION 12: PRODUCT AFFINITY & BUNDLES
-# =========================================================================
 if "🛒 Product Affinity & Bundles" in tab_map:
     with tab_map["🛒 Product Affinity & Bundles"]:
         st.markdown("### 🛒 Market Basket Affinity, Cross-Sell Bundles & Aspect Sentiment")
@@ -1991,10 +1987,6 @@ if "🛒 Product Affinity & Bundles" in tab_map:
             st.plotly_chart(fig_asp, use_container_width=True)
             st.dataframe(asp_df, use_container_width=True, hide_index=True)
 
-
-# =========================================================================
-# SECTION 13: NATURAL-LANGUAGE ASSISTANT
-# =========================================================================
 if "💬 Natural-Language Assistant" in tab_map:
     with tab_map["💬 Natural-Language Assistant"]:
         st.markdown("### 💬 Executive Natural-Language Business Assistant")
