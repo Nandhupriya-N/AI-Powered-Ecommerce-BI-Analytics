@@ -2005,8 +2005,7 @@ if "💬 Natural-Language Assistant" in tab_map:
                 st.session_state['nl_prompt'] = "Which items are at risk of stockout?"
         with ex_cols[3]:
             if st.button("What is the sales demand forecast?", use_container_width=True):
-                st.session_state['nl_prompt'] = "What is the sales demand forecast?"
-                
+                st.session_state['nl_prompt'] = "What is the sales demand forecast?"    
         default_p = st.session_state.get('nl_prompt', "What is our overall churn rate?")
         query_input = st.text_input("Enter your business query:", value=default_p)
         
@@ -2203,6 +2202,5 @@ if "📑 Export Report" in tab_map:
         with rep_tab3:
             st.markdown("##### Copy-Ready Executive Briefing Memo")
             st.code(md_summary, language="markdown")
-
 st.markdown("<hr style='margin-top: 36px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
 st.caption("Enterprise AI-Powered E-Commerce Decision Intelligence Suite | Production Release v2.4")
