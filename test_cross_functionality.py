@@ -3,13 +3,11 @@ Comprehensive End-to-End Cross-Functional Verification Test Suite
 Tests all 7 Data Scenarios across all 15 Core Modules, RBAC Personas,
 Pipeline Engines, and PDF Generation.
 """
-
 import os
 import sys
 import datetime
 import pandas as pd
 import numpy as np
-
 # Ensure root directory is on sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -250,7 +248,6 @@ def run_all_tests():
         assert res_sent['label'] == exp_lbl, f"Sentiment mismatch for '{text}': expected {exp_lbl}, got {res_sent['label']}"
         assert 'emotion' in res_sent, "Emotion field missing"
         print(f"  -> Text: '{text[:45]}...' -> Classified as {res_sent['label']} (Emotion: {res_sent['emotion']}) - SUCCESS")
-
     # -------------------------------------------------------------
     # TEST 6: NATURAL LANGUAGE ASSISTANT QUERY ROUTER
     # -------------------------------------------------------------
@@ -277,6 +274,5 @@ def run_all_tests():
     print("ALL 6 TEST PHASES PASSED WITH ZERO ERRORS!")
     print("ALL 7 DATASET SCENARIOS VERIFIED ACROSS ALL ACTIVE MODULES.")
     print("=" * 70)
-
 if __name__ == '__main__':
     run_all_tests()
