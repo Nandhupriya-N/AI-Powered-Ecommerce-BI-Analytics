@@ -371,7 +371,7 @@
       <text x="28" y="246" fill="#334155" font-size="13.5">• Thread-safe SQLite connection handling with automatic table creation</text>
       <text x="28" y="270" fill="#334155" font-size="13.5">• Salt <tspan font-family="Consolas">'ECommerceBI_Secure_2026'</tspan> guarantees protection</text>
       <text x="28" y="294" fill="#334155" font-size="13.5">• Dynamic Account Registration: Create accounts in sidebar</text>
-      <text x="28" y="318" fill="#334155" font-size="13.5">• Fast 1-Click Demo Profiles for Guide &amp; Committee Evaluation</text>
+      <text x="28" y="318" fill="#334155" font-size="13.5">• Multi-Tenant Role Isolation for Enterprise Stakeholders</text>
       <text x="16" y="352" fill="#059669" font-size="14" font-weight="700">✔ Fully verified against SQL injection and permission escalation</text>
     </g>
 

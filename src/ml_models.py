@@ -389,3 +389,125 @@ class AnomalyDetectorCustom:
         scores = self.decision_function(X)
         # -1 for anomaly, 1 for normal (matching scikit-learn convention)
         return np.where(scores >= self.threshold_, -1, 1)
+
+
+# ==========================================
+# 7. RANDOM FOREST REGRESSOR (Pure-Python/NumPy)
+# ==========================================
+class RegressorTreeNode:
+    def __init__(self, feature=None, threshold=None, left=None, right=None, *, value=None):
+        self.feature = feature
+        self.threshold = threshold
+        self.left = left
+        self.right = right
+        self.value = value
+
+    @property
+    def is_leaf(self):
+        return self.value is not None
+
+
+class DecisionTreeRegressorCustom:
+    def __init__(self, max_depth=5, min_samples_split=5):
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.root = None
+
+    def _best_split(self, X, y):
+        best_mse = float('inf')
+        split_feat, split_thresh = None, None
+        n_samples, n_features = X.shape
+        feature_indices = np.random.choice(n_features, size=int(np.sqrt(n_features)) + 1, replace=False)
+
+        for f in feature_indices:
+            col = X[:, f]
+            qs = np.percentile(col, [20, 40, 60, 80])
+            for t in qs:
+                left_mask = col <= t
+                right_mask = ~left_mask
+                if np.sum(left_mask) == 0 or np.sum(right_mask) == 0:
+                    continue
+                mse_left = np.var(y[left_mask]) * np.sum(left_mask)
+                mse_right = np.var(y[right_mask]) * np.sum(right_mask)
+                tot = mse_left + mse_right
+                if tot < best_mse:
+                    best_mse = tot
+                    split_feat, split_thresh = f, t
+        return split_feat, split_thresh
+
+    def _build_tree(self, X, y, depth=0):
+        n_samples = len(y)
+        if depth >= self.max_depth or n_samples < self.min_samples_split or np.var(y) < 1e-6:
+            return RegressorTreeNode(value=float(np.mean(y)))
+
+        feat, thresh = self._best_split(X, y)
+        if feat is None:
+            return RegressorTreeNode(value=float(np.mean(y)))
+
+        left_mask = X[:, feat] <= thresh
+        right_mask = ~left_mask
+
+        left_child = self._build_tree(X[left_mask], y[left_mask], depth + 1)
+        right_child = self._build_tree(X[right_mask], y[right_mask], depth + 1)
+        return RegressorTreeNode(feature=feat, threshold=thresh, left=left_child, right=right_child)
+
+    def fit(self, X, y):
+        X = np.asarray(X, dtype=np.float64)
+        y = np.asarray(y, dtype=np.float64)
+        self.root = self._build_tree(X, y)
+        return self
+
+    def _traverse_one(self, x, node):
+        if node.is_leaf:
+            return node.value
+        if x[node.feature] <= node.threshold:
+            return self._traverse_one(x, node.left)
+        return self._traverse_one(x, node.right)
+
+    def predict(self, X):
+        X = np.asarray(X, dtype=np.float64)
+        if X.ndim == 1:
+            return np.array([self._traverse_one(X, self.root)])
+        return np.array([self._traverse_one(x, self.root) for x in X])
+
+
+class RandomForestRegressorCustom:
+    def __init__(self, n_estimators=35, max_depth=6, min_samples_split=5, random_state=42):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.random_state = random_state
+        self.estimators_ = []
+        self.feature_importances_ = None
+
+    def fit(self, X, y):
+        X = np.asarray(X, dtype=np.float64)
+        y = np.asarray(y, dtype=np.float64)
+        n_samples, n_features = X.shape
+        np.random.seed(self.random_state)
+        self.estimators_ = []
+
+        feat_counts = np.zeros(n_features)
+        for _ in range(self.n_estimators):
+            boot_idx = np.random.choice(n_samples, size=n_samples, replace=True)
+            tree = DecisionTreeRegressorCustom(max_depth=self.max_depth, min_samples_split=self.min_samples_split)
+            tree.fit(X[boot_idx], y[boot_idx])
+            self.estimators_.append(tree)
+
+            def count_splits(node):
+                if node and not node.is_leaf:
+                    feat_counts[node.feature] += 1
+                    count_splits(node.left)
+                    count_splits(node.right)
+            count_splits(tree.root)
+
+        tot = np.sum(feat_counts)
+        self.feature_importances_ = feat_counts / tot if tot > 0 else np.ones(n_features) / n_features
+        return self
+
+    def predict(self, X):
+        X = np.asarray(X, dtype=np.float64)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        tree_preds = np.array([tree.predict(X) for tree in self.estimators_])
+        return np.mean(tree_preds, axis=0)

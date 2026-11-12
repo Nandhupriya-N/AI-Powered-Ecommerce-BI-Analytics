@@ -1,7 +1,7 @@
 @echo off
-title Launching AI E-Commerce BI Platform (Desktop & Mobile Ready)...
+title Launching MasterMind AI (Enterprise Decision Intelligence)...
 echo ============================================================
-echo   Starting AI E-Commerce BI & Predictive Analytics Platform
+echo   Starting MasterMind AI: Autonomous Decision Intelligence
 echo   Accessible on Desktop, Tablet & Mobile Devices
 echo ============================================================
 cd /d "c:\Users\Nandhupriya\BI PROJECT"

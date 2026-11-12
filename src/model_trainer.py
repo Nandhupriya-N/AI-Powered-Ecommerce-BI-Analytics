@@ -23,7 +23,8 @@ from sklearn.metrics import (
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.ml_models import (
     LogisticRegressionCustom, RandomForestCustom, GradientBoostingCustom,
-    SalesForecasterCustom, KMeansCustom, AnomalyDetectorCustom
+    SalesForecasterCustom, KMeansCustom, AnomalyDetectorCustom,
+    RandomForestRegressorCustom
 )
 
 def train_test_split_custom(X, y, test_size=0.25, random_state=42):
@@ -194,16 +195,13 @@ def train_sales_forecaster(trans_df, models_dir):
     print(f"[Baseline Ridge Forecaster] MAE: ${ridge_metrics['MAE']} | RMSE: ${ridge_metrics['RMSE']} | R2: {ridge_metrics['R2']} | MAPE: {ridge_metrics['MAPE']}%")
     
     # 2. Enhanced Random Forest Regressor (IEEE Papers 7 & 8)
-    from sklearn.ensemble import RandomForestRegressor
     X_train_rf = train_df[rf_features].values
     X_test_rf = test_df[rf_features].values
     
-    rf = RandomForestRegressor(
-        n_estimators=100,
+    rf = RandomForestRegressorCustom(
+        n_estimators=40,
         max_depth=5,
         min_samples_split=5,
-        min_samples_leaf=3,
-        max_features=0.8,
         random_state=42
     )
     rf.fit(X_train_rf, y_train)

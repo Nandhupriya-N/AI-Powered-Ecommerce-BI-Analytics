@@ -40,8 +40,8 @@
   <g class="shadow">
     <rect x="40" y="30" width="3120" height="120" rx="12" fill="url(#headerGrad)"/>
     <rect x="40" y="146" width="3120" height="4" fill="#38bdf8"/>
-    <text x="70" y="80" class="title">RETAILIQ: AI-POWERED E-COMMERCE DECISION INTELLIGENCE SUITE</text>
-    <text x="72" y="122" class="subtitle">HIGH-LEVEL DESIGN (HLD) SYSTEM ARCHITECTURE &amp; END-TO-END DATA FLOW | MID-TERM EVALUATION</text>
+    <text x="70" y="80" class="title">MASTERMIND AI: ENTERPRISE DECISION INTELLIGENCE PLATFORM</text>
+    <text x="72" y="122" class="subtitle">ENTERPRISE SYSTEM ARCHITECTURE &amp; END-TO-END DATA FLOW | PRODUCTION RELEASE v2.4</text>
   </g>
 
   <!-- ============================================================== -->

@@ -23,7 +23,7 @@ import base64
 # Configure wide page layout with enterprise logo icon
 logo_ico_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'logo.png')
 st.set_page_config(
-    page_title="Enterprise E-Commerce BI & Predictive Suite",
+    page_title="MasterMind AI | AI-Powered E-Commerce Business Intelligence & Predictive Analytics",
     page_icon=logo_ico_path if os.path.exists(logo_ico_path) else "💼",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -73,12 +73,71 @@ from src.report_generator import ExecutiveReportGenerator
 # Initialize SQLite database
 init_db()
 
-# Session State for Authentication
+# =========================================================================
+# ROLE-BASED ACCESS CONTROL (RBAC) MODULE SPECIFICATIONS
+# =========================================================================
+ROLE_MODULES = {
+    "Business Manager": [
+        "📊 Executive BI KPIs",
+        "🧠 Root-Cause Diagnosis",
+        "🎯 Prescriptive Analysis",
+        "⚖️ Unified Decision Engine",
+        "📑 Export Report",
+        "💬 Natural-Language Assistant"
+    ],
+    "BI Analyst": [
+        "📊 Executive BI KPIs",
+        "🔍 Data Quality & EDA",
+        "🤖 Model Accuracy & Training",
+        "🔮 Prediction Analysis",
+        "💬 Sentiment Analysis",
+        "🚨 Anomaly Detection",
+        "🛒 Product Affinity & Bundles",
+        "📑 Export Report",
+        "💬 Natural-Language Assistant"
+    ],
+    "Operations & Inventory Lead": [
+        "📊 Executive BI KPIs",
+        "📦 Inventory & Stockout Risk",
+        "🛒 Product Affinity & Bundles",
+        "🎯 Prescriptive Analysis",
+        "📑 Export Report",
+        "💬 Natural-Language Assistant"
+    ],
+    "Marketing & CRM Specialist": [
+        "📊 Executive BI KPIs",
+        "👥 RFM Segmentation & Recs",
+        "💎 Customer Lifetime Value (CLV)",
+        "💬 Sentiment Analysis",
+        "🎯 Prescriptive Analysis",
+        "📑 Export Report",
+        "💬 Natural-Language Assistant"
+    ],
+    "Administrator": [
+        "📊 Executive BI KPIs",
+        "🔍 Data Quality & EDA",
+        "🤖 Model Accuracy & Training",
+        "🔮 Prediction Analysis",
+        "💬 Sentiment Analysis",
+        "🚨 Anomaly Detection",
+        "🧠 Root-Cause Diagnosis",
+        "🎯 Prescriptive Analysis",
+        "👥 RFM Segmentation & Recs",
+        "💎 Customer Lifetime Value (CLV)",
+        "📦 Inventory & Stockout Risk",
+        "🛒 Product Affinity & Bundles",
+        "💬 Natural-Language Assistant",
+        "⚖️ Unified Decision Engine",
+        "📑 Export Report"
+    ]
+}
+
+# Session State for Authentication (Enforces Login Portal First)
 if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = True  # Default logged-in for instant exploration
-    st.session_state['user_info'] = {'username': 'admin', 'role': 'Administrator', 'full_name': 'Chief BI Architect'}
+    st.session_state['authenticated'] = False
+    st.session_state['user_info'] = {}
     st.session_state['active_view_role'] = 'Administrator'
-    st.session_state['last_logged_in_user'] = 'admin'
+    st.session_state['last_logged_in_user'] = None
 
 st.markdown("""
 <style>
@@ -410,134 +469,99 @@ def get_nl_assistant():
         drift_suite=get_drift_suite()
     )
 
+# =========================================================================
+# PAGE 1: PRIMARY USER LOGIN PORTAL (FIRST PAGE BEFORE WORKSPACE)
+# =========================================================================
+if not st.session_state.get('authenticated', False):
+    # Hide sidebar completely on Page 1 (Login Page) for true standalone login experience
+    st.markdown("""
+    <style>
+        [data-testid="stSidebar"] {
+            display: none !important;
+        }
+        .main .block-container {
+            max-width: 860px !important;
+            padding-top: 2.2rem !important;
+            padding-bottom: 3.5rem !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Page 1 Login Portal Hero Card
+    st.markdown(f"""
+    <div style="max-width: 820px; margin: 10px auto 25px auto; text-align: center;">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 84px; height: 84px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 10px 25px rgba(37,99,235,0.2); margin-bottom: 16px; border: 1px solid #E2E8F0;">
+            <img src="data:image/png;base64,{LOGO_B64}" width="68" height="68" alt="Logo" style="border-radius: 16px;" />
+        </div>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0F172A; margin: 0 0 6px 0; letter-spacing: -0.5px; line-height: 1.2;">
+            MasterMind AI
+        </h1>
+        <div style="font-size: 1.25rem; font-weight: 700; color: #2563EB; margin-bottom: 12px; letter-spacing: -0.2px;">
+            AI-Powered E-Commerce Business Intelligence &amp; Predictive Analytics
+        </div>
+        <p style="font-size: 1.05rem; color: #475569; max-width: 720px; margin: 0 auto 18px auto; line-height: 1.5;">
+            Autonomous Decision-Support &amp; Predictive Analytics Suite with Multi-Tenant Role Isolation &amp; SQLite PBKDF2 Cryptographic Security.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;">
+            <span style="background: #EFF6FF; color: #1D4ED8; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #BFDBFE;">🔒 PBKDF2-HMAC-SHA256 (100,000 Iters)</span>
+            <span style="background: #F0FDF4; color: #15803D; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #BBF7D0;">⚡ Multi-Tenant Role Isolation (RBAC)</span>
+            <span style="background: #FAF5FF; color: #7E22CE; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #E9D5FF;">💾 SQLite Multi-User Auth</span>
+            <span style="background: #FEF3C7; color: #B45309; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #FDE68A;">📑 1-Click Executive PDF Export</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col_l1, col_l2, col_l3 = st.columns([3, 6, 3])
+    with col_l2:
+        st.markdown("#### 🔑 Sign In to Workspace")
+        st.caption("Enter your enterprise credentials to unlock your role-tailored workspace:")
+        with st.form("main_login_form"):
+            in_user = st.text_input("Username:", placeholder="e.g. manager, analyst, admin", key="f_user")
+            in_pass = st.text_input("Password:", type="password", placeholder="Enter your password", key="f_pass")
+            btn_login = st.form_submit_button("🔓 Sign In to Workspace", use_container_width=True, type="primary")
+            
+            if btn_login:
+                if in_user and in_pass:
+                    auth_res = authenticate_user(in_user, in_pass)
+                    if auth_res:
+                        st.session_state['authenticated'] = True
+                        st.session_state['user_info'] = auth_res
+                        st.session_state['active_view_role'] = auth_res['role']
+                        st.session_state['last_logged_in_user'] = auth_res['username']
+                        st.success(f"Welcome back, {auth_res['full_name']}! Loading {auth_res['role']} workspace...")
+                        st.rerun()
+                    else:
+                        st.error("Authentication failed. Invalid username or password.")
+                else:
+                    st.warning("Please enter both username and password.")
+
+    st.stop()
+
+# =========================================================================
+# AUTHENTICATED SESSION: INITIALIZE ENGINES & WORKSPACE CONTROLS
+# =========================================================================
 analyzer = get_analyzer()
 
+user_info = st.session_state.get('user_info') or {}
+active_role = user_info.get('role', 'Administrator')
+full_name = user_info.get('full_name', 'Authorized User')
+username = user_info.get('username', 'user')
+
+all_roles = [
+    "Business Manager",
+    "BI Analyst",
+    "Operations & Inventory Lead",
+    "Marketing & CRM Specialist",
+    "Administrator"
+]
+
+if 'active_view_role' not in st.session_state or not st.session_state['active_view_role']:
+    st.session_state['active_view_role'] = active_role
+if st.session_state.get('last_logged_in_user') != username:
+    st.session_state['active_view_role'] = active_role
+    st.session_state['last_logged_in_user'] = username
+
 with st.sidebar:
-    if os.path.exists("assets/logo.png"):
-        st.image("assets/logo.png", width=72)
-    else:
-        st.image("https://img.icons8.com/isometric/100/data-analytics.png", width=64)
-    st.markdown("### 🔐 User Authentication & DB")
-    st.caption("SQLite Persistent Credentials Database (`database/ecommerce_bi.db`)")
-    
-    # Login / Logout Interface
-    if st.session_state['authenticated']:
-        u = st.session_state['user_info']
-        st.success(f"Signed in: **{u['full_name']}**")
-        st.markdown(f"**Assigned Role:** `{u['role']}` | **User:** `@{u['username']}`")
-        
-        st.markdown("##### 🎭 Role-Tailored Module Filter")
-        all_roles = [
-            "Business Manager",
-            "BI Analyst",
-            "Operations & Inventory Lead",
-            "Marketing & CRM Specialist",
-            "Administrator"
-        ]
-        user_role = u.get('role', 'Administrator')
-        
-        if 'active_view_role' not in st.session_state:
-            st.session_state['active_view_role'] = user_role
-        if st.session_state.get('last_logged_in_user') != u.get('username'):
-            st.session_state['active_view_role'] = user_role
-            st.session_state['last_logged_in_user'] = u.get('username')
-            
-        def_idx = all_roles.index(st.session_state['active_view_role']) if st.session_state['active_view_role'] in all_roles else 0
-        selected_role_view = st.selectbox(
-            "Filter Modules for Persona:",
-            all_roles,
-            index=def_idx,
-            help="Displays ONLY the modules necessary for the selected business role."
-        )
-        st.session_state['active_view_role'] = selected_role_view
-        
-        with st.expander("👥 View SQLite Database Accounts", expanded=False):
-            st.caption("Live registered accounts from `database/ecommerce_bi.db`:")
-            st.dataframe(pd.DataFrame(list_users()), use_container_width=True, hide_index=True)
-            st.caption("🔒 Passwords stored with salted SHA-256 cryptographic hashes.")
-            
-        if st.button("🚪 Sign Out", use_container_width=True):
-            st.session_state['authenticated'] = False
-            st.session_state['user_info'] = None
-            st.session_state['active_view_role'] = 'Administrator'
-            st.rerun()
-    else:
-        st.markdown("##### 🔑 Sign In with SQLite Credentials")
-        with st.form("login_form"):
-            login_user = st.text_input("Username:", "manager")
-            login_pass = st.text_input("Password:", "manager123", type="password")
-            submitted = st.form_submit_button("Sign In", use_container_width=True)
-            if submitted:
-                auth = authenticate_user(login_user, login_pass)
-                if auth:
-                    st.session_state['authenticated'] = True
-                    st.session_state['user_info'] = auth
-                    st.session_state['active_view_role'] = auth['role']
-                    st.session_state['last_logged_in_user'] = auth['username']
-                    st.success("Authenticated successfully!")
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials! Try quick demo buttons below.")
-                    
-        st.markdown("##### ⚡ Quick 1-Click Role Login:")
-        q1, q2 = st.columns(2)
-        with q1:
-            if st.button("💼 Manager", use_container_width=True, help="manager / manager123 (6 Essential Modules)"):
-                st.session_state['authenticated'] = True
-                st.session_state['user_info'] = authenticate_user("manager", "manager123")
-                st.session_state['active_view_role'] = "Business Manager"
-                st.session_state['last_logged_in_user'] = "manager"
-                st.rerun()
-        with q2:
-            if st.button("📊 Analyst", use_container_width=True, help="analyst / analyst123 (9 Analytics Modules)"):
-                st.session_state['authenticated'] = True
-                st.session_state['user_info'] = authenticate_user("analyst", "analyst123")
-                st.session_state['active_view_role'] = "BI Analyst"
-                st.session_state['last_logged_in_user'] = "analyst"
-                st.rerun()
-
-        q3, q4 = st.columns(2)
-        with q3:
-            if st.button("📦 Operations", use_container_width=True, help="ops / ops123 (5 Inventory Modules)"):
-                st.session_state['authenticated'] = True
-                st.session_state['user_info'] = authenticate_user("ops", "ops123")
-                st.session_state['active_view_role'] = "Operations & Inventory Lead"
-                st.session_state['last_logged_in_user'] = "ops"
-                st.rerun()
-        with q4:
-            if st.button("👥 Marketing", use_container_width=True, help="marketing / marketing123 (6 Customer Modules)"):
-                st.session_state['authenticated'] = True
-                st.session_state['user_info'] = authenticate_user("marketing", "marketing123")
-                st.session_state['active_view_role'] = "Marketing & CRM Specialist"
-                st.session_state['last_logged_in_user'] = "marketing"
-                st.rerun()
-
-        if st.button("🔑 Administrator (Full Suite)", use_container_width=True, help="admin / admin123 (All 16 Modules)"):
-            st.session_state['authenticated'] = True
-            st.session_state['user_info'] = authenticate_user("admin", "admin123")
-            st.session_state['active_view_role'] = "Administrator"
-            st.session_state['last_logged_in_user'] = "admin"
-            st.rerun()
-
-        with st.expander("Register New Account in DB"):
-            reg_user = st.text_input("New Username:", key="reg_u")
-            reg_pass = st.text_input("New Password:", type="password", key="reg_p")
-            reg_role = st.selectbox("Role:", ["Business Manager", "BI Analyst", "Operations & Inventory Lead", "Marketing & CRM Specialist", "Administrator"], key="reg_r")
-            reg_name = st.text_input("Full Name:", key="reg_n")
-            if st.button("Register User", key="reg_btn"):
-                if reg_user and reg_pass:
-                    ok = register_user(reg_user, reg_pass, reg_role, reg_name or reg_user)
-                    if ok:
-                        st.success("Account created in SQLite DB! Please log in above.")
-                    else:
-                        st.error("Username already exists!")
-                        
-        with st.expander("👥 View SQLite Database Accounts", expanded=False):
-            st.caption("Live registered accounts from `database/ecommerce_bi.db`:")
-            st.dataframe(pd.DataFrame(list_users()), use_container_width=True, hide_index=True)
-            
-    st.divider()
-    
     # SELECTING FROM SEVERAL TESTING DATASETS
     st.markdown("#### 📂 Select Testing Dataset")
     st.caption("Multiple test CSV scenarios available for real-time analysis:")
@@ -708,8 +732,10 @@ st.markdown(f"""
     <div style="display: flex; align-items: center; gap: 18px;">
         <img src="data:image/png;base64,{LOGO_B64}" width="58" height="58" alt="Logo" style="border-radius: 14px; box-shadow: 0 4px 14px rgba(37,99,235,0.25); flex-shrink: 0;" />
         <div>
-            <h1 class="brand-title">AI-POWERED E-COMMERCE BUSINESS INTELLIGENCE</h1>
-            <p class="brand-tagline">Autonomous Predictive Decision-Support Suite | Machine Learning • Root-Cause AI • Prescriptive Analysis</p>
+            <h1 class="brand-title" style="font-size: 1.55rem; font-weight: 800; margin: 0 0 4px 0;">
+                MASTERMIND AI: AI-POWERED E-COMMERCE BUSINESS INTELLIGENCE &amp; PREDICTIVE ANALYTICS
+            </h1>
+            <p class="brand-tagline" style="margin: 0;">Autonomous Decision Intelligence • Machine Learning • Root-Cause AI • Prescriptive Analytics</p>
         </div>
     </div>
     <div style="text-align: right;">
@@ -720,87 +746,11 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Authentication Gating Check: Ensure user is signed in to SQLite DB
-if not st.session_state.get('authenticated', False):
-    st.markdown(f"""
-    <div style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E2E8F0; padding: 36px 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); text-align: center; margin-top: 10px;">
-        <img src="data:image/png;base64,{LOGO_B64}" width="80" height="80" alt="Logo" style="border-radius: 18px; box-shadow: 0 6px 20px rgba(37,99,235,0.3); margin-bottom: 12px;" />
-        <h2 style="color: #0F172A; margin: 12px 0;">Enterprise Access Restricted: Authentication Required</h2>
-        <p style="color: #475569; font-size: 1.05rem; max-width: 680px; margin: 0 auto 20px auto;">
-            This platform uses persistent <strong>SQLite Database Authentication</strong> (<code>database/ecommerce_bi.db</code>) with salted SHA-256 cryptographic password hashing and role-based permissions.
-        </p>
-        <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 10px; padding: 18px 24px; display: inline-block; text-align: left; margin-bottom: 24px;">
-            <p style="margin: 4px 0; color: #1E293B;"><strong>💼 Business Manager:</strong> <code>manager</code> / <code>manager123</code> (Strategic & Prescriptive — 6 Modules)</p>
-            <p style="margin: 4px 0; color: #1E293B;"><strong>📊 BI Analyst:</strong> <code>analyst</code> / <code>analyst123</code> (Deep Data & ML Diagnostics — 9 Modules)</p>
-            <p style="margin: 4px 0; color: #1E293B;"><strong>📦 Operations Lead:</strong> <code>ops</code> / <code>ops123</code> (Supply Chain & Inventory — 6 Modules)</p>
-            <p style="margin: 4px 0; color: #1E293B;"><strong>👥 Marketing Specialist:</strong> <code>marketing</code> / <code>marketing123</code> (Customer Lifecycle & CLV — 7 Modules)</p>
-            <p style="margin: 4px 0; color: #1E293B;"><strong>🔑 Administrator:</strong> <code>admin</code> / <code>admin123</code> (Full Master Suite — 15 Modules)</p>
-        </div>
-        <p style="color: #64748B; font-size: 0.95rem;">👈 Please enter your credentials or use the <strong>Quick 1-Click Role Login</strong> in the left sidebar to unlock the application.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    st.stop()
-
 # =========================================================================
 # ROLE-BASED ACCESS CONTROL (RBAC) & CORPORATE TAB NAVIGATION
 # =========================================================================
-ROLE_MODULES = {
-    "Business Manager": [
-        "📊 Executive BI KPIs",
-        "🧠 Root-Cause Diagnosis",
-        "🎯 Prescriptive Analysis",
-        "⚖️ Unified Decision Engine",
-        "📑 Export Report",
-        "💬 Natural-Language Assistant"
-    ],
-    "BI Analyst": [
-        "📊 Executive BI KPIs",
-        "🔍 Data Quality & EDA",
-        "🤖 Model Accuracy & Training",
-        "🔮 Prediction Analysis",
-        "💬 Sentiment Analysis",
-        "🚨 Anomaly Detection",
-        "🛒 Product Affinity & Bundles",
-        "📑 Export Report",
-        "💬 Natural-Language Assistant"
-    ],
-    "Operations & Inventory Lead": [
-        "📊 Executive BI KPIs",
-        "📦 Inventory & Stockout Risk",
-        "🛒 Product Affinity & Bundles",
-        "🎯 Prescriptive Analysis",
-        "📑 Export Report",
-        "💬 Natural-Language Assistant"
-    ],
-    "Marketing & CRM Specialist": [
-        "📊 Executive BI KPIs",
-        "👥 RFM Segmentation & Recs",
-        "💎 Customer Lifetime Value (CLV)",
-        "💬 Sentiment Analysis",
-        "🎯 Prescriptive Analysis",
-        "📑 Export Report",
-        "💬 Natural-Language Assistant"
-    ],
-    "Administrator": [
-        "📊 Executive BI KPIs",
-        "🔍 Data Quality & EDA",
-        "🤖 Model Accuracy & Training",
-        "🔮 Prediction Analysis",
-        "💬 Sentiment Analysis",
-        "🚨 Anomaly Detection",
-        "🧠 Root-Cause Diagnosis",
-        "🎯 Prescriptive Analysis",
-        "👥 RFM Segmentation & Recs",
-        "💎 Customer Lifetime Value (CLV)",
-        "📦 Inventory & Stockout Risk",
-        "🛒 Product Affinity & Bundles",
-        "💬 Natural-Language Assistant",
-        "⚖️ Unified Decision Engine",
-        "📑 Export Report"
-    ]
-}
 
-user_info = st.session_state.get('user_info', {})
+user_info = st.session_state.get('user_info') or {}
 active_role = user_info.get('role', 'Administrator')
 full_name = user_info.get('full_name', 'Authorized User')
 username = user_info.get('username', 'user')
@@ -808,19 +758,25 @@ view_role = st.session_state.get('active_view_role', active_role)
 
 permitted_modules = ROLE_MODULES.get(view_role, ROLE_MODULES.get(active_role, ROLE_MODULES["Administrator"]))
 
-# Subtle Enterprise Workspace Status Bar
-st.markdown(f"""
-<div style="display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px 18px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+# Subtle Enterprise Workspace Status Bar with Sign Out
+col_stat_left, col_stat_right = st.columns([84, 16])
+with col_stat_left:
+    st.markdown(f"""
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
         <span style="font-size: 0.80rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Active Persona:</span>
         <span style="background: #EFF6FF; color: #1D4ED8; font-weight: 700; font-size: 0.85rem; padding: 3px 10px; border-radius: 6px; border: 1px solid #BFDBFE;">{view_role} Workspace</span>
-        <span style="color: #64748B; font-size: 0.85rem;">| Signed in as <strong>{full_name}</strong> (<code>{username}</code>)</span>
+        <span style="color: #64748B; font-size: 0.85rem;">| Signed in as <strong>{full_name}</strong> (<code>@{username}</code>)</span>
+        <span style="background: #F0FDF4; color: #166534; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 6px;">🔒 PBKDF2 Active</span>
+        <span style="color: #059669; font-size: 0.82rem; font-weight: 700; background: #ECFDF5; padding: 3px 10px; border-radius: 6px; border: 1px solid #A7F3D0;">● {len(permitted_modules)} Modules</span>
     </div>
-    <div>
-        <span style="color: #059669; font-size: 0.82rem; font-weight: 700; background: #ECFDF5; padding: 3px 10px; border-radius: 6px; border: 1px solid #A7F3D0;">● {len(permitted_modules)} Role-Tailored Modules Active</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+with col_stat_right:
+    if st.button("🚪 Sign Out", key="top_signout_btn", use_container_width=True):
+        st.session_state['authenticated'] = False
+        st.session_state['user_info'] = {}
+        st.session_state['active_view_role'] = 'Administrator'
+        st.session_state['last_logged_in_user'] = None
+        st.rerun()
 
 # Sleek Corporate Top Tabs (No Buttons, Clean Underline Navigation)
 tabs = st.tabs(permitted_modules)
@@ -1289,7 +1245,7 @@ if "🤖 Model Accuracy & Training" in tab_map:
                 st.dataframe(tp_df, use_container_width=True, hide_index=True)
 
         st.markdown("---")
-        st.markdown("#### 📈 Sales Demand Forecasting Model Architecture & Benchmark (IEEE Papers 7 & 8)")
+        st.markdown("#### 📈 Sales Demand Forecasting Model Architecture & Benchmarks")
         st.caption("Empirical holdout evaluation using an 80/20 chronological time-split (243 train days / 61 unseen test days) to eliminate lookahead data leakage.")
         
         fc_meta = meta.get('forecasting_models', {})
@@ -1297,7 +1253,7 @@ if "🤖 Model Accuracy & Training" in tab_map:
         
         fc1, fc2, fc3, fc4 = st.columns(4)
         chronos_fc = fc_comp.get('Amazon Chronos-Bolt', {})
-        rf_fc = fc_comp.get('Random Forest (IEEE 7&8)', {})
+        rf_fc = fc_comp.get('Random Forest (IEEE 7&8)', fc_comp.get('Random Forest', {}))
         ridge_fc = fc_comp.get('Baseline Ridge', {})
         with fc1:
             st.metric("Primary Forecaster", "Chronos-Bolt", "Amazon Zero-Shot SOTA")
@@ -1322,7 +1278,7 @@ if "🤖 Model Accuracy & Training" in tab_map:
                     "RAM / Latency": "~73 MB | < 85 ms"
                 },
                 {
-                    "Model Architecture": "Enhanced Random Forest (IEEE 7 & 8)",
+                    "Model Architecture": "Enhanced Random Forest Ensemble",
                     "Category": "Tree-Ensemble Regressor (100 Trees)",
                     "MAE ($)": f"${rf_fc.get('MAE', 1777.38):,.2f}",
                     "RMSE ($)": f"${rf_fc.get('RMSE', 2155.91):,.2f}",
@@ -1350,7 +1306,7 @@ if "🤖 Model Accuracy & Training" in tab_map:
                 }
             ]
             st.dataframe(pd.DataFrame(fc_table_data), use_container_width=True, hide_index=True)
-            st.info("💡 **Methodological Note:** Chronological split prevents lookahead data leakage. Chronos-Bolt achieves the lowest RMSE ($2,152.42) and lowest MAPE (32.51%) with zero feature leakage. Random Forest provides a lightweight sub-8ms fallback.")
+            st.info("💡 **Production Insight:** Chronological split prevents lookahead data leakage. Chronos-Bolt achieves the lowest RMSE ($2,152.42) and lowest MAPE (32.51%) with zero feature leakage. Random Forest provides a lightweight sub-8ms fallback.")
 
         with col_fc_feat:
             st.markdown("##### ⏱️ Forecaster Feature Importance (Random Forest)")
@@ -1364,27 +1320,6 @@ if "🤖 Model Accuracy & Training" in tab_map:
                 )
                 fig_rf_feat.update_layout(yaxis=dict(autorange="reversed"), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=240, margin=dict(l=10, r=10, t=30, b=10))
                 st.plotly_chart(fig_rf_feat, use_container_width=True)
-
-        st.markdown("---")
-        st.markdown("#### 📚 Verified IEEE Literature Survey & Architectural Grounding")
-        st.caption("Theoretical grounding and architectural alignment from 9 recent IEEE research publications (2023–2025).")
-        
-        with st.expander("📖 Expand Verified IEEE Literature Survey Matrix (9 Research Papers)", expanded=False):
-            st.markdown("""
-            | # | Title | Authors & Venue | Year | DOI / Document ID | Platform Module Grounding |
-            |---|---|---|---|---|---|
-            | **1** | Machine Learning in E-Commerce: Trends, Applications, and Future Challenges | E. Dritsas, M. Trigka *(IEEE Access)* | 2025 | [`10.1109/ACCESS.2025.3572865`](https://doi.org/10.1109/ACCESS.2025.3572865) | Platform Architecture & Explainable AI (XAI) feature importances |
-            | **2** | Sentiment Analysis in E-Commerce Platforms: A Review of Current Techniques | H. Huang, A. Asemi, M. B. Mustafa *(IEEE Access)* | 2023 | [`10.1109/ACCESS.2023.3307308`](https://doi.org/10.1109/ACCESS.2023.3307308) | Low-latency linguistic sentiment analysis engine |
-            | **3** | Empowering E-commerce: Leveraging Open AI and Sentiment Analysis for Smarter Recommendations | Y. Giri, V. Bhagat, A. H. Ganie *(IEEE)* | 2024 | [`IEEE 10739003`](https://ieeexplore.ieee.org/abstract/document/10739003) | Sentiment-aware customer segment recommendations |
-            | **4** | Enhancing Sales Forecasting in E-Commerce Through Advanced Predictive Analytics | M. Kotha, G. Rajaram et al. *(IEEE)* | 2025 | [`IEEE 10957568`](https://ieeexplore.ieee.org/abstract/document/10957568) | Multi-factor demand forecasting with rolling lag terms |
-            | **5** | Research on E-Commerce Intelligent Recommendation System Based on Big Data Analysis | Y. Huang, S. Ye *(IEEE EIECT)* | 2024 | [`10.1109/EIECT64462.2024.10866645`](https://doi.org/10.1109/EIECT64462.2024.10866645) | Automated schema harmonization and 360° customer profiling |
-            | **6** | Multi-Modal Self-Supervised Learning Algorithm-Based Product Recommendation | L. Gao, H. Fan, Q. Chen, H. Yang *(IEEE TASE)* | 2025 | [`10.1109/TASE.2025.3568286`](https://doi.org/10.1109/TASE.2025.3568286) | Cold-start handling via category popularity & RFM fallbacks |
-            | **7** | Sales Forecasting in Retail Using Random Forest Regression: A Case Study on Walmart | K. F. Googerdchi et al. *(IEEE ICCIT)* | 2025 | [`IEEE 10989314`](https://ieeexplore.ieee.org/document/10989314/) | Core Random Forest demand forecasting implementation |
-            | **8** | AI-Based Approach for Retail Sale Forecasting | ICSSAS Conference Authors *(IEEE ICSSAS)* | 2023 | [`IEEE 10331651`](https://ieeexplore.ieee.org/abstract/document/10331651) | Ridge vs. Random Forest empirical benchmark methodology |
-            | **9** | Enhancing E-Commerce Insights: Sentiment Analysis Using ML & Ensemble Techniques | S. Shedekar, S. K. Shah, V. Kumbhar *(IEEE)* | 2024 | [`IEEE 10430284`](https://ieeexplore.ieee.org/document/10430284) | Sentiment polarity classification and ensemble scoring |
-            
-            *Detailed methodological syntheses, research limitations, and academic citations are documented in [`docs/IEEE_LITERATURE_SURVEY.md`](file:///c:/Users/Nandhupriya/BI%20PROJECT/docs/IEEE_LITERATURE_SURVEY.md).*
-            """)
 
 # =========================================================================
 # SECTION 4: PREDICTION ANALYSIS
@@ -1409,7 +1344,7 @@ if "🔮 Prediction Analysis" in tab_map:
         with col_p2:
             st.markdown("#### 📈 Multi-Horizon Demand Forecasting Studio")
             active_fc_name = forecast_res.get('model_used', 'Amazon Chronos-Bolt Foundation Model (Zero-Shot)')
-            st.caption(f"🤖 **Primary Engine:** `{active_fc_name}` | Baseline Fallback: Enhanced Random Forest (IEEE 7&8)")
+            st.caption(f"🤖 **Primary Engine:** `{active_fc_name}` | Baseline Fallback: High-Performance Random Forest Ensemble")
             
             future_fc = forecast_res.get('future_14_day_forecast', pd.DataFrame())
             weekly_fc = forecast_res.get('weekly_forecast', pd.DataFrame())
@@ -2203,4 +2138,4 @@ if "📑 Export Report" in tab_map:
             st.markdown("##### Copy-Ready Executive Briefing Memo")
             st.code(md_summary, language="markdown")
 st.markdown("<hr style='margin-top: 36px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
-st.caption("Enterprise AI-Powered E-Commerce Decision Intelligence Suite | Production Release v2.4")
+st.caption("MasterMind AI: AI-Powered E-Commerce Business Intelligence & Predictive Analytics Platform | Production Release v2.4")

@@ -50,8 +50,13 @@ class AutonomousBIAnalyzer:
         # Load Enhanced Random Forest Regressor (IEEE Papers 7 & 8)
         rf_forecaster_path = os.path.join(self.models_dir, 'rf_sales_forecaster.joblib')
         if os.path.exists(rf_forecaster_path):
-            self.rf_sales_forecaster = joblib.load(rf_forecaster_path)
-            self.rf_forecaster_features = joblib.load(os.path.join(self.models_dir, 'rf_forecaster_features.joblib'))
+            try:
+                self.rf_sales_forecaster = joblib.load(rf_forecaster_path)
+                self.rf_forecaster_features = joblib.load(os.path.join(self.models_dir, 'rf_forecaster_features.joblib'))
+            except (ImportError, Exception) as e:
+                print(f"[Analyzer] Note: Fallback to baseline sales forecaster (reason: {e})")
+                self.rf_sales_forecaster = None
+                self.rf_forecaster_features = None
         else:
             self.rf_sales_forecaster = None
             self.rf_forecaster_features = None

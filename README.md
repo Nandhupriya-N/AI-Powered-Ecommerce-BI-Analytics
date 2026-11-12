@@ -1,4 +1,4 @@
-# AI-Powered E-Commerce Business Intelligence & Advanced Predictive Analytics Platform
+# MasterMind AI: Autonomous E-Commerce Business Intelligence & Predictive Analytics Platform
 
 An enterprise-grade, end-to-end Decision-Support System integrating **Descriptive Business Intelligence, Foundation Model Time-Series Forecasting, Incremental Data Ingestion, Machine Learning, Explainable AI (XAI), Concept Drift Surveillance, and Automated Business Decision Support**.
 
@@ -6,14 +6,16 @@ An enterprise-grade, end-to-end Decision-Support System integrating **Descriptiv
 
 ## 🎯 System Capabilities & Architecture
 
-1. **Persistent Authentication & Role-Based Access Control (RBAC)**:
-   - Powered by SQLite (`database/ecommerce_bi.db`) with salted SHA-256 cryptographic password hashing.
-   - Persona-tailored workspaces displaying strictly necessary modules per user role:
-     - **Business Manager** (6 Modules): Executive BI KPIs, Root-Cause Diagnosis, Prescriptive Analysis, Unified Decision Engine, Export Report or Summary, and AI Assistant.
-     - **BI Analyst** (9 Modules): Executive KPIs, Data Quality & EDA, Model Accuracy & Training, Prediction Analysis, Sentiment Analysis, Anomaly Detection, Product Affinity, Export Report or Summary, and AI Assistant.
-     - **Operations & Inventory Lead** (6 Modules): Executive KPIs, Inventory & Stockout Risk, Product Affinity & Bundles, Prescriptive Analysis, Export Report or Summary, and AI Assistant.
-     - **Marketing & CRM Specialist** (7 Modules): Executive KPIs, RFM Segmentation & Recs, Customer Lifetime Value (CLV), Sentiment Analysis, Prescriptive Analysis, Export Report or Summary, and AI Assistant.
-     - **Administrator** (15 Modules): Full Master Suite with dynamic on-the-fly persona perspective filter.
+1. **Primary Login Portal & Cryptographic Security Architecture**:
+   - **Primary Login Gate**: Displays a dedicated, executive user login portal on the first screen before any analytical modules or datasets are loaded into memory.
+   - **PBKDF2-HMAC-SHA256 Encryption**: Password hashing using 100,000 Key Derivation iterations and cryptographically random per-user 128-bit salts (`secrets.token_hex(16)`).
+   - **Constant-Time Verification**: Employs `hmac.compare_digest` to eliminate side-channel timing attacks, with automatic in-place hash upgrades.
+   - **Role-Based Access Control (RBAC)**: Persona-tailored workspaces displaying strictly the modules necessary for each business role:
+     - **Business Manager** (6 Modules): Executive BI KPIs, Root-Cause Diagnosis, Prescriptive Analysis, Unified Decision Engine, Export Report, and AI Assistant.
+     - **BI Analyst** (9 Modules): Executive KPIs, Data Quality & EDA, Model Accuracy & Training, Prediction Analysis, Sentiment Analysis, Anomaly Detection, Product Affinity, Export Report, and AI Assistant.
+     - **Operations & Inventory Lead** (6 Modules): Executive KPIs, Inventory & Stockout Risk, Product Affinity & Bundles, Prescriptive Analysis, Export Report, and AI Assistant.
+     - **Marketing & CRM Specialist** (7 Modules): Executive KPIs, RFM Segmentation & Recs, Customer Lifetime Value (CLV), Sentiment Analysis, Prescriptive Analysis, Export Report, and AI Assistant.
+     - **Administrator** (15 Modules): Full Enterprise Master Suite with live persona preview switching.
 
 2. **Advanced Foundation Model Time-Series Demand Forecasting**:
    - Integrated with **Amazon Chronos-Bolt Tiny** (`amazon/chronos-bolt-tiny`), an 8.8M-parameter zero-shot probabilistic foundation time-series model (T5 encoder-decoder architecture).
