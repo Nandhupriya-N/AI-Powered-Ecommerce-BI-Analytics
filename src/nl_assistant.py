@@ -44,11 +44,28 @@ class NaturalLanguageBusinessAssistant:
         """
         Unified wrapper for Streamlit UI querying.
         """
+        # Auto-heal missing dependencies on the fly if raw data is provided
+        if (inventory_df is None or (isinstance(inventory_df, pd.DataFrame) and inventory_df.empty)) and self.inv_engine and scored_trans is not None and not scored_trans.empty:
+            try:
+                inv_res = self.inv_engine.optimize_inventory(scored_trans)
+                inventory_df = inv_res[0] if isinstance(inv_res, tuple) else (inv_res.get('inventory_plan_df') if isinstance(inv_res, dict) else inv_res)
+            except Exception:
+                pass
+
+        if (clv_df is None or (isinstance(clv_df, pd.DataFrame) and clv_df.empty)) and self.clv_engine and scored_cust is not None and not scored_cust.empty:
+            try:
+                clv_res = self.clv_engine.compute_clv(scored_cust, scored_trans)
+                clv_df = clv_res['scored_clv_df'] if isinstance(clv_res, dict) else (clv_res[0] if isinstance(clv_res, tuple) else clv_res)
+            except Exception:
+                pass
+
         ctx = {
             'transactions': scored_trans if scored_trans is not None else pd.DataFrame(),
             'customers': scored_cust if scored_cust is not None else pd.DataFrame(),
             'clv': clv_df if clv_df is not None else pd.DataFrame(),
+            'clv_data': clv_df if clv_df is not None else pd.DataFrame(),
             'inventory': inventory_df if inventory_df is not None else pd.DataFrame(),
+            'inventory_plan': inventory_df if inventory_df is not None else pd.DataFrame(),
             'forecast': forecast_res if forecast_res is not None else {}
         }
         res = self.query(query, ctx)
@@ -213,20 +230,46 @@ class NaturalLanguageBusinessAssistant:
         }
 
     def _handle_clv_by_segment(self, question, ctx):
-        clv_df = ctx.get('clv_data', pd.DataFrame())
-        if clv_df.empty or 'Predicted_CLV_12M' not in clv_df.columns:
+        raw_clv = ctx.get('clv_data', ctx.get('clv', pd.DataFrame()))
+        if isinstance(raw_clv, dict):
+            clv_df = raw_clv.get('scored_clv_df', raw_clv.get('clv_df', pd.DataFrame()))
+        elif isinstance(raw_clv, tuple):
+            clv_df = raw_clv[0]
+        else:
+            clv_df = raw_clv
+
+        if (clv_df is None or clv_df.empty) and self.clv_engine and not ctx.get('customers', pd.DataFrame()).empty:
+            try:
+                clv_res = self.clv_engine.compute_clv(ctx.get('customers'), ctx.get('transactions'))
+                clv_df = clv_res['scored_clv_df'] if isinstance(clv_res, dict) else (clv_res[0] if isinstance(clv_res, tuple) else clv_res)
+            except Exception:
+                clv_df = pd.DataFrame()
+
+        clv_col = next((c for c in ['Predicted_CLV_12M', 'CLV_12M', 'Forward_CLV', 'Monetary_Spend'] if c in clv_df.columns), None)
+        if clv_df is None or clv_df.empty or not clv_col:
             return self._missing_data_response("Customer Lifetime Value (CLV) scored dataset")
             
-        clv_summary = clv_df.groupby('CLV_Tier').agg(
-            Accounts=('Customer_ID', 'count'),
-            Avg_Forward_12M_CLV=('Predicted_CLV_12M', 'mean'),
-            Total_Cohort_Value=('Predicted_CLV_12M', 'sum'),
-            Value_At_Risk=('Value_At_Risk_12M', 'sum')
-        ).reset_index().sort_values('Avg_Forward_12M_CLV', ascending=False)
+        tier_col = next((c for c in ['CLV_Tier', 'Customer_Segment', 'Segment_Name', 'Segment'] if c in clv_df.columns), None)
+        id_col = next((c for c in ['Customer_ID', 'CustomerID', 'id'] if c in clv_df.columns), clv_df.columns[0])
+        var_col = next((c for c in ['Value_At_Risk_12M', 'Value_At_Risk'] if c in clv_df.columns), None)
+
+        if not tier_col:
+            clv_df['CLV_Tier'] = np.where(clv_df[clv_col] >= clv_df[clv_col].median(), 'High-Value Tier', 'Standard Tier')
+            tier_col = 'CLV_Tier'
+
+        agg_dict = {
+            'Accounts': (id_col, 'count'),
+            'Avg_Forward_12M_CLV': (clv_col, 'mean'),
+            'Total_Cohort_Value': (clv_col, 'sum')
+        }
+        if var_col:
+            agg_dict['Value_At_Risk'] = (var_col, 'sum')
+
+        clv_summary = clv_df.groupby(tier_col).agg(**agg_dict).reset_index().sort_values('Avg_Forward_12M_CLV', ascending=False)
         
-        top_tier = clv_summary.iloc[0]['CLV_Tier']
+        top_tier = clv_summary.iloc[0][tier_col]
         top_clv = clv_summary.iloc[0]['Avg_Forward_12M_CLV']
-        tot_val = clv_summary['Total_Cohort_Value'].sum()
+        tot_val = max(1.0, clv_summary['Total_Cohort_Value'].sum())
         
         ans = (
             f"The segment with the highest future customer lifetime value is **{top_tier}**, "
@@ -240,19 +283,40 @@ class NaturalLanguageBusinessAssistant:
             'calculation_methodology': "Discounted monthly purchase rate * retention probability p_alive over 12 months.",
             'supporting_data': clv_summary,
             'chart_type': 'bar',
-            'chart_x': 'CLV_Tier',
+            'chart_x': tier_col,
             'chart_y': 'Avg_Forward_12M_CLV',
             'chart_title': 'Projected 12-Month Average CLV by Value Tier ($)'
         }
 
     def _handle_clv_retention_risk(self, question, ctx):
-        clv_df = ctx.get('clv_data', pd.DataFrame())
-        if clv_df.empty:
+        raw_clv = ctx.get('clv_data', ctx.get('clv', pd.DataFrame()))
+        if isinstance(raw_clv, dict):
+            clv_df = raw_clv.get('scored_clv_df', raw_clv.get('clv_df', pd.DataFrame()))
+        elif isinstance(raw_clv, tuple):
+            clv_df = raw_clv[0]
+        else:
+            clv_df = raw_clv
+
+        if (clv_df is None or clv_df.empty) and self.clv_engine and not ctx.get('customers', pd.DataFrame()).empty:
+            try:
+                clv_res = self.clv_engine.compute_clv(ctx.get('customers'), ctx.get('transactions'))
+                clv_df = clv_res['scored_clv_df'] if isinstance(clv_res, dict) else (clv_res[0] if isinstance(clv_res, tuple) else clv_res)
+            except Exception:
+                clv_df = pd.DataFrame()
+
+        if clv_df is None or clv_df.empty:
             return self._missing_data_response("CLV scored records")
             
-        prio_counts = clv_df['Retention_Priority'].value_counts().reset_index()
+        prio_col = next((c for c in ['Retention_Priority', 'Priority', 'Risk_Level'] if c in clv_df.columns), None)
+        var_col = next((c for c in ['Value_At_Risk_12M', 'Value_At_Risk'] if c in clv_df.columns), None)
+
+        if not prio_col:
+            clv_df['Retention_Priority'] = np.where(clv_df.get('Predicted_Churn', 0) == 1, 'Immediate Concierge', 'Standard Lifecycle')
+            prio_col = 'Retention_Priority'
+
+        prio_counts = clv_df[prio_col].value_counts().reset_index()
         prio_counts.columns = ['Retention_Priority', 'Accounts_Count']
-        tot_var = clv_df['Value_At_Risk_12M'].sum()
+        tot_var = clv_df[var_col].sum() if var_col else 0.0
         
         ans = (
             f"Across the active customer base, **${tot_var:,.2f}** in 12-month future value is currently at risk of churn. "
@@ -267,7 +331,7 @@ class NaturalLanguageBusinessAssistant:
             'chart_type': 'bar',
             'chart_x': 'Retention_Priority',
             'chart_y': 'Accounts_Count',
-            'chart_title': 'Customer Distribution by Retention Action Priority'
+            'chart_title': 'Retention Concierge Priority Breakdown'
         }
 
     def _handle_monthly_sales_trajectory(self, question, ctx):
@@ -319,25 +383,48 @@ class NaturalLanguageBusinessAssistant:
         }
 
     def _handle_inventory_stockout_risks(self, question, ctx):
-        inv_df = ctx.get('inventory_plan', pd.DataFrame())
-        if inv_df.empty:
+        inv_df = ctx.get('inventory_plan', ctx.get('inventory', pd.DataFrame()))
+        if (inv_df is None or inv_df.empty) and self.inv_engine and not ctx.get('transactions', pd.DataFrame()).empty:
+            try:
+                inv_df, _ = self.inv_engine.optimize_inventory(ctx.get('transactions'))
+            except Exception:
+                inv_df = pd.DataFrame()
+
+        if inv_df is None or inv_df.empty:
             return self._missing_data_response("Inventory optimization plan")
             
-        top_risk = inv_df.sort_values('Reorder Point (ROP)', ascending=False).iloc[0]
-        ans = (
-            f"**{top_risk['Product Category']}** represents the highest replenishment urgency, "
-            f"requiring a Reorder Point (ROP) of **{top_risk['Reorder Point (ROP)']} units** "
-            f"(including {top_risk['Recommended Safety Stock']} safety stock units) to avoid stockouts over its "
-            f"{top_risk['Lead Time (Days)']}-day supplier lead time. Risk status is **{top_risk['Stockout Risk Assessment']}**."
-        )
+        cat_col = next((c for c in ['Product_Category', 'Product Category', 'Category'] if c in inv_df.columns), inv_df.columns[0])
+        rop_col = next((c for c in ['Reorder_Point', 'Reorder Point (ROP)', 'ROP'] if c in inv_df.columns), None)
+        ss_col = next((c for c in ['Safety_Stock', 'Recommended Safety Stock', 'SS'] if c in inv_df.columns), None)
+        lt_col = next((c for c in ['Lead_Time_Days', 'Lead Time (Days)', 'Lead_Time'] if c in inv_df.columns), None)
+        risk_col = next((c for c in ['Stockout_Risk', 'Stockout Risk Assessment', 'Risk'] if c in inv_df.columns), None)
+        dir_col = next((c for c in ['Days_Inventory_Remaining', 'Days Inventory Remaining (DIR)'] if c in inv_df.columns), None)
+
+        if rop_col:
+            top_risk = inv_df.sort_values(rop_col, ascending=False).iloc[0]
+            cat_val = top_risk[cat_col]
+            rop_val = top_risk[rop_col]
+            ss_val = top_risk[ss_col] if ss_col else "N/A"
+            lt_val = top_risk[lt_col] if lt_col else "N/A"
+            risk_val = top_risk[risk_col] if risk_col else "Critical"
+            dir_str = f" and **{top_risk[dir_col]} days of inventory remaining**" if dir_col and pd.notnull(top_risk[dir_col]) else ""
+            ans = (
+                f"**{cat_val}** represents the highest replenishment urgency, "
+                f"requiring a Reorder Point (ROP) of **{rop_val} units** "
+                f"(including {ss_val} safety stock units){dir_str} to avoid stockouts over its "
+                f"{lt_val}-day supplier lead time. Risk status is **{risk_val}**."
+            )
+        else:
+            ans = f"Catalog inventory plan monitors {len(inv_df)} categories across lead times and safety stock levels."
+
         return {
             'intent': 'inventory_stockout_risks',
             'answer': ans,
-            'calculation_methodology': "ROP = (Daily_Demand * Lead_Time) + (1.65 * Demand_StdDev * sqrt(Lead_Time)).",
+            'calculation_methodology': "ROP = (Daily_Demand * Lead_Time) + (1.65 * Combined_Demand_LeadTime_StdDev).",
             'supporting_data': inv_df,
             'chart_type': 'bar',
-            'chart_x': 'Product Category',
-            'chart_y': 'Reorder Point (ROP)',
+            'chart_x': cat_col,
+            'chart_y': rop_col or inv_df.columns[1],
             'chart_title': 'Recommended Reorder Point (ROP) Units by Category'
         }
 

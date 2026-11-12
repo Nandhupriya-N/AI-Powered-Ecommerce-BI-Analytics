@@ -40,7 +40,26 @@ class InventoryIntelligenceEngine:
         for each product category in the catalog.
         """
         df = trans_df.copy()
-        df['Order_Date'] = pd.to_datetime(df['Order_Date'])
+        
+        # Universal column resolution
+        date_col = next((c for c in ['Order_Date', 'Order Date', 'InvoiceDate', 'order_purchase_timestamp', 'date', 'Date'] if c in df.columns), None)
+        df['Order_Date'] = pd.to_datetime(df[date_col], errors='coerce') if date_col else pd.Timestamp.now()
+        if df['Order_Date'].isnull().all():
+            df['Order_Date'] = pd.Timestamp.now()
+        elif df['Order_Date'].isnull().any():
+            df['Order_Date'] = df['Order_Date'].bfill().ffill()
+
+        cat_col = next((c for c in ['Product_Category', 'Category', 'product_category_name', 'Description', 'Item', 'category'] if c in df.columns), None)
+        df['Product_Category'] = df[cat_col].astype(str) if cat_col else 'General'
+
+        qty_col = next((c for c in ['Quantity', 'qty', 'Qty', 'quantity'] if c in df.columns), None)
+        df['Quantity'] = pd.to_numeric(df[qty_col], errors='coerce').fillna(1.0) if qty_col else 1.0
+
+        price_col = next((c for c in ['Unit_Price', 'UnitPrice', 'price', 'Sales', 'Total_Amount', 'Price'] if c in df.columns), None)
+        if price_col:
+            df['Unit_Price'] = pd.to_numeric(df[price_col].astype(str).str.replace('$', '').str.replace(',', ''), errors='coerce').fillna(80.0)
+        else:
+            df['Unit_Price'] = 80.0
         
         # Aggregate daily demand per category
         cat_daily = df.groupby(['Order_Date', 'Product_Category'])['Quantity'].sum().reset_index()
