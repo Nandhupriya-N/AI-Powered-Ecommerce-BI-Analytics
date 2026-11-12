@@ -60,7 +60,7 @@ except ImportError:
 from src.recommender import analyze_sentiment, analyze_sentiment_detailed, generate_recommendations, compute_association_rules, analyze_aspect_based_sentiment, extract_text_eda_summary
 
 from src.analyzer import AutonomousBIAnalyzer
-from src.data_processor import assess_data_quality, clean_and_prepare, map_kaggle_to_standard
+from src.data_processor import assess_data_quality, clean_and_prepare, map_kaggle_to_standard, harmonize_any_ecommerce_dataset
 from src.clv_engine import CustomerLifetimeValueEngine
 from src.inventory_optimizer import InventoryIntelligenceEngine
 from src.drift_monitor import EnterpriseModelMonitoringSuite
@@ -625,40 +625,23 @@ elif "7. Baseline" in test_scenario:
     active_cust = analyzer.baseline_cust
     st.sidebar.info("Loaded Historical Baseline Data (6,000 transactions).")
 else:
-    st.sidebar.markdown("##### 📤 Upload Custom CSV Dataset")
+    st.sidebar.markdown("##### 📤 Universal E-Commerce Dataset Ingestion")
+    st.sidebar.caption("Upload ANY e-commerce CSV (Kaggle, Olist, UK Retail, Superstore, Shopify, Amazon, etc.).")
     up_main = st.sidebar.file_uploader(
-        "Upload CSV (Kaggle Dataset or Customer Profiles)",
+        "Upload Primary E-Commerce CSV (Transactions or Customer Cohort)",
         type=['csv'],
         key="up_main",
-        help="Upload any Kaggle dataset CSV (e.g. kaggle_ecommerce_churn_test_unseen_1408.csv) for real-time analysis."
+        help="Upload ANY e-commerce dataset CSV. The universal engine automatically harmonizes columns, synthesizes cohorts, and connects all 15 modules."
     )
-    up_trans = st.sidebar.file_uploader("(Optional) Upload Transactions CSV", type=['csv'], key="up_trans")
+    up_trans = st.sidebar.file_uploader("(Optional) Upload Secondary Cohort / Transactions CSV", type=['csv'], key="up_trans")
     
     if up_main is not None:
         raw_uploaded = pd.read_csv(up_main)
-        if is_kaggle_schema(raw_uploaded):
-            active_cust = map_kaggle_to_standard(raw_uploaded)
-            st.sidebar.success(f"🎯 Verified Kaggle Dataset detected! Harmonized {len(active_cust):,} records with 92.47% Random Forest Model.")
-            if up_trans is not None:
-                active_trans = pd.read_csv(up_trans)
-            else:
-                active_trans = pd.read_csv(os.path.join(k_export_dir, 'kaggle_transactions_orders_2000.csv'))
-        elif 'Total_Amount' in raw_uploaded.columns or 'UnitPrice' in raw_uploaded.columns or 'InvoiceNo' in raw_uploaded.columns:
-            active_trans = raw_uploaded
-            if up_trans is not None:
-                active_cust = pd.read_csv(up_trans)
-            else:
-                active_cust = pd.read_csv('data/new_batch_customer_profiles.csv')
-            st.sidebar.success(f"📊 Transactions CSV loaded ({len(active_trans):,} orders).")
-        else:
-            active_cust = raw_uploaded
-            if up_trans is not None:
-                active_trans = pd.read_csv(up_trans)
-            else:
-                active_trans = pd.read_csv('data/new_batch_ecommerce_data.csv')
-            st.sidebar.success(f"👥 Customer Profiles loaded ({len(active_cust):,} accounts).")
+        raw_secondary = pd.read_csv(up_trans) if up_trans is not None else None
+        active_trans, active_cust, detection_msg = harmonize_any_ecommerce_dataset(raw_uploaded, raw_secondary)
+        st.sidebar.success(f"🎯 {detection_msg}")
     else:
-        st.sidebar.info("💡 Upload any Kaggle CSV using the box above, or click one of the download buttons to save a copy!")
+        st.sidebar.info("💡 Upload any custom e-commerce CSV above, or analyze the baseline Kaggle cohort:")
         raw_k = pd.read_csv(os.path.join(k_export_dir, 'kaggle_ecommerce_churn_test_unseen_1408.csv'))
         active_cust = map_kaggle_to_standard(raw_k)
         active_trans = pd.read_csv(os.path.join(k_export_dir, 'kaggle_transactions_orders_2000.csv'))
@@ -677,13 +660,16 @@ improvements = analysis_results['prescriptive_improvements']
 forecast_res = analysis_results['forecast']
 sentiment_res = analysis_results['sentiment_summary']
 
-# Defensive Field Assurance: Guarantee columns exist with zero KeyErrors
-if 'Recency_Days' not in scored_cust.columns:
-    scored_cust['Recency_Days'] = 30
-if 'Frequency_Orders' not in scored_cust.columns:
-    scored_cust['Frequency_Orders'] = 2
-if 'Monetary_Spend' not in scored_cust.columns:
-    scored_cust['Monetary_Spend'] = 150.0
+# Defensive Field Assurance: Guarantee columns exist with zero KeyErrors across all modules
+for c, def_val in [
+    ('Recency_Days', 30), ('Frequency_Orders', 2), ('Monetary_Spend', 150.0),
+    ('Avg_Order_Value', 75.0), ('Return_Rate', 0.0), ('Customer_Service_Calls', 0),
+    ('Website_Visits_Per_Month', 5), ('Age', 32), ('Gender', 'Female'),
+    ('Region', 'North'), ('Membership_Type', 'Silver')
+]:
+    if c not in scored_cust.columns:
+        scored_cust[c] = def_val
+
 if 'Segment_Name' not in scored_cust.columns:
     scored_cust = analyzer._assign_clusters(scored_cust)
 if 'Predicted_Churn' not in scored_cust.columns:
@@ -691,6 +677,14 @@ if 'Predicted_Churn' not in scored_cust.columns:
 if 'Risk_Level' not in scored_cust.columns:
     r_scores = scored_cust.get('Churn_Risk_Score', pd.Series([25.0] * len(scored_cust)))
     scored_cust['Risk_Level'] = r_scores.apply(lambda s: 'High Risk' if s >= 70 else ('Moderate Risk' if s >= 40 else 'Low Risk'))
+
+for c, def_val in [
+    ('Total_Amount', 50.0), ('Profit', 11.0), ('Quantity', 1), ('Unit_Price', 50.0),
+    ('Discount_Percent', 10.0), ('Product_Category', 'General Retail'),
+    ('Payment_Method', 'Credit Card'), ('Rating', 4), ('Review_Text', 'Good product.')
+]:
+    if c not in scored_trans.columns:
+        scored_trans[c] = def_val
 
 if 'Is_Anomaly_Predicted' not in scored_trans.columns and 'Is_Anomaly' not in scored_trans.columns:
     scored_trans = analyzer._detect_anomalies(scored_trans)
