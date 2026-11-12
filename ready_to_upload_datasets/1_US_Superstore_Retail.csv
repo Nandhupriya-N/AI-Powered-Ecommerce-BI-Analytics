@@ -1,0 +1,51 @@
+Order ID,Order Date,Customer ID,Customer Name,Category,Sub-Category,Sales,Quantity,Discount,Profit,Region
+CA-2024-10000,2024-01-01,CUST-100,Enterprise Client 0,Technology,Phones,45.5,1,0.0,12.0,East
+CA-2024-10001,2024-02-02,CUST-101,Enterprise Client 1,Furniture,Chairs,67.8,2,0.05,17.4,West
+CA-2024-10002,2024-03-03,CUST-102,Enterprise Client 2,Office Supplies,Storage,90.1,3,0.1,22.8,Central
+CA-2024-10003,2024-04-04,CUST-103,Enterprise Client 3,Technology,Accessories,112.4,4,0.15,28.2,South
+CA-2024-10004,2024-05-05,CUST-104,Enterprise Client 4,Office Supplies,Paper,134.7,5,0.0,33.6,East
+CA-2024-10005,2024-06-06,CUST-105,Enterprise Client 5,Technology,Phones,157.0,1,0.05,39.0,East
+CA-2024-10006,2024-07-07,CUST-106,Enterprise Client 6,Furniture,Chairs,179.3,2,0.1,44.4,West
+CA-2024-10007,2024-08-08,CUST-107,Enterprise Client 7,Office Supplies,Storage,201.6,3,0.15,49.8,Central
+CA-2024-10008,2024-09-09,CUST-108,Enterprise Client 8,Technology,Accessories,223.9,4,0.0,55.2,South
+CA-2024-10009,2024-10-10,CUST-109,Enterprise Client 9,Office Supplies,Paper,246.2,5,0.05,60.6,East
+CA-2024-10010,2024-11-11,CUST-100,Enterprise Client 0,Technology,Phones,268.5,1,0.1,66.0,East
+CA-2024-10011,2024-12-12,CUST-101,Enterprise Client 1,Furniture,Chairs,290.8,2,0.15,71.4,West
+CA-2024-10012,2024-01-13,CUST-102,Enterprise Client 2,Office Supplies,Storage,313.1,3,0.0,76.8,Central
+CA-2024-10013,2024-02-14,CUST-103,Enterprise Client 3,Technology,Accessories,335.4,4,0.05,82.2,South
+CA-2024-10014,2024-03-15,CUST-104,Enterprise Client 4,Office Supplies,Paper,357.7,5,0.1,87.6,East
+CA-2024-10015,2024-04-16,CUST-105,Enterprise Client 5,Technology,Phones,380.0,1,0.15,93.0,East
+CA-2024-10016,2024-05-17,CUST-106,Enterprise Client 6,Furniture,Chairs,402.3,2,0.0,98.4,West
+CA-2024-10017,2024-06-18,CUST-107,Enterprise Client 7,Office Supplies,Storage,424.6,3,0.05,103.8,Central
+CA-2024-10018,2024-07-19,CUST-108,Enterprise Client 8,Technology,Accessories,446.9,4,0.1,109.2,South
+CA-2024-10019,2024-08-20,CUST-109,Enterprise Client 9,Office Supplies,Paper,469.2,5,0.15,114.6,East
+CA-2024-10020,2024-09-21,CUST-100,Enterprise Client 0,Technology,Phones,491.5,1,0.0,120.0,East
+CA-2024-10021,2024-10-22,CUST-101,Enterprise Client 1,Furniture,Chairs,513.8,2,0.05,125.4,West
+CA-2024-10022,2024-11-23,CUST-102,Enterprise Client 2,Office Supplies,Storage,536.1,3,0.1,130.8,Central
+CA-2024-10023,2024-12-24,CUST-103,Enterprise Client 3,Technology,Accessories,558.4,4,0.15,136.2,South
+CA-2024-10024,2024-01-25,CUST-104,Enterprise Client 4,Office Supplies,Paper,580.7,5,0.0,141.6,East
+CA-2024-10025,2024-02-26,CUST-105,Enterprise Client 5,Technology,Phones,603.0,1,0.05,147.0,East
+CA-2024-10026,2024-03-27,CUST-106,Enterprise Client 6,Furniture,Chairs,625.3,2,0.1,152.4,West
+CA-2024-10027,2024-04-28,CUST-107,Enterprise Client 7,Office Supplies,Storage,647.6,3,0.15,157.8,Central
+CA-2024-10028,2024-05-01,CUST-108,Enterprise Client 8,Technology,Accessories,669.9,4,0.0,163.2,South
+CA-2024-10029,2024-06-02,CUST-109,Enterprise Client 9,Office Supplies,Paper,692.2,5,0.05,168.6,East
+CA-2024-10030,2024-07-03,CUST-100,Enterprise Client 0,Technology,Phones,714.5,1,0.1,174.0,East
+CA-2024-10031,2024-08-04,CUST-101,Enterprise Client 1,Furniture,Chairs,736.8,2,0.15,179.4,West
+CA-2024-10032,2024-09-05,CUST-102,Enterprise Client 2,Office Supplies,Storage,759.1,3,0.0,184.8,Central
+CA-2024-10033,2024-10-06,CUST-103,Enterprise Client 3,Technology,Accessories,781.4,4,0.05,190.2,South
+CA-2024-10034,2024-11-07,CUST-104,Enterprise Client 4,Office Supplies,Paper,803.7,5,0.1,195.6,East
+CA-2024-10035,2024-12-08,CUST-105,Enterprise Client 5,Technology,Phones,826.0,1,0.15,201.0,East
+CA-2024-10036,2024-01-09,CUST-106,Enterprise Client 6,Furniture,Chairs,848.3,2,0.0,206.4,West
+CA-2024-10037,2024-02-10,CUST-107,Enterprise Client 7,Office Supplies,Storage,870.6,3,0.05,211.8,Central
+CA-2024-10038,2024-03-11,CUST-108,Enterprise Client 8,Technology,Accessories,892.9,4,0.1,217.2,South
+CA-2024-10039,2024-04-12,CUST-109,Enterprise Client 9,Office Supplies,Paper,915.2,5,0.15,222.6,East
+CA-2024-10040,2024-05-13,CUST-100,Enterprise Client 0,Technology,Phones,937.5,1,0.0,228.0,East
+CA-2024-10041,2024-06-14,CUST-101,Enterprise Client 1,Furniture,Chairs,959.8,2,0.05,233.4,West
+CA-2024-10042,2024-07-15,CUST-102,Enterprise Client 2,Office Supplies,Storage,982.1,3,0.1,238.8,Central
+CA-2024-10043,2024-08-16,CUST-103,Enterprise Client 3,Technology,Accessories,1004.4,4,0.15,244.2,South
+CA-2024-10044,2024-09-17,CUST-104,Enterprise Client 4,Office Supplies,Paper,1026.7,5,0.0,249.6,East
+CA-2024-10045,2024-10-18,CUST-105,Enterprise Client 5,Technology,Phones,1049.0,1,0.05,255.0,East
+CA-2024-10046,2024-11-19,CUST-106,Enterprise Client 6,Furniture,Chairs,1071.3,2,0.1,260.4,West
+CA-2024-10047,2024-12-20,CUST-107,Enterprise Client 7,Office Supplies,Storage,1093.6,3,0.15,265.8,Central
+CA-2024-10048,2024-01-21,CUST-108,Enterprise Client 8,Technology,Accessories,1115.9,4,0.0,271.2,South
+CA-2024-10049,2024-02-22,CUST-109,Enterprise Client 9,Office Supplies,Paper,1138.2,5,0.05,276.6,East
