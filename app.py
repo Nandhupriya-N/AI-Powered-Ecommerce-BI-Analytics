@@ -1321,6 +1321,56 @@ if "🤖 Model Accuracy & Training" in tab_map:
                 fig_rf_feat.update_layout(yaxis=dict(autorange="reversed"), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=240, margin=dict(l=10, r=10, t=30, b=10))
                 st.plotly_chart(fig_rf_feat, use_container_width=True)
 
+        # --- Academic Research Literature Survey (100 Peer-Reviewed Papers) ---
+        st.markdown("---")
+        st.markdown("#### 📚 Academic Research Foundation (100 Peer-Reviewed Papers)")
+        st.caption("Theoretical, algorithmic, and empirical literature grounding MasterMind AI across 10 analytical domains (IEEE, ACM, INFORMS, Springer, ScienceDirect, NeurIPS, NIST).")
+        
+        with st.expander("🔍 Explore 100 Research Papers & System Implementation Mappings", expanded=False):
+            try:
+                from src.research_compendium import get_all_papers, get_domains, filter_papers_by_domain, search_papers
+                
+                domains = ["All Domains"] + get_domains()
+                r_col1, r_col2 = st.columns([1, 2])
+                with r_col1:
+                    selected_domain = st.selectbox("Filter by Academic Domain:", domains, index=0)
+                with r_col2:
+                    search_kw = st.text_input("Search paper title, author, algorithm, or file mapping:", placeholder="e.g. Random Forest, SMOTE, EOQ, VADER, PBKDF2...")
+                
+                if search_kw.strip():
+                    matched_papers = search_papers(search_kw.strip())
+                    if selected_domain != "All Domains":
+                        matched_papers = [p for p in matched_papers if p["domain"] == selected_domain]
+                else:
+                    matched_papers = filter_papers_by_domain(selected_domain)
+                
+                st.markdown(f"**Showing {len(matched_papers)} Papers:**")
+                table_rows = []
+                for p in matched_papers:
+                    table_rows.append({
+                        "ID": p["id"],
+                        "Domain": p["domain"],
+                        "Title": p["title"],
+                        "Authors": p["authors"],
+                        "Year": p["year"],
+                        "Venue": p["venue"],
+                        "Formula / Core": p["formula"],
+                        "Code Mapping": p["project_mapping"]
+                    })
+                st.dataframe(pd.DataFrame(table_rows), use_container_width=True, hide_index=True)
+                
+                pdf_file_path = "MasterMind_AI_Research_Literature_Survey_100_Papers.pdf"
+                if os.path.exists(pdf_file_path):
+                    with open(pdf_file_path, "rb") as pf:
+                        st.download_button(
+                            label="📄 Download 100 Research Papers Survey PDF",
+                            data=pf.read(),
+                            file_name="MasterMind_AI_Research_Literature_Survey_100_Papers.pdf",
+                            mime="application/pdf"
+                        )
+            except Exception as ex_rp:
+                st.warning(f"Research Compendium Module: {ex_rp}")
+
 # =========================================================================
 # SECTION 4: PREDICTION ANALYSIS
 # =========================================================================
