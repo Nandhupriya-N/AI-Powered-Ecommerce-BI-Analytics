@@ -63,9 +63,18 @@ from src.analyzer import AutonomousBIAnalyzer
 import src.data_processor as data_proc_mod
 importlib.reload(data_proc_mod)
 from src.data_processor import assess_data_quality, clean_and_prepare, map_kaggle_to_standard, harmonize_any_ecommerce_dataset
+import src.clv_engine as clv_eng_mod
+importlib.reload(clv_eng_mod)
 from src.clv_engine import CustomerLifetimeValueEngine
+
+import src.inventory_optimizer as inv_opt_mod
+importlib.reload(inv_opt_mod)
 from src.inventory_optimizer import InventoryIntelligenceEngine
+
 from src.drift_monitor import EnterpriseModelMonitoringSuite
+
+import src.nl_assistant as nl_assistant_mod
+importlib.reload(nl_assistant_mod)
 from src.nl_assistant import NaturalLanguageBusinessAssistant
 from src.decision_engine import BusinessDecisionEngine
 import src.report_generator as report_gen_mod
@@ -468,7 +477,6 @@ def render_pdf_from_html(html_content: str) -> bytes:
                 except Exception:
                     pass
 
-@st.cache_resource
 def get_nl_assistant():
     return NaturalLanguageBusinessAssistant(
         analyzer=get_analyzer(),
