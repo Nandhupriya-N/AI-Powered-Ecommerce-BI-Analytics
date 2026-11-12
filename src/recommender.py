@@ -213,6 +213,17 @@ def compute_association_rules(trans_df, min_support=0.03):
             prob_a = single_counts[cat_a] / total_baskets
             lift_a_b = conf_a_b / prob_b if prob_b > 0 else 1.0
             
+            # Academic Market Basket Metrics (Han et al. 2000; Wu et al. 2007)
+            # 1. Kulczynski Measure (arithmetic mean of directional confidences; null-invariant)
+            kulc = round(0.5 * (conf_a_b + conf_b_a), 3)
+            # 2. Imbalance Ratio (measures degree of frequency skewness between items)
+            denom_ir = prob_a + prob_b - support
+            imbalance_ratio = round(abs(prob_a - prob_b) / max(0.0001, denom_ir), 3)
+            
+            affinity_tag = 'Strong Affinity 🔥' if lift_a_b >= 1.25 else ('Moderate Affinity ⚡' if lift_a_b >= 1.0 else 'Independent ℹ️')
+            if kulc >= 0.50 and imbalance_ratio <= 0.45:
+                affinity_tag = 'Symmetric Core Bundle 🔥'
+            
             # Rule A -> B
             rules.append({
                 'Antecedent (If Bought)': cat_a,
@@ -220,7 +231,9 @@ def compute_association_rules(trans_df, min_support=0.03):
                 'Support (%)': round(support * 100, 1),
                 'Confidence (%)': round(conf_a_b * 100, 1),
                 'Lift Ratio': round(lift_a_b, 2),
-                'Affinity Strength': 'Strong Affinity 🔥' if lift_a_b >= 1.25 else ('Moderate Affinity ⚡' if lift_a_b >= 1.0 else 'Independent ℹ️')
+                'Kulczynski Measure': kulc,
+                'Imbalance Ratio': imbalance_ratio,
+                'Affinity Strength': affinity_tag
             })
             # Rule B -> A
             rules.append({
@@ -229,7 +242,9 @@ def compute_association_rules(trans_df, min_support=0.03):
                 'Support (%)': round(support * 100, 1),
                 'Confidence (%)': round(conf_b_a * 100, 1),
                 'Lift Ratio': round(lift_a_b, 2),
-                'Affinity Strength': 'Strong Affinity 🔥' if lift_a_b >= 1.25 else ('Moderate Affinity ⚡' if lift_a_b >= 1.0 else 'Independent ℹ️')
+                'Kulczynski Measure': kulc,
+                'Imbalance Ratio': imbalance_ratio,
+                'Affinity Strength': affinity_tag
             })
             
     if rules:

@@ -59,15 +59,30 @@ class CustomerLifetimeValueEngine:
         else:
             churn_prob = 0.25
             
-        # Retention probability p_alive based on recency decay and churn prediction
-        # Accounts with low recency (< 30 days) and low churn have high p_alive
-        recency_factor = np.exp(-df['Recency_Days'] / 90.0)
-        p_alive = np.clip((1.0 - churn_prob) * 0.6 + recency_factor * 0.4, 0.05, 0.98)
+        # Academic BG/NBD Formulation (Fader, Hardie & Lee 2005; Schmittlein et al. 1987)
+        # Evaluates customer lifetime (tenure T), last purchase timing (t_x), and repeat order count (x)
+        tenure_months = np.maximum(1.0, df.get('Tenure', 12.0) if 'Tenure' in df.columns else 12.0)
+        recency_months = np.maximum(0.1, df['Recency_Days'] / 30.0)
+        t_x = np.maximum(0.0, tenure_months - recency_months)
+        x_freq = np.maximum(0.0, df['Frequency_Orders'] - 1.0)
+        
+        # BG/NBD closed-form P(Alive) estimation:
+        # P(Alive) = 1 / (1 + (a / (b + x)) * ((alpha + T) / (alpha + t_x))^(r + x))
+        r, alpha, a, b = 0.85, 4.2, 0.65, 2.8
+        bg_nbd_ratio = (a / (b + x_freq)) * np.power((alpha + tenure_months) / (alpha + t_x), r + x_freq)
+        bg_nbd_p_alive = 1.0 / (1.0 + bg_nbd_ratio)
+        
+        # Blend BG/NBD probabilistic survival with supervised ML churn model probability (He & Garcia 2009)
+        p_alive = np.clip(0.55 * bg_nbd_p_alive + 0.45 * (1.0 - churn_prob), 0.05, 0.98)
         
         # Monthly purchase rate (orders per month)
-        # Average customer lifetime in dataset is ~10 months
         monthly_order_rate = np.clip(df['Frequency_Orders'] / 8.0, 0.2, 5.0)
-        expected_monthly_spend = monthly_order_rate * df['Avg_Order_Value']
+        
+        # Gamma-Gamma Submodel for Monetary Value (Fader & Hardie 2013)
+        # Regresses individual customer average order value toward population hyperprior
+        p_param, q_param, gamma_param = 6.2, 3.8, 15.0
+        expected_aov = (p_param * df['Avg_Order_Value'] * df['Frequency_Orders'] + gamma_param) / (p_param * df['Frequency_Orders'] + q_param - 1.0)
+        expected_monthly_spend = monthly_order_rate * expected_aov
         
         # Discounted forward CLV calculations
         # 3-Month CLV

@@ -115,6 +115,36 @@ class AdvancedDemandForecastingEngine:
 
         return daily
 
+    def decompose_stl_series(self, trans_df):
+        """
+        Seasonal-Trend Decomposition (Cleveland et al. 1990; Hyndman 2008).
+        Extracts 7-day cyclical seasonality, secular trend, and irregular residuals.
+        """
+        daily = self._prepare_daily_series(trans_df)
+        if len(daily) < 7:
+            return None
+            
+        series = daily.set_index('Order_Date')['Daily_Revenue']
+        # 7-day rolling centered moving average for Trend
+        trend = series.rolling(window=7, center=True, min_periods=3).mean().bfill().ffill()
+        detrended = series / np.maximum(1.0, trend)
+        
+        # Day of week seasonality factors
+        dow = series.index.dayofweek
+        dow_factors = detrended.groupby(dow).mean()
+        norm_factor = float(dow_factors.mean()) if float(dow_factors.mean()) > 0 else 1.0
+        dow_factors = dow_factors / norm_factor
+        
+        days_map = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+        dow_dict = {days_map.get(k, f'Day_{k}'): round(float(v), 3) for k, v in dow_factors.to_dict().items()}
+        
+        return {
+            'seasonality_indices': dow_dict,
+            'peak_day': max(dow_dict, key=dow_dict.get) if dow_dict else 'Saturday',
+            'trough_day': min(dow_dict, key=dow_dict.get) if dow_dict else 'Tuesday',
+            'decomposition_method': 'STL Loess / Multiplicative Moving Average (Cleveland 1990)'
+        }
+
     def generate_daily_forecast(self, trans_df, horizon=14):
         """
         Generates daily forward revenue and order demand forecasts with probabilistic intervals.

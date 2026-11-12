@@ -10,6 +10,7 @@ Implements:
 
 import os
 import sys
+import math
 import numpy as np
 import pandas as pd
 
@@ -62,15 +63,23 @@ class InventoryIntelligenceEngine:
             # Annual demand estimate (365 * daily average)
             annual_D = d_avg * 365.0
             
-            # 1. Safety Stock
-            safety_stock = float(self.service_level_z * sigma_d * np.sqrt(L))
+            # 1. Advanced Safety Stock (Silver, Pyke & Peterson 1998; Graves & Willems 2000)
+            # Incorporates both demand volatility and supplier lead-time variance (sigma_L ~ 15% of lead time)
+            sigma_L = max(0.5, 0.15 * L)
+            sigma_LTD = float(np.sqrt(L * (sigma_d ** 2) + (d_avg ** 2) * (sigma_L ** 2)))
+            safety_stock = float(self.service_level_z * sigma_LTD)
             
-            # 2. Reorder Point (ROP)
+            # 2. Dynamic Reorder Point (ROP = Lead Time Demand + Safety Stock)
             lead_time_demand = d_avg * L
             rop = float(lead_time_demand + safety_stock)
             
-            # 3. Economic Order Quantity (EOQ)
+            # 3. Economic Order Quantity (Harris 1913; Wilson 1934)
             eoq = float(np.sqrt((2.0 * annual_D * S) / H))
+            
+            # 4. Days of Inventory Remaining (DIR) & Fill Rate Metrics (Snyder & Shen 2019; Chopra & Meindl 2016)
+            dir_days = round(float(safety_stock + eoq / 2.0) / max(0.1, d_avg), 1)
+            # Theoretical cycle stockout probability = 1 - Phi(Z)
+            stockout_prob_pct = round(float(0.5 * math.erfc(self.service_level_z / math.sqrt(2.0)) * 100.0), 1)
             
             # Stockout Risk Index: coefficient of demand variation (volatility penalty)
             cv = sigma_d / max(0.1, d_avg)
@@ -90,9 +99,12 @@ class InventoryIntelligenceEngine:
                 "Demand Std Dev": round(sigma_d, 2),
                 "Lead Time (Days)": L,
                 "Lead Time Demand": round(lead_time_demand, 1),
+                "Combined Lead Time StdDev": round(sigma_LTD, 2),
                 "Recommended Safety Stock": int(np.ceil(safety_stock)),
                 "Reorder Point (ROP)": int(np.ceil(rop)),
                 "Economic Order Qty (EOQ)": int(np.ceil(eoq)),
+                "Days Inventory Remaining (DIR)": dir_days,
+                "Cycle Stockout Risk (%)": f"{stockout_prob_pct}%",
                 "Stockout Risk Assessment": risk_level,
                 "Action Priority": priority
             })
@@ -132,6 +144,8 @@ class InventoryIntelligenceEngine:
         df['Safety_Stock'] = raw_df['Recommended Safety Stock']
         df['Reorder_Point'] = raw_df['Reorder Point (ROP)']
         df['EOQ_Units'] = raw_df['Economic Order Qty (EOQ)']
+        df['Days_Inventory_Remaining'] = raw_df['Days Inventory Remaining (DIR)']
+        df['Stockout_Probability'] = raw_df['Cycle Stockout Risk (%)']
         
         # Map stockout risk to clean categories
         def map_risk(txt):
