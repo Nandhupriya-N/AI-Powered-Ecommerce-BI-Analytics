@@ -440,8 +440,14 @@ def render_pdf_from_html(html_content: str) -> bytes:
     try:
         cmd = [
             browser_bin,
-            "--headless",
+            "--headless=new",
             "--disable-gpu",
+            "--no-sandbox",
+            "--disable-extensions",
+            "--disable-background-networking",
+            "--disable-sync",
+            "--disable-default-apps",
+            "--no-first-run",
             "--run-all-compositor-stages-before-draw",
             f"--print-to-pdf={pdf_path}",
             html_path
