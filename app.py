@@ -60,6 +60,8 @@ except ImportError:
 from src.recommender import analyze_sentiment, analyze_sentiment_detailed, generate_recommendations, compute_association_rules, analyze_aspect_based_sentiment, extract_text_eda_summary
 
 from src.analyzer import AutonomousBIAnalyzer
+import src.data_processor as data_proc_mod
+importlib.reload(data_proc_mod)
 from src.data_processor import assess_data_quality, clean_and_prepare, map_kaggle_to_standard, harmonize_any_ecommerce_dataset
 from src.clv_engine import CustomerLifetimeValueEngine
 from src.inventory_optimizer import InventoryIntelligenceEngine
