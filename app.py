@@ -181,7 +181,7 @@ if 'authenticated' not in st.session_state:
 st.markdown(f"""
 <style>
     .stApp {{
-        background: linear-gradient(rgba(255, 255, 255, 0.65), rgba(248, 250, 252, 0.75)),
+        background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(248, 250, 252, 0.55)),
                     url("data:image/jpeg;base64,{WORKSPACE_BG_B64}") center center / cover no-repeat fixed !important;
     }}
 </style>
