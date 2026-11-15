@@ -41,13 +41,12 @@ def run_all_tests():
     init_db()
     users = list_users()
     print(f"  -> Total registered users in database: {len(users)}")
-    assert len(users) >= 5, f"Expected at least 5 default users, found {len(users)}"
+    assert len(users) >= 4, f"Expected at least 4 default users, found {len(users)}"
     
     test_creds = [
         ("admin", "admin123", "Administrator"),
         ("manager", "manager123", "Business Manager"),
         ("analyst", "analyst123", "BI Analyst"),
-        ("ops", "ops123", "Operations & Inventory Lead"),
         ("marketing", "marketing123", "Marketing & CRM Specialist")
     ]
     for uname, pwd, exp_role in test_creds:
@@ -55,6 +54,10 @@ def run_all_tests():
         assert auth is not None, f"Failed to authenticate {uname}"
         assert auth['role'] == exp_role, f"Role mismatch for {uname}: expected {exp_role}, got {auth['role']}"
         print(f"  -> Verified auth for: @{uname} [{auth['role']}] - SUCCESS")
+
+    # Verify 'ops' user is purged
+    assert not any(u['Username'] == 'ops' for u in list_users()), "Ops user should be removed from database!"
+    print("  -> Verified 'ops' user successfully removed - SUCCESS")
 
     # -------------------------------------------------------------
     # TEST 2: ROLE MODULE ASSIGNMENTS (RBAC PERMISSIONS)
@@ -77,7 +80,7 @@ def run_all_tests():
         "BI Analyst": 9,
         "Operations & Inventory Lead": 6,
         "Marketing & CRM Specialist": 7,
-        "Administrator": 15
+        "Administrator": 16
     }
     for role, count in expected_counts.items():
         assert role in ROLE_MODULES, f"Missing role: {role}"

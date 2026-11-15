@@ -42,20 +42,10 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import importlib
 import src.auth_db as auth_db_mod
 importlib.reload(auth_db_mod)
-from src.auth_db import init_db, authenticate_user, register_user
-
-try:
-    from src.auth_db import list_users
-except ImportError:
-    import sqlite3
-    def list_users():
-        db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database', 'ecommerce_bi.db')
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, username, role, full_name, created_at FROM users ORDER BY id ASC")
-        rows = cursor.fetchall()
-        conn.close()
-        return [{"ID": r[0], "Username": r[1], "Role": r[2], "Full_Name": r[3], "Registered_At": r[4]} for r in rows]
+from src.auth_db import (
+    init_db, authenticate_user, register_user, create_new_user,
+    delete_user, update_user_modules, list_users, get_audit_logs, log_activity
+)
 
 from src.recommender import analyze_sentiment, analyze_sentiment_detailed, generate_recommendations, compute_association_rules, analyze_aspect_based_sentiment, extract_text_eda_summary
 
@@ -87,6 +77,24 @@ init_db()
 # =========================================================================
 # ROLE-BASED ACCESS CONTROL (RBAC) MODULE SPECIFICATIONS
 # =========================================================================
+CORE_ANALYTIC_MODULES = [
+    "📊 Executive BI KPIs",
+    "🔍 Data Quality & EDA",
+    "🤖 Model Accuracy & Training",
+    "🔮 Prediction Analysis",
+    "💬 Sentiment Analysis",
+    "🚨 Anomaly Detection",
+    "🧠 Root-Cause Diagnosis",
+    "🎯 Prescriptive Analysis",
+    "👥 RFM Segmentation & Recs",
+    "💎 Customer Lifetime Value (CLV)",
+    "📦 Inventory & Stockout Risk",
+    "🛒 Product Affinity & Bundles",
+    "💬 Natural-Language Assistant",
+    "⚖️ Unified Decision Engine",
+    "📑 Export Report"
+]
+
 ROLE_MODULES = {
     "Business Manager": [
         "📊 Executive BI KPIs",
@@ -139,7 +147,8 @@ ROLE_MODULES = {
         "🛒 Product Affinity & Bundles",
         "💬 Natural-Language Assistant",
         "⚖️ Unified Decision Engine",
-        "📑 Export Report"
+        "📑 Export Report",
+        "🛡️ User Management & Audit Logs"
     ]
 }
 
@@ -503,7 +512,7 @@ if not st.session_state.get('authenticated', False):
     </style>
     """, unsafe_allow_html=True)
     
-    # Page 1 Login Portal Hero Card
+    # Page 1 Login & Registration Portal Hero Card
     st.markdown(f"""
     <div style="max-width: 820px; margin: 10px auto 25px auto; text-align: center;">
         <div style="display: inline-flex; align-items: center; justify-content: center; width: 84px; height: 84px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 10px 25px rgba(37,99,235,0.2); margin-bottom: 16px; border: 1px solid #E2E8F0;">
@@ -515,41 +524,83 @@ if not st.session_state.get('authenticated', False):
         <div style="font-size: 1.25rem; font-weight: 700; color: #2563EB; margin-bottom: 12px; letter-spacing: -0.2px;">
             AI-Powered E-Commerce Business Intelligence &amp; Predictive Analytics
         </div>
-        <p style="font-size: 1.05rem; color: #475569; max-width: 720px; margin: 0 auto 18px auto; line-height: 1.5;">
-            Autonomous Decision-Support &amp; Predictive Analytics Suite with Multi-Tenant Role Isolation &amp; SQLite PBKDF2 Cryptographic Security.
+        <p style="font-size: 1.05rem; color: #475569; max-width: 720px; margin: 0 auto 20px auto; line-height: 1.5;">
+            Autonomous Decision-Support &amp; Predictive Analytics Platform.
         </p>
-        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;">
-            <span style="background: #EFF6FF; color: #1D4ED8; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #BFDBFE;">🔒 PBKDF2-HMAC-SHA256 (100,000 Iters)</span>
-            <span style="background: #F0FDF4; color: #15803D; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #BBF7D0;">⚡ Multi-Tenant Role Isolation (RBAC)</span>
-            <span style="background: #FAF5FF; color: #7E22CE; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #E9D5FF;">💾 SQLite Multi-User Auth</span>
-            <span style="background: #FEF3C7; color: #B45309; font-weight: 600; font-size: 0.80rem; padding: 4px 12px; border-radius: 20px; border: 1px solid #FDE68A;">📑 1-Click Executive PDF Export</span>
-        </div>
     </div>
     """, unsafe_allow_html=True)
     
     col_l1, col_l2, col_l3 = st.columns([3, 6, 3])
     with col_l2:
-        st.markdown("#### 🔑 Sign In to Workspace")
-        st.caption("Enter your enterprise credentials to unlock your role-tailored workspace:")
-        with st.form("main_login_form"):
-            in_user = st.text_input("Username:", placeholder="e.g. manager, analyst, admin", key="f_user")
-            in_pass = st.text_input("Password:", type="password", placeholder="Enter your password", key="f_pass")
-            btn_login = st.form_submit_button("🔓 Sign In to Workspace", use_container_width=True, type="primary")
-            
-            if btn_login:
-                if in_user and in_pass:
-                    auth_res = authenticate_user(in_user, in_pass)
-                    if auth_res:
-                        st.session_state['authenticated'] = True
-                        st.session_state['user_info'] = auth_res
-                        st.session_state['active_view_role'] = auth_res['role']
-                        st.session_state['last_logged_in_user'] = auth_res['username']
-                        st.success(f"Welcome back, {auth_res['full_name']}! Loading {auth_res['role']} workspace...")
-                        st.rerun()
+        tab_login, tab_register = st.tabs(["🔑 Sign In to Workspace", "📝 Register New Account"])
+        
+        with tab_login:
+            st.caption("Enter your enterprise credentials to unlock your workspace:")
+            with st.form("main_login_form"):
+                in_user = st.text_input("Username:", placeholder="e.g. manager, analyst, admin", key="f_user")
+                in_pass = st.text_input("Password:", type="password", placeholder="Enter your password", key="f_pass")
+                btn_login = st.form_submit_button("🔓 Sign In to Workspace", use_container_width=True, type="primary")
+                
+                if btn_login:
+                    if in_user and in_pass:
+                        auth_res = authenticate_user(in_user, in_pass)
+                        if auth_res:
+                            st.session_state['authenticated'] = True
+                            st.session_state['user_info'] = auth_res
+                            st.session_state['active_view_role'] = auth_res['role']
+                            st.session_state['last_logged_in_user'] = auth_res['username']
+                            st.success(f"Welcome back, {auth_res['full_name']}! Loading {auth_res['role']} workspace...")
+                            st.rerun()
+                        else:
+                            st.error("Authentication failed. Invalid username or password.")
                     else:
-                        st.error("Authentication failed. Invalid username or password.")
-                else:
-                    st.warning("Please enter both username and password.")
+                        st.warning("Please enter both username and password.")
+
+        with tab_register:
+            st.caption("Create a new enterprise account to access the intelligence platform:")
+            with st.form("main_register_form"):
+                reg_fname = st.text_input("Full Name:", placeholder="e.g. Priya Sharma", key="reg_fname")
+                reg_user = st.text_input("Choose Username:", placeholder="e.g. priya_analyst", key="reg_user")
+                reg_pass = st.text_input("Choose Password:", type="password", placeholder="Enter secure password (min 4 chars)", key="reg_pass")
+                reg_role = st.selectbox(
+                    "Primary Role:",
+                    [
+                        "BI Analyst",
+                        "Business Manager",
+                        "Marketing & CRM Specialist"
+                    ],
+                    key="reg_role",
+                    help="Select your operational department to receive role-tailored modules."
+                )
+                btn_register = st.form_submit_button("✨ Register Account", use_container_width=True, type="primary")
+                
+                if btn_register:
+                    if not reg_fname or not reg_user or not reg_pass:
+                        st.warning("Please fill in all fields (Full Name, Username, and Password).")
+                    elif len(reg_user.strip()) < 3:
+                        st.warning("Username must be at least 3 characters.")
+                    elif len(reg_pass) < 4:
+                        st.warning("Password must be at least 4 characters.")
+                    else:
+                        success, msg = create_new_user(
+                            username=reg_user,
+                            password=reg_pass,
+                            role=reg_role,
+                            full_name=reg_fname,
+                            custom_modules=None,
+                            performed_by="Self-Registration"
+                        )
+                        if success:
+                            st.success("🎉 Account created successfully! Automatically logging you in...")
+                            new_auth = authenticate_user(reg_user.strip().lower(), reg_pass)
+                            if new_auth:
+                                st.session_state['authenticated'] = True
+                                st.session_state['user_info'] = new_auth
+                                st.session_state['active_view_role'] = new_auth['role']
+                                st.session_state['last_logged_in_user'] = new_auth['username']
+                                st.rerun()
+                        else:
+                            st.error(msg)
 
     st.stop()
 
@@ -766,7 +817,14 @@ full_name = user_info.get('full_name', 'Authorized User')
 username = user_info.get('username', 'user')
 view_role = st.session_state.get('active_view_role', active_role)
 
-permitted_modules = ROLE_MODULES.get(view_role, ROLE_MODULES.get(active_role, ROLE_MODULES["Administrator"]))
+# Resolve Permitted Modules: Custom Module Grants Override Default Role Presets
+user_custom_mods = user_info.get('custom_modules')
+if user_custom_mods and isinstance(user_custom_mods, list) and len(user_custom_mods) > 0:
+    permitted_modules = [m for m in user_custom_mods if m in CORE_ANALYTIC_MODULES]
+    if (active_role == "Administrator" or username == "admin") and "🛡️ User Management & Audit Logs" not in permitted_modules:
+        permitted_modules.append("🛡️ User Management & Audit Logs")
+else:
+    permitted_modules = ROLE_MODULES.get(view_role, ROLE_MODULES.get(active_role, ROLE_MODULES["Administrator"]))
 
 # Subtle Enterprise Workspace Status Bar with Sign Out
 col_stat_left, col_stat_right = st.columns([84, 16])
@@ -776,12 +834,12 @@ with col_stat_left:
         <span style="font-size: 0.80rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Active Persona:</span>
         <span style="background: #EFF6FF; color: #1D4ED8; font-weight: 700; font-size: 0.85rem; padding: 3px 10px; border-radius: 6px; border: 1px solid #BFDBFE;">{view_role} Workspace</span>
         <span style="color: #64748B; font-size: 0.85rem;">| Signed in as <strong>{full_name}</strong> (<code>@{username}</code>)</span>
-        <span style="background: #F0FDF4; color: #166534; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 6px;">🔒 PBKDF2 Active</span>
-        <span style="color: #059669; font-size: 0.82rem; font-weight: 700; background: #ECFDF5; padding: 3px 10px; border-radius: 6px; border: 1px solid #A7F3D0;">● {len(permitted_modules)} Modules</span>
     </div>
     """, unsafe_allow_html=True)
 with col_stat_right:
     if st.button("🚪 Sign Out", key="top_signout_btn", use_container_width=True):
+        if username and username != 'user':
+            log_activity(username, full_name, active_role, 'LOGOUT', 'User initiated secure sign out')
         st.session_state['authenticated'] = False
         st.session_state['user_info'] = {}
         st.session_state['active_view_role'] = 'Administrator'
@@ -972,153 +1030,6 @@ if "🔍 Data Quality & EDA" in tab_map:
                 st.plotly_chart(fig_box, use_container_width=True)
             else:
                 st.info("Product category or profit attributes not present in current selection.")
-
-        st.markdown("---")
-        st.markdown("#### 3. Dual Ingestion Architecture: Structured vs. Unstructured Processing")
-        st.markdown("""
-        <div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #CBD5E1; padding: 20px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 5px solid #2563EB; border-radius: 8px; padding: 16px;">
-                    <h5 style="margin: 0 0 8px 0; color: #1E40AF; font-size: 1rem;">📊 1. Structured Data Stream</h5>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Data Sources:</strong> Tabular transaction logs (6,000 orders), customer profile cohorts (5,630 accounts), time-series sequences, SQLite relational tables.</p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Key Attributes:</strong> <code>Total_Amount</code>, <code>Unit_Price</code>, <code>Discount_Percent</code>, <code>Tenure</code>, <code>OrderCount</code>, <code>WarehouseToHome</code>, <code>CashbackAmount</code>.</p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Processing Methods:</strong> Median/mode missing-value imputation, IQR anomaly clipping, Z-score scaling, SMOTE balance sampling.</p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Active ML Engines:</strong> Random Forest Churn Classifier (92.27% Acc), Chronos-Bolt Demand Forecaster, Isolation Forest, K-Means Clustering, ROP/EOQ Inventory Math.</p>
-                </div>
-                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 5px solid #7C3AED; border-radius: 8px; padding: 16px;">
-                    <h5 style="margin: 0 0 8px 0; color: #6D28D9; font-size: 1rem;">💬 2. Unstructured Data Stream</h5>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Data Sources:</strong> Free-text customer feedback (<code>Review_Text</code>), support complaints, and conversational business queries.</p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Example Payloads:</strong> <em>"Delivery took too long, customer service was unhelpful."</em>, <em>"Excellent product, exceeded expectations!"</em></p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Processing Methods:</strong> Lexicon tokenization, polarity scoring, aspect keyword extraction, conversational intent parsing.</p>
-                    <p style="margin: 4px 0; font-size: 0.88rem; color: #334155;"><strong>Active NLP Engines:</strong> Aspect-Based Sentiment Analysis (Product Quality, Logistics, Support, Price, Packaging), Complaint Keyword Miner, Natural Language Assistant.</p>
-                </div>
-            </div>
-            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 18px; margin-top: 14px; font-size: 0.90rem; color: #1E3A8A;">
-                🔗 <strong>Multimodal Data Fusion:</strong> The platform cross-references unstructured review sentiment with structured sales metrics in the <strong>Root-Cause Diagnosis</strong> and <strong>Unified Decision Engine</strong> to explain <em>why</em> KPIs shift (e.g., correlating customer complaint spikes with regional churn spikes and inventory stockout risks).
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("---")
-        st.markdown("#### 4. Unstructured Text Data Exploratory Analysis (Text EDA) & Visualization")
-        st.caption("Deep-dive exploratory data analysis on raw, non-tabular customer review documents — analyzing document length dynamics, vocabulary richness, top n-grams, and aspect distributions:")
-        
-        text_eda = extract_text_eda_summary(scored_trans if 'Review_Text' in scored_trans.columns else active_trans)
-        
-        if text_eda.get('has_text', False):
-            # 5 Key Metrics for Unstructured Text EDA
-            u1, u2, u3, u4, u5 = st.columns(5)
-            with u1:
-                st.metric("Raw Text Documents", f"{text_eda['total_docs']:,}", "Customer Reviews")
-            with u2:
-                st.metric("Total Words Ingested", f"{text_eda['total_words']:,}", "NLP Word Tokens")
-            with u3:
-                st.metric("Distinct Vocabulary", f"{text_eda['vocab_size']:,}", "Unique Lemmatized Words")
-            with u4:
-                st.metric("Lexical Richness", f"{text_eda['lexical_diversity']:.1f}%", "Vocab / Total Words")
-            with u5:
-                st.metric("Avg Review Length", f"{text_eda['avg_words']:.0f} words", f"~{text_eda['avg_chars']:.0f} Characters")
-
-            # Row 1: Document Length Distribution & Sentiment Polarity vs Rating Boxplot
-            st.markdown("<br>", unsafe_allow_html=True)
-            col_u1, col_u2 = st.columns(2)
-            
-            with col_u1:
-                st.markdown("##### 📏 Review Length Distribution by Sentiment")
-                fig_len = px.histogram(
-                    text_eda['length_df'], x='Word_Count', color='Sentiment',
-                    barmode='overlay', nbins=25,
-                    title="Word Count Distribution (Dissatisfied vs Satisfied Customers)",
-                    color_discrete_map={'Positive': '#10B981', 'Neutral': '#64748B', 'Negative': '#EF4444'},
-                    labels={'Word_Count': 'Number of Words in Review', 'count': 'Frequency'}
-                )
-                fig_len.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=320)
-                st.plotly_chart(fig_len, use_container_width=True)
-                st.caption("💡 **Text EDA Finding:** Negative complaints are on average 40% longer as dissatisfied customers detail specific pain points.")
-
-            with col_u2:
-                st.markdown("##### ⭐ Review Sentiment vs Star Rating Alignment")
-                fig_pol = px.box(
-                    text_eda['length_df'], x='Rating', y='Polarity', color='Rating',
-                    title="Review Sentiment Spread Across Discrete Star Ratings",
-                    color_discrete_sequence=px.colors.sequential.Tealgrn,
-                    labels={'Rating': 'Star Rating (1 to 5)', 'Polarity': 'Sentiment Score (-1 to +1)'}
-                )
-                fig_pol.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=320)
-                st.plotly_chart(fig_pol, use_container_width=True)
-                st.caption("💡 **Validation Finding:** Strong monotonic correlation between unstructured text review sentiment and explicit numerical ratings.")
-
-            # Row 2: N-Gram Frequency Analytics (Unigrams & Bigrams)
-            st.markdown("---")
-            col_u3, col_u4 = st.columns(2)
-            with col_u3:
-                st.markdown("##### 🔤 Top 10 Most Frequent Keywords (Unigrams)")
-                fig_uni = px.bar(
-                    text_eda['top_unigrams'].head(10), x='Frequency', y='Keyword',
-                    orientation='h', color='Sentiment Category',
-                    title="High-Frequency Unigrams (Stopwords Removed)",
-                    color_discrete_map={'Positive': '#10B981', 'Negative': '#EF4444', 'Neutral': '#3B82F6'}
-                )
-                fig_uni.update_layout(yaxis=dict(autorange="reversed"), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=320)
-                st.plotly_chart(fig_uni, use_container_width=True)
-
-            with col_u4:
-                st.markdown("##### 🔗 Top 10 Two-Word Phrases (Bigrams)")
-                fig_bi = px.bar(
-                    text_eda['top_bigrams'].head(10), x='Frequency', y='Phrase',
-                    orientation='h', color='Frequency', color_continuous_scale='Purples',
-                    title="Key Two-Word Collocations (Bigrams)"
-                )
-                fig_bi.update_layout(yaxis=dict(autorange="reversed"), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=320)
-                st.plotly_chart(fig_bi, use_container_width=True)
-
-            # Row 3: Aspect-Based Categorization & Interactive Corpus Filter
-            st.markdown("---")
-            col_u5, col_u6 = st.columns(2)
-            with col_u5:
-                st.markdown("##### 🎯 Operational Aspect Sentiment Breakdown")
-                aspect_res = analyze_aspect_based_sentiment(scored_trans if 'Review_Text' in scored_trans.columns else active_trans)
-                asp_df = aspect_res.get('aspect_breakdown', pd.DataFrame())
-                if not asp_df.empty:
-                    fig_asp = px.bar(
-                        asp_df, x='Aspect Dimension', y=['Positive Sentiment (%)', 'Negative Sentiment (%)', 'Neutral Sentiment (%)'],
-                        barmode='stack', title="Customer Feedback Sentiment Across Operational Touchpoints",
-                        color_discrete_map={'Positive Sentiment (%)': '#10B981', 'Negative Sentiment (%)': '#EF4444', 'Neutral Sentiment (%)': '#94A3B8'}
-                    )
-                    fig_asp.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#0F172A'), height=300)
-                    st.plotly_chart(fig_asp, use_container_width=True)
-                else:
-                    st.info("No aspect breakdown available.")
-
-            with col_u6:
-                st.markdown("##### ☁️ Interactive Vocabulary Frequency Cloud")
-                cloud_html = "<div style='background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); min-height: 250px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center;'>"
-                for item in text_eda['word_cloud_items']:
-                    w = item['word']
-                    c = item['count']
-                    sz = item['size_px']
-                    cat = item['category']
-                    if cat == 'Positive':
-                        bg, col, brd = '#ECFDF5', '#047857', '#A7F3D0'
-                    elif cat == 'Negative':
-                        bg, col, brd = '#FEF2F2', '#B91C1C', '#FECACA'
-                    else:
-                        bg, col, brd = '#F8FAFC', '#334155', '#CBD5E1'
-                    cloud_html += f"<span style='background: {bg}; color: {col}; border: 1px solid {brd}; border-radius: 14px; padding: 4px 10px; font-size: {sz}px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;'>{w} <small style='font-size: 0.65em; opacity: 0.7;'>({c})</small></span>"
-                cloud_html += "</div>"
-                st.markdown(cloud_html, unsafe_allow_html=True)
-                
-                # Live Interactive Text Search Explorer
-                st.markdown("<br>", unsafe_allow_html=True)
-                txt_search = st.text_input("🔍 Filter & Inspect Reviews by Keyword:", placeholder="e.g. delivery, broken, quality, support", key="txt_eda_search")
-                if txt_search:
-                    matched = text_eda['length_df'][text_eda['length_df']['Review_Text'].str.contains(txt_search, case=False, na=False)]
-                    st.caption(f"Found **{len(matched)}** reviews containing '`{txt_search}`':")
-                    st.dataframe(matched[['Review_Text', 'Rating', 'Sentiment', 'Word_Count']].head(5), use_container_width=True, hide_index=True)
-                else:
-                    st.dataframe(text_eda['length_df'][['Review_Text', 'Rating', 'Sentiment', 'Word_Count']].head(4), use_container_width=True, hide_index=True)
-        else:
-            st.info("ℹ️ No unstructured text column (`Review_Text`) detected in active tabular batch.")
 
 
 # =========================================================================
@@ -2197,5 +2108,227 @@ if "📑 Export Report" in tab_map:
         with rep_tab3:
             st.markdown("##### Copy-Ready Executive Briefing Memo")
             st.code(md_summary, language="markdown")
+
+# =========================================================================
+# SECTION 16: USER MANAGEMENT & SECURITY AUDIT LOGS (ADMIN ONLY)
+# =========================================================================
+if "🛡️ User Management & Audit Logs" in tab_map:
+    with tab_map["🛡️ User Management & Audit Logs"]:
+        st.markdown("### 🛡️ Enterprise User Management & Security Audit Center")
+        st.caption("Centralized user administration, granular role-based module provisioning, and real-time login/logout audit trail.")
+        
+        # Admin KPI Ribbon
+        all_users = list_users()
+        audit_trail = get_audit_logs(limit=250)
+        login_events_count = sum(1 for log in audit_trail if log['Action'] == 'LOGIN')
+        logout_events_count = sum(1 for log in audit_trail if log['Action'] == 'LOGOUT')
+        
+        kpi_u1, kpi_u2, kpi_u3, kpi_u4 = st.columns(4)
+        with kpi_u1:
+            st.metric("Total Active Users", len(all_users))
+        with kpi_u2:
+            st.metric("Recorded Logins", login_events_count)
+        with kpi_u3:
+            st.metric("Recorded Logouts", logout_events_count)
+        with kpi_u4:
+            st.metric("Cryptographic Security", "PBKDF2-HMAC-SHA256")
+        
+        st.markdown("---")
+        
+        # 3 Sub-tabs for administration
+        adm_tab1, adm_tab2, adm_tab3 = st.tabs([
+            "👥 User Directory & Access Management",
+            "➕ Add New User & Provision Modules",
+            "📜 Real-Time Login & Logout Audit Trail"
+        ])
+        
+        # SUB-TAB 1: USER DIRECTORY & REMOVE USER & EDIT MODULES
+        with adm_tab1:
+            st.markdown("##### 👥 Registered Enterprise Accounts")
+            st.caption("Manage existing accounts, review assigned modules, update access, or delete users.")
+            
+            for u in all_users:
+                u_uname = u["Username"]
+                u_fname = u["Full_Name"]
+                u_role = u["Role"]
+                u_login = u["Last_Login"]
+                u_custom = u["Custom_Modules"]
+                u_created = u["Registered_At"]
+                
+                with st.container():
+                    c_info, c_mods_info, c_actions = st.columns([4, 5, 3])
+                    with c_info:
+                        st.markdown(f"**{u_fname}** (`@{u_uname}`)")
+                        st.caption(f"Role: **{u_role}** | Last Login: `{u_login}` | Created: `{u_created}`")
+                    with c_mods_info:
+                        if u_custom:
+                            st.markdown(f"<span style='background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:4px;font-size:0.78rem;font-weight:600;'>{len(u_custom)} Custom Modules</span>", unsafe_allow_html=True)
+                            st.caption(", ".join(u_custom[:3]) + ("..." if len(u_custom) > 3 else ""))
+                        else:
+                            def_count = len(ROLE_MODULES.get(u_role, []))
+                            st.markdown(f"<span style='background:#F1F5F9;color:#475569;padding:2px 8px;border-radius:4px;font-size:0.78rem;font-weight:600;'>Default Role Modules ({def_count})</span>", unsafe_allow_html=True)
+                            st.caption(f"Standard preset for {u_role}")
+                    with c_actions:
+                        if u_uname != 'admin':
+                            del_confirm = st.checkbox(f"Confirm Delete @{u_uname}", key=f"del_chk_{u_uname}")
+                            if del_confirm:
+                                if st.button(f"🗑️ Delete User @{u_uname}", key=f"del_btn_{u_uname}", type="primary"):
+                                    del_ok, del_msg = delete_user(u_uname, performed_by=username)
+                                    if del_ok:
+                                        st.success(del_msg)
+                                        st.rerun()
+                                    else:
+                                        st.error(del_msg)
+                        else:
+                            st.info("Primary Admin (Protected)")
+                    
+                    # Module Permission Editor Expander
+                    with st.expander(f"⚙️ Edit Module Permissions for @{u_uname}"):
+                        current_assigned = u_custom if u_custom is not None else ROLE_MODULES.get(u_role, CORE_ANALYTIC_MODULES)
+                        selected_user_mods = st.multiselect(
+                            f"Assigned Modules for @{u_uname}:",
+                            options=CORE_ANALYTIC_MODULES,
+                            default=[m for m in current_assigned if m in CORE_ANALYTIC_MODULES],
+                            key=f"edit_mods_{u_uname}"
+                        )
+                        btn_save_mods = st.button(f"💾 Save Permissions for @{u_uname}", key=f"save_mod_{u_uname}")
+                        if btn_save_mods:
+                            up_ok, up_msg = update_user_modules(u_uname, selected_user_mods, performed_by=username)
+                            if up_ok:
+                                st.success(up_msg)
+                                st.rerun()
+                            else:
+                                st.error(up_msg)
+                    st.markdown("<hr style='margin: 8px 0; border-color: #E2E8F0;'>", unsafe_allow_html=True)
+
+        # SUB-TAB 2: ADD NEW USER WITH CUSTOM MODULES
+        with adm_tab2:
+            st.markdown("##### ➕ Provision New Enterprise User Account")
+            st.caption("Create a new team member with PBKDF2 cryptographic hashing and assign tailored modules.")
+            
+            with st.form("create_user_form"):
+                new_col1, new_col2 = st.columns(2)
+                with new_col1:
+                    new_uname = st.text_input("New Username:", placeholder="e.g. priya_analyst, ramesh_mgr", help="Unique username for login (lowercase, no spaces).")
+                    new_pass = st.text_input("Password:", type="password", placeholder="Enter secure password (min 4 chars)")
+                with new_col2:
+                    new_fname = st.text_input("Full Name:", placeholder="e.g. Priya Sharma", help="Display name shown across the workspace.")
+                    new_role = st.selectbox(
+                        "Primary Business Role:",
+                        [
+                            "BI Analyst",
+                            "Business Manager",
+                            "Marketing & CRM Specialist",
+                            "Administrator"
+                        ],
+                        help="Determines the base persona and default access profile."
+                    )
+                
+                st.markdown("###### 🧩 Select Permitted Modules for this User:")
+                st.caption("Check or uncheck the specific analytics and decision modules this user can access:")
+                
+                # Default selection based on role
+                default_for_new_role = [m for m in ROLE_MODULES.get(new_role, CORE_ANALYTIC_MODULES) if m in CORE_ANALYTIC_MODULES]
+                
+                assigned_modules = st.multiselect(
+                    "Granted Modules:",
+                    options=CORE_ANALYTIC_MODULES,
+                    default=default_for_new_role,
+                    key="new_user_modules_sel",
+                    help="You can add or remove any module to create a tailored workspace for this user."
+                )
+                
+                btn_create = st.form_submit_button("🚀 Create User & Grant Module Access", use_container_width=True, type="primary")
+                if btn_create:
+                    if not new_uname or not new_pass or not new_fname:
+                        st.warning("Please fill in Username, Password, and Full Name.")
+                    elif len(assigned_modules) == 0:
+                        st.warning("Please assign at least 1 module to the user.")
+                    else:
+                        c_ok, c_msg = create_new_user(
+                            username=new_uname,
+                            password=new_pass,
+                            role=new_role,
+                            full_name=new_fname,
+                            custom_modules=assigned_modules,
+                            performed_by=username
+                        )
+                        if c_ok:
+                            st.success(c_msg)
+                            st.rerun()
+                        else:
+                            st.error(c_msg)
+        
+        # SUB-TAB 3: REAL-TIME AUDIT LOGS (LOGIN / LOGOUT TRACKING)
+        with adm_tab3:
+            st.markdown("##### 📜 Real-Time Security & Session Audit Trail")
+            st.caption("Track user login, logout, account creation, deletion, and permission updates.")
+            
+            c_filter1, c_filter2, c_filter3 = st.columns([3, 4, 3])
+            with c_filter1:
+                action_filter = st.selectbox("Filter by Action:", ["All Actions", "LOGIN", "LOGOUT", "USER_CREATED", "USER_DELETED", "PERMISSIONS_UPDATED"])
+            with c_filter2:
+                search_user = st.text_input("Search Username:", placeholder="e.g. admin, analyst")
+            with c_filter3:
+                st.write("")
+                st.write("")
+                if st.button("🔄 Refresh Audit Logs", use_container_width=True):
+                    st.rerun()
+            
+            # Filter audit records
+            filtered_logs = audit_trail
+            if action_filter != "All Actions":
+                filtered_logs = [l for l in filtered_logs if l["Action"] == action_filter]
+            if search_user:
+                filtered_logs = [l for l in filtered_logs if search_user.lower() in l["Username"].lower()]
+                
+            if filtered_logs:
+                log_df = pd.DataFrame(filtered_logs)
+                
+                # Badge Action icons for clean interactive visualization
+                action_icons = {
+                    "LOGIN": "🟢 LOGIN",
+                    "LOGOUT": "🔴 LOGOUT",
+                    "USER_CREATED": "🔵 USER_CREATED",
+                    "USER_DELETED": "🟠 USER_DELETED",
+                    "PERMISSIONS_UPDATED": "🟣 PERMISSIONS_UPDATED"
+                }
+                
+                audit_display = log_df[['Timestamp', 'Username', 'Full_Name', 'Role', 'Action', 'Details']].copy()
+                audit_display['Security Event'] = audit_display['Action'].map(lambda a: action_icons.get(a, f"⚪ {a}"))
+                audit_display['Account'] = audit_display['Username'].apply(lambda u: f"@{u}")
+                
+                table_to_show = audit_display[['Timestamp', 'Account', 'Full_Name', 'Role', 'Security Event', 'Details']].rename(
+                    columns={
+                        'Full_Name': 'Full Name',
+                        'Role': 'Assigned Role',
+                        'Details': 'Event Details'
+                    }
+                )
+                
+                st.dataframe(
+                    table_to_show,
+                    use_container_width=True,
+                    hide_index=True,
+                    column_config={
+                        "Timestamp": st.column_config.TextColumn("Timestamp", width="medium"),
+                        "Account": st.column_config.TextColumn("User Account", width="small"),
+                        "Full Name": st.column_config.TextColumn("Full Name", width="medium"),
+                        "Assigned Role": st.column_config.TextColumn("Assigned Role", width="medium"),
+                        "Security Event": st.column_config.TextColumn("Security Event", width="small"),
+                        "Event Details": st.column_config.TextColumn("Event Details", width="large")
+                    }
+                )
+                
+                # CSV Export for compliance
+                csv_bytes = log_df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    "📥 Export Audit Logs to CSV",
+                    data=csv_bytes,
+                    file_name=f"Security_Audit_Logs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    mime="text/csv"
+                )
+            else:
+                st.info("No audit log records match the selected filter.")
 st.markdown("<hr style='margin-top: 36px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
 st.caption("MasterMind AI: AI-Powered E-Commerce Business Intelligence & Predictive Analytics Platform | Production Release v2.4")
