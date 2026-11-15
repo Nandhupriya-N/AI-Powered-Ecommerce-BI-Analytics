@@ -273,8 +273,26 @@ def run_all_tests():
         assert 'answer' in ans and len(ans['answer']) > 10, f"Query '{q}' returned invalid answer"
         print(f"  -> Prompt: '{q}' -> Answer generated: {len(ans['answer'])} chars - SUCCESS")
 
+    # -------------------------------------------------------------
+    # TEST 7: USER MANAGEMENT, CUSTOM MODULE PROVISIONING & AUDIT LOGS
+    # -------------------------------------------------------------
+    print("\n[TEST 7] Testing Dynamic User Management, Module Provisioning & Audit Trail...")
+    from src.auth_db import create_new_user, delete_user, get_audit_logs, log_activity
+    c_ok, c_msg = create_new_user("test_analyst", "pwd1234", "BI Analyst", "Test Analyst", ["📊 Executive BI KPIs", "🔍 Data Quality & EDA"])
+    assert c_ok, f"Failed to create test user: {c_msg}"
+    auth_test = authenticate_user("test_analyst", "pwd1234")
+    assert auth_test is not None, "Failed to authenticate newly created user"
+    assert auth_test['custom_modules'] == ["📊 Executive BI KPIs", "🔍 Data Quality & EDA"], "Custom modules mismatch"
+    log_activity("test_analyst", "Test Analyst", "BI Analyst", "LOGOUT", "Test logout")
+    logs = get_audit_logs(limit=10)
+    assert any(l['Username'] == 'test_analyst' and l['Action'] == 'LOGIN' for l in logs), "LOGIN not logged in audit trail"
+    assert any(l['Username'] == 'test_analyst' and l['Action'] == 'LOGOUT' for l in logs), "LOGOUT not logged in audit trail"
+    d_ok, d_msg = delete_user("test_analyst")
+    assert d_ok, f"Failed to delete test user: {d_msg}"
+    print("  -> User creation, custom module provisioning, login/logout audit, and deletion - SUCCESS")
+
     print("\n" + "=" * 70)
-    print("ALL 6 TEST PHASES PASSED WITH ZERO ERRORS!")
+    print("ALL 7 TEST PHASES PASSED WITH ZERO ERRORS!")
     print("ALL 7 DATASET SCENARIOS VERIFIED ACROSS ALL ACTIVE MODULES.")
     print("=" * 70)
 if __name__ == '__main__':

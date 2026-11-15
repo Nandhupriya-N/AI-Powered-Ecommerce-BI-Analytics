@@ -37,6 +37,24 @@ def get_base64_logo():
 
 LOGO_B64 = get_base64_logo()
 
+def get_base64_login_bg():
+    bg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'login_bg.jpg')
+    if os.path.exists(bg_path):
+        with open(bg_path, 'rb') as f:
+            return base64.b64encode(f.read()).decode('utf-8')
+    return ""
+
+LOGIN_BG_B64 = get_base64_login_bg()
+
+def get_base64_workspace_bg():
+    bg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'workspace_bg.jpg')
+    if os.path.exists(bg_path):
+        with open(bg_path, 'rb') as f:
+            return base64.b64encode(f.read()).decode('utf-8')
+    return ""
+
+WORKSPACE_BG_B64 = get_base64_workspace_bg()
+
 # Append directory to sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import importlib
@@ -159,12 +177,20 @@ if 'authenticated' not in st.session_state:
     st.session_state['active_view_role'] = 'Administrator'
     st.session_state['last_logged_in_user'] = None
 
+# Custom Enterprise Workspace Background (High-Performance Base64 Injection)
+st.markdown(f"""
+<style>
+    .stApp {{
+        background: linear-gradient(rgba(255, 255, 255, 0.65), rgba(248, 250, 252, 0.75)),
+                    url("data:image/jpeg;base64,{WORKSPACE_BG_B64}") center center / cover no-repeat fixed !important;
+    }}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <style>
-    /* Full Page Business Background Image with Executive Light Overlay */
+    /* Full Page Business Background Base Styling */
     .stApp {
-        background: linear-gradient(rgba(248, 250, 252, 0.90), rgba(241, 245, 249, 0.94)),
-                    url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80') center/cover fixed;
         color: #0F172A;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -498,17 +524,28 @@ def get_nl_assistant():
 # PAGE 1: PRIMARY USER LOGIN PORTAL (FIRST PAGE BEFORE WORKSPACE)
 # =========================================================================
 if not st.session_state.get('authenticated', False):
-    # Hide sidebar completely on Page 1 (Login Page) for true standalone login experience
-    st.markdown("""
+    # Hide sidebar completely on Page 1 (Login Page) and apply custom e-commerce background
+    st.markdown(f"""
     <style>
-        [data-testid="stSidebar"] {
+        [data-testid="stSidebar"] {{
             display: none !important;
-        }
-        .main .block-container {
+        }}
+        .stApp {{
+            background: url("data:image/jpeg;base64,{LOGIN_BG_B64}") center center / cover no-repeat fixed !important;
+        }}
+        .main .block-container {{
             max-width: 860px !important;
-            padding-top: 2.2rem !important;
+            padding-top: 1.8rem !important;
             padding-bottom: 3.5rem !important;
-        }
+        }}
+        div[data-testid="stForm"] {{
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(10px) !important;
+            border-radius: 16px !important;
+            padding: 24px 28px !important;
+            border: 1px solid rgba(226, 232, 240, 0.9) !important;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08) !important;
+        }}
     </style>
     """, unsafe_allow_html=True)
     
