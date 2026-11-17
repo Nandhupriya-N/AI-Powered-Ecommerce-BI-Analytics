@@ -1966,29 +1966,38 @@ if "💬 Natural-Language Assistant" in tab_map:
         st.markdown("##### 💡 Example Quick Prompts:")
         ex_cols = st.columns(5)
         with ex_cols[0]:
-            if st.button("What is our overall churn rate?", use_container_width=True):
-                st.session_state['nl_prompt'] = "What is our overall churn rate?"
+            if st.button("Root cause of Beauty sales?", use_container_width=True):
+                st.session_state['nl_prompt'] = "what is the root cause for low sales of beauty"
+                st.rerun()
         with ex_cols[1]:
             if st.button("Which product has lowest sales?", use_container_width=True):
                 st.session_state['nl_prompt'] = "which product has lowest sales?"
+                st.rerun()
         with ex_cols[2]:
+            if st.button("What is our overall churn rate?", use_container_width=True):
+                st.session_state['nl_prompt'] = "What is our overall churn rate?"
+                st.rerun()
+        with ex_cols[3]:
             if st.button("Show me top customers by CLV", use_container_width=True):
                 st.session_state['nl_prompt'] = "Show me top customers by CLV"
-        with ex_cols[3]:
+                st.rerun()
+        with ex_cols[4]:
             if st.button("Which items are at risk of stockout?", use_container_width=True):
                 st.session_state['nl_prompt'] = "Which items are at risk of stockout?"
-        with ex_cols[4]:
-            if st.button("What is the sales demand forecast?", use_container_width=True):
-                st.session_state['nl_prompt'] = "What is the sales demand forecast?"    
+                st.rerun()
 
-        col_in, col_opt = st.columns([3, 1])
-        with col_opt:
-            st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
-            auto_voice = st.checkbox("🎙️ Auto-Read Voice", value=False, help="Automatically play spoken executive voice narration when responses are generated.")
-            
+        if 'nl_prompt' not in st.session_state:
+            st.session_state['nl_prompt'] = "what is the root cause for low sales of beauty"
+
+        col_in, col_btn, col_opt = st.columns([6, 2, 2])
         with col_in:
-            default_p = st.session_state.get('nl_prompt', "which product has lowest sales?")
-            query_input = st.text_input("Enter your business query:", value=default_p)
+            query_input = st.text_input("Enter your business query:", value=st.session_state['nl_prompt'], key="query_input_box")
+        with col_btn:
+            st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
+            submit_btn = st.button("🔍 Run Analysis", use_container_width=True, type="primary")
+        with col_opt:
+            st.markdown("<div style='padding-top: 33px;'></div>", unsafe_allow_html=True)
+            auto_voice = st.checkbox("🎙️ Auto-Read Voice", value=False, help="Automatically play spoken executive voice narration when responses are generated.")
 
         # Interactive Voice Dictation / Speech Recognition Component
         st.components.v1.html("""
@@ -2079,10 +2088,12 @@ if "💬 Natural-Language Assistant" in tab_map:
         }
         </script>
         """, height=48)
+
+        active_query = query_input.strip() if query_input else st.session_state.get('nl_prompt', '')
         
-        if query_input:
+        if active_query:
             ans_res = nl_assistant.answer_query(
-                query=query_input,
+                query=active_query,
                 scored_trans=scored_trans,
                 scored_cust=scored_cust,
                 clv_df=clv_df,
@@ -2092,6 +2103,9 @@ if "💬 Natural-Language Assistant" in tab_map:
             
             answer_text = ans_res.get('answer', '')
             clean_speech = clean_text_for_voice(answer_text)
+            
+            # Format markdown paragraphs cleanly for display
+            formatted_answer = answer_text.replace("\n", "<br>")
             
             st.markdown(f"""
             <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #2563EB; border-radius: 10px; padding: 20px; margin-top: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
@@ -2103,7 +2117,10 @@ if "💬 Natural-Language Assistant" in tab_map:
                         🎙️ Voice Assistant Ready
                     </span>
                 </div>
-                <p style="font-size: 1.05rem; color: #0F172A; line-height: 1.6; margin: 0 0 14px 0;">{answer_text}</p>
+                <div style="font-size: 0.88rem; color: #2563EB; font-weight: 600; margin-bottom: 14px; background: #F8FAFC; padding: 8px 14px; border-radius: 6px; border: 1px solid #E2E8F0;">
+                    🔍 Analyzing Query: <span style="color: #0F172A; font-weight: 700;">"{active_query}"</span>
+                </div>
+                <div style="font-size: 1.03rem; color: #0F172A; line-height: 1.7; margin: 0 0 14px 0;">{formatted_answer}</div>
                 <div style="font-size: 0.85rem; color: #64748B;">
                     <strong>Domain:</strong> <code>{ans_res.get('category', 'General')}</code> | 
                     <strong>Confidence:</strong> <code>{ans_res.get('confidence', 'High')}</code>
