@@ -1960,52 +1960,128 @@ if "🛒 Product Affinity & Bundles" in tab_map:
 
 if "💬 Natural-Language Assistant" in tab_map:
     with tab_map["💬 Natural-Language Assistant"]:
-        st.markdown("### 💬 Executive Natural-Language Business Assistant & Voice AI")
-        st.caption("Ask questions about revenue, product performance, customer churn, lifetime value, inventory stockout risks, and demand forecasts in plain English or use the interactive Voice Assistant.")
+        # Enterprise Header Card
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border: 1px solid #E2E8F0; border-radius: 14px; padding: 22px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                    <span style="font-size: 1.6rem;">💬</span>
+                    <h3 style="margin: 0; color: #0F172A; font-weight: 800; font-size: 1.45rem; letter-spacing: -0.02em;">Executive AI Conversational Copilot</h3>
+                    <span style="background: #EEF2FF; color: #4338CA; font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; border: 1px solid #C7D2FE; text-transform: uppercase; letter-spacing: 0.05em;">Voice AI 2.0</span>
+                </div>
+                <p style="margin: 0; color: #64748B; font-size: 0.92rem;">Ask anything across financial KPIs, category root-causes, customer churn, stockout risks, or ML viva algorithms in plain English.</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <span style="background: #F0FDF4; color: #166534; font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; border: 1px solid #BBF7D0; display: flex; align-items: center; gap: 6px;">
+                    <span style="display: inline-block; width: 7px; height: 7px; background: #22C55E; border-radius: 50%;"></span>
+                    Deterministic Engine Active
+                </span>
+                <span style="background: #EFF6FF; color: #1D4ED8; font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; border: 1px solid #BFDBFE;">
+                    🎙️ Voice Dictation Ready
+                </span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.markdown("##### 💡 Example Quick Prompts:")
-        ex_cols = st.columns(5)
-        with ex_cols[0]:
-            if st.button("Root cause of Beauty sales?", use_container_width=True):
+        # Featured Quick Inquiries (Top 4 Pills)
+        st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 0 0 8px 2px;'>⚡ Featured Quick Inquiries:</p>", unsafe_allow_html=True)
+        top_pill_cols = st.columns(4)
+        with top_pill_cols[0]:
+            if st.button("📈 Root cause of electronic sales", key="pill_elec", use_container_width=True):
+                st.session_state['nl_prompt'] = "root cause of electronic sales"
+                st.rerun()
+        with top_pill_cols[1]:
+            if st.button("🔍 Why low sales of Beauty?", key="pill_beauty", use_container_width=True):
                 st.session_state['nl_prompt'] = "what is the root cause for low sales of beauty"
                 st.rerun()
-        with ex_cols[1]:
-            if st.button("Which product has lowest sales?", use_container_width=True):
-                st.session_state['nl_prompt'] = "which product has lowest sales?"
+        with top_pill_cols[2]:
+            if st.button("💎 What is our overall churn rate?", key="pill_churn", use_container_width=True):
+                st.session_state['nl_prompt'] = "what is our overall churn rate?"
                 st.rerun()
-        with ex_cols[2]:
-            if st.button("What is our overall churn rate?", use_container_width=True):
-                st.session_state['nl_prompt'] = "What is our overall churn rate?"
-                st.rerun()
-        with ex_cols[3]:
-            if st.button("Show me top customers by CLV", use_container_width=True):
-                st.session_state['nl_prompt'] = "Show me top customers by CLV"
-                st.rerun()
-        with ex_cols[4]:
-            if st.button("Which items are at risk of stockout?", use_container_width=True):
+        with top_pill_cols[3]:
+            if st.button("📦 Which items at stockout risk?", key="pill_stock", use_container_width=True):
                 st.session_state['nl_prompt'] = "Which items are at risk of stockout?"
                 st.rerun()
 
-        if 'nl_prompt' not in st.session_state:
-            st.session_state['nl_prompt'] = "what is the root cause for low sales of beauty"
+        # Categorized Deep-Dive Query Explorer
+        with st.expander("💡 Explore Full Catalog of Curated Executive Inquiries by Domain", expanded=False):
+            c1, c2, c3, c4 = st.columns(4)
+            with c1:
+                st.markdown("<strong style='color: #1E3A8A;'>📈 Sales & Categories</strong>", unsafe_allow_html=True)
+                if st.button("Which product has lowest sales?", use_container_width=True, key="qp_low"):
+                    st.session_state['nl_prompt'] = "which product has lowest sales?"
+                    st.rerun()
+                if st.button("Top revenue category?", use_container_width=True, key="qp_top"):
+                    st.session_state['nl_prompt'] = "which product has highest sales?"
+                    st.rerun()
+                if st.button("Average Order Value (AOV)?", use_container_width=True, key="qp_aov"):
+                    st.session_state['nl_prompt'] = "What is the average order value?"
+                    st.rerun()
+            with c2:
+                st.markdown("<strong style='color: #1E3A8A;'>💎 Customers & Churn</strong>", unsafe_allow_html=True)
+                if st.button("Why are customers churning?", use_container_width=True, key="qp_why_churn"):
+                    st.session_state['nl_prompt'] = "why are customers churning?"
+                    st.rerun()
+                if st.button("Show top customers by CLV", use_container_width=True, key="qp_clv"):
+                    st.session_state['nl_prompt'] = "Show me top customers by CLV"
+                    st.rerun()
+                if st.button("Total customer count?", use_container_width=True, key="qp_cust"):
+                    st.session_state['nl_prompt'] = "How many customers do we have?"
+                    st.rerun()
+            with c3:
+                st.markdown("<strong style='color: #1E3A8A;'>📦 Supply & Growth</strong>", unsafe_allow_html=True)
+                if st.button("What is the sales forecast?", use_container_width=True, key="qp_fc"):
+                    st.session_state['nl_prompt'] = "What is the sales demand forecast?"
+                    st.rerun()
+                if st.button("How can we increase profit?", use_container_width=True, key="qp_prof"):
+                    st.session_state['nl_prompt'] = "How can we increase our profit?"
+                    st.rerun()
+                if st.button("How many total orders?", use_container_width=True, key="qp_orders"):
+                    st.session_state['nl_prompt'] = "How many total orders have been placed?"
+                    st.rerun()
+            with c4:
+                st.markdown("<strong style='color: #1E3A8A;'>🧠 ML & Viva Defense</strong>", unsafe_allow_html=True)
+                if st.button("Why RF over Deep Learning?", use_container_width=True, key="qp_rf"):
+                    st.session_state['nl_prompt'] = "Why did you choose Random Forest over Deep Learning?"
+                    st.rerun()
+                if st.button("How does SMOTE work?", use_container_width=True, key="qp_smote"):
+                    st.session_state['nl_prompt'] = "What is SMOTE and how does it handle class imbalance?"
+                    st.rerun()
+                if st.button("Explain PBKDF2 encryption", use_container_width=True, key="qp_pbkdf"):
+                    st.session_state['nl_prompt'] = "How does PBKDF2 password encryption work?"
+                    st.rerun()
 
+        st.markdown("<div style='margin-top: 14px;'></div>", unsafe_allow_html=True)
+
+        if 'nl_prompt' not in st.session_state:
+            st.session_state['nl_prompt'] = "root cause of electronic sales"
+
+        # Search Bar & Execution Controls
         col_in, col_btn, col_opt = st.columns([6, 2, 2])
         with col_in:
-            query_input = st.text_input("Enter your business query:", value=st.session_state['nl_prompt'], key="query_input_box")
+            query_input = st.text_input(
+                "Enter your business query:",
+                value=st.session_state['nl_prompt'],
+                key="query_input_box",
+                placeholder="Ask any question e.g. root cause of electronic sales, churn rate, stockout risk..."
+            )
         with col_btn:
             st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
-            submit_btn = st.button("🔍 Run Analysis", use_container_width=True, type="primary")
+            submit_btn = st.button("🚀 Analyze Query", use_container_width=True, type="primary")
         with col_opt:
             st.markdown("<div style='padding-top: 33px;'></div>", unsafe_allow_html=True)
             auto_voice = st.checkbox("🎙️ Auto-Read Voice", value=False, help="Automatically play spoken executive voice narration when responses are generated.")
 
         # Interactive Voice Dictation / Speech Recognition Component
         st.components.v1.html("""
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
-            <button id="micBtn" onclick="toggleVoiceDictation()" style="background: #FFFFFF; border: 1.5px solid #2563EB; color: #2563EB; padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.1); transition: all 0.2s ease;">
-                <span id="micIcon" style="font-size: 1.05rem;">🎙️</span> <span id="micText">Speak Query (Voice Mic)</span>
-            </button>
-            <span id="micStatus" style="font-size: 0.84rem; color: #64748B;">Click microphone to speak hands-free</span>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 8px 16px; margin-bottom: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button id="micBtn" onclick="toggleVoiceDictation()" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #2563EB; color: #1D4ED8; padding: 6px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.12); transition: all 0.2s ease;">
+                    <span id="micIcon" style="font-size: 1.05rem;">🎙️</span> <span id="micText">Speak Query (Voice Mic)</span>
+                </button>
+                <span id="micStatus" style="font-size: 0.84rem; color: #64748B;">Click microphone to speak hands-free</span>
+            </div>
+            <span style="font-size: 0.78rem; color: #94A3B8; font-weight: 500;">Web Speech API Active</span>
         </div>
         <script>
         var recognition = null;
@@ -2067,7 +2143,7 @@ if "💬 Natural-Language Assistant" in tab_map:
             
             recognition.onerror = function(event) {
                 isListening = false;
-                if (btn) { btn.style.background = '#FFFFFF'; btn.style.borderColor = '#2563EB'; btn.style.color = '#2563EB'; }
+                if (btn) { btn.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)'; btn.style.borderColor = '#2563EB'; btn.style.color = '#1D4ED8'; }
                 if (icon) icon.innerText = '🎙️';
                 if (text) text.innerText = 'Speak Query (Voice Mic)';
                 if (statusEl) statusEl.innerText = 'Microphone status: ' + event.error;
@@ -2075,7 +2151,7 @@ if "💬 Natural-Language Assistant" in tab_map:
             
             recognition.onend = function() {
                 isListening = false;
-                if (btn) { btn.style.background = '#FFFFFF'; btn.style.borderColor = '#2563EB'; btn.style.color = '#2563EB'; }
+                if (btn) { btn.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)'; btn.style.borderColor = '#2563EB'; btn.style.color = '#1D4ED8'; }
                 if (icon) icon.innerText = '🎙️';
                 if (text) text.innerText = 'Speak Query (Voice Mic)';
             };
@@ -2087,7 +2163,7 @@ if "💬 Natural-Language Assistant" in tab_map:
             }
         }
         </script>
-        """, height=48)
+        """, height=52)
 
         active_query = query_input.strip() if query_input else st.session_state.get('nl_prompt', '')
         
@@ -2107,53 +2183,72 @@ if "💬 Natural-Language Assistant" in tab_map:
             # Format markdown paragraphs cleanly for display
             formatted_answer = answer_text.replace("\n", "<br>")
             
+            # Executive Response Card
             st.markdown(f"""
-            <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #2563EB; border-radius: 10px; padding: 20px; margin-top: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <h4 style="margin: 0; color: #1E3A8A; display: flex; align-items: center; gap: 8px;">
-                        <span>🤖 Assistant Response</span>
-                    </h4>
-                    <span style="background: #EFF6FF; color: #2563EB; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 12px; border: 1px solid #BFDBFE;">
-                        🎙️ Voice Assistant Ready
-                    </span>
+            <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #2563EB; border-radius: 12px; padding: 24px 28px; margin-top: 18px; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #F1F5F9; padding-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem;">🤖</span>
+                        <h4 style="margin: 0; color: #1E3A8A; font-weight: 800; font-size: 1.15rem;">MasterMind Executive Decision Memo</h4>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                        <span style="background: #EEF2FF; color: #3730A3; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 14px; border: 1px solid #C7D2FE;">
+                            🏷️ {ans_res.get('category', 'General')}
+                        </span>
+                        <span style="background: #ECFDF5; color: #065F46; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 14px; border: 1px solid #A7F3D0;">
+                            🛡️ {ans_res.get('confidence', 'High')}
+                        </span>
+                    </div>
                 </div>
-                <div style="font-size: 0.88rem; color: #2563EB; font-weight: 600; margin-bottom: 14px; background: #F8FAFC; padding: 8px 14px; border-radius: 6px; border: 1px solid #E2E8F0;">
-                    🔍 Analyzing Query: <span style="color: #0F172A; font-weight: 700;">"{active_query}"</span>
+                <div style="font-size: 0.90rem; color: #2563EB; font-weight: 700; margin-bottom: 16px; background: #F8FAFC; padding: 10px 16px; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; align-items: center; gap: 8px;">
+                    <span>🔍</span> <span>Analyzed Inquiry:</span> <span style="color: #0F172A; font-weight: 800;">"{active_query}"</span>
                 </div>
-                <div style="font-size: 1.03rem; color: #0F172A; line-height: 1.7; margin: 0 0 14px 0;">{formatted_answer}</div>
-                <div style="font-size: 0.85rem; color: #64748B;">
-                    <strong>Domain:</strong> <code>{ans_res.get('category', 'General')}</code> | 
-                    <strong>Confidence:</strong> <code>{ans_res.get('confidence', 'High')}</code>
+                <div style="font-size: 1.05rem; color: #1E293B; line-height: 1.75; margin: 0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                    {formatted_answer}
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
-            # Voice Audio Player & Interactive Speech Controls
+            # Supporting Data Display (if available)
+            sup_data = ans_res.get('supporting_data')
+            if isinstance(sup_data, pd.DataFrame) and not sup_data.empty:
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 16px 0 6px 0;'>📊 Supporting Deterministic Data Evidence:</p>", unsafe_allow_html=True)
+                st.dataframe(sup_data, use_container_width=True, hide_index=True)
+            
+            # Polished Voice Narration Panel
             voice_bytes = generate_voice_bytes(clean_speech)
+            
+            st.markdown("""
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px 20px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2rem;">🔊</span>
+                    <strong style="font-size: 0.92rem; color: #1E3A8A;">Voice Narration & Audio Controls:</strong>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             
             voice_col1, voice_col2 = st.columns([2, 1])
             with voice_col1:
-                st.markdown("<p style='font-size: 0.88rem; font-weight: 600; color: #1E3A8A; margin: 12px 0 4px 0;'>🔊 Executive Voice Assistant Narration:</p>", unsafe_allow_html=True)
                 if voice_bytes:
                     st.audio(voice_bytes, format="audio/mp3", autoplay=auto_voice)
                 else:
-                    st.caption("Voice audio generated via local speech synthesizer.")
+                    st.caption("Voice audio synthesis available via local engine.")
             
             with voice_col2:
                 # Browser Native SpeechSynthesis with Live Audio Feedback
                 clean_json = json.dumps(clean_speech)
                 auto_js = "true" if auto_voice else "false"
                 st.components.v1.html(f"""
-                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding-top: 14px;">
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding-top: 6px;">
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <button id="ttsBtn" onclick="speakResponse()" style="background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%); color: #FFFFFF; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
+                        <button id="ttsBtn" onclick="speakResponse()" style="background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%); color: #FFFFFF; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
                             <span id="ttsIcon">🔊</span> <span id="ttsText">Read Aloud</span>
                         </button>
-                        <button id="stopBtn" onclick="stopSpeech()" style="background: #F8FAFC; color: #64748B; border: 1px solid #CBD5E1; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+                        <button id="stopBtn" onclick="stopSpeech()" style="background: #FFFFFF; color: #475569; border: 1.5px solid #CBD5E1; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
                             ⏹️ Stop
                         </button>
                     </div>
-                    <div id="ttsStatus" style="font-size: 0.80rem; color: #2563EB; margin-top: 6px; font-weight: 500;"></div>
+                    <div id="ttsStatus" style="font-size: 0.80rem; color: #2563EB; margin-top: 6px; font-weight: 600;"></div>
                 </div>
                 <script>
                 var textToSpeak = {clean_json};
@@ -2180,7 +2275,7 @@ if "💬 Natural-Language Assistant" in tab_map:
                         var stat = document.getElementById('ttsStatus');
                         if (txt) txt.innerText = 'Speaking...';
                         if (icon) icon.innerText = '🔊🎶';
-                        if (stat) stat.innerText = '● Voice speaking';
+                        if (stat) stat.innerText = '● Voice narration active';
                     }};
                     
                     u.onend = function() {{
@@ -2220,19 +2315,25 @@ if "💬 Natural-Language Assistant" in tab_map:
                     setTimeout(speakResponse, 400);
                 }}
                 </script>
-                """, height=70)
+                """, height=65)
             
+            # Key Related Metrics
             if ans_res.get('key_metrics'):
-                st.markdown("##### Key Related Metrics:")
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 18px 0 6px 0;'>📊 Key Contextual Metrics:</p>", unsafe_allow_html=True)
                 km_cols = st.columns(len(ans_res['key_metrics']))
                 for idx, (k, v) in enumerate(ans_res['key_metrics'].items()):
                     with km_cols[idx]:
                         st.metric(k, str(v))
                         
+            # Clickable Follow-Up Suggestions
             if ans_res.get('suggested_followups'):
-                st.markdown("##### Suggested Follow-Up Questions:")
-                for fq in ans_res['suggested_followups']:
-                    st.caption(f"• {fq}")
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 18px 0 8px 0;'>💡 Recommended Follow-Up Investigations:</p>", unsafe_allow_html=True)
+                fq_cols = st.columns(len(ans_res['suggested_followups']))
+                for idx, fq in enumerate(ans_res['suggested_followups']):
+                    with fq_cols[idx]:
+                        if st.button(f"🔍 {fq}", key=f"fq_btn_{idx}", use_container_width=True):
+                            st.session_state['nl_prompt'] = fq
+                            st.rerun()
 
 
 # =========================================================================
