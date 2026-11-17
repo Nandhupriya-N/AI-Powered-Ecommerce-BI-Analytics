@@ -1962,24 +1962,12 @@ if "💬 Natural-Language Assistant" in tab_map:
     with tab_map["💬 Natural-Language Assistant"]:
         # Enterprise Header Card
         st.markdown("""
-        <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border: 1px solid #E2E8F0; border-radius: 14px; padding: 22px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-                    <span style="font-size: 1.6rem;">💬</span>
-                    <h3 style="margin: 0; color: #0F172A; font-weight: 800; font-size: 1.45rem; letter-spacing: -0.02em;">Executive AI Conversational Copilot</h3>
-                    <span style="background: #EEF2FF; color: #4338CA; font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; border: 1px solid #C7D2FE; text-transform: uppercase; letter-spacing: 0.05em;">Voice AI 2.0</span>
-                </div>
-                <p style="margin: 0; color: #64748B; font-size: 0.92rem;">Ask anything across financial KPIs, category root-causes, customer churn, stockout risks, or ML viva algorithms in plain English.</p>
+        <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px 26px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span style="font-size: 1.6rem;">💬</span>
+                <h3 style="margin: 0; color: #0F172A; font-weight: 800; font-size: 1.45rem; letter-spacing: -0.02em;">Executive AI Conversational Copilot</h3>
             </div>
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <span style="background: #F0FDF4; color: #166534; font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; border: 1px solid #BBF7D0; display: flex; align-items: center; gap: 6px;">
-                    <span style="display: inline-block; width: 7px; height: 7px; background: #22C55E; border-radius: 50%;"></span>
-                    Deterministic Engine Active
-                </span>
-                <span style="background: #EFF6FF; color: #1D4ED8; font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; border: 1px solid #BFDBFE;">
-                    🎙️ Voice Dictation Ready
-                </span>
-            </div>
+            <p style="margin: 0; color: #64748B; font-size: 0.92rem;">Ask anything across financial KPIs, category root-causes, customer churn, stockout risks, or ML viva algorithms in plain English.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -2074,14 +2062,13 @@ if "💬 Natural-Language Assistant" in tab_map:
 
         # Interactive Voice Dictation / Speech Recognition Component
         st.components.v1.html("""
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 8px 16px; margin-bottom: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 8px 16px; margin-bottom: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <button id="micBtn" onclick="toggleVoiceDictation()" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #2563EB; color: #1D4ED8; padding: 6px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.12); transition: all 0.2s ease;">
                     <span id="micIcon" style="font-size: 1.05rem;">🎙️</span> <span id="micText">Speak Query (Voice Mic)</span>
                 </button>
                 <span id="micStatus" style="font-size: 0.84rem; color: #64748B;">Click microphone to speak hands-free</span>
             </div>
-            <span style="font-size: 0.78rem; color: #94A3B8; font-weight: 500;">Web Speech API Active</span>
         </div>
         <script>
         var recognition = null;
@@ -2195,9 +2182,6 @@ if "💬 Natural-Language Assistant" in tab_map:
                         <span style="background: #EEF2FF; color: #3730A3; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 14px; border: 1px solid #C7D2FE;">
                             🏷️ {ans_res.get('category', 'General')}
                         </span>
-                        <span style="background: #ECFDF5; color: #065F46; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 14px; border: 1px solid #A7F3D0;">
-                            🛡️ {ans_res.get('confidence', 'High')}
-                        </span>
                     </div>
                 </div>
                 <div style="font-size: 0.90rem; color: #2563EB; font-weight: 700; margin-bottom: 16px; background: #F8FAFC; padding: 10px 16px; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; align-items: center; gap: 8px;">
@@ -2212,7 +2196,7 @@ if "💬 Natural-Language Assistant" in tab_map:
             # Supporting Data Display (if available)
             sup_data = ans_res.get('supporting_data')
             if isinstance(sup_data, pd.DataFrame) and not sup_data.empty:
-                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 16px 0 6px 0;'>📊 Supporting Deterministic Data Evidence:</p>", unsafe_allow_html=True)
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 16px 0 6px 0;'>📊 Supporting Data Table:</p>", unsafe_allow_html=True)
                 st.dataframe(sup_data, use_container_width=True, hide_index=True)
             
             # Polished Voice Narration Panel

@@ -89,7 +89,7 @@ class NaturalLanguageBusinessAssistant:
         return {
             'answer': res.get('answer', 'Query executed successfully.'),
             'category': res.get('intent', 'General Analytics').replace('_', ' ').title(),
-            'confidence': 'High (Deterministic SQL/Aggregation)',
+            'confidence': 'High',
             'key_metrics': key_metrics,
             'suggested_followups': followups,
             'supporting_data': res.get('supporting_data', None)
