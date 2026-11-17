@@ -18,6 +18,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st
+try:
+    import speech_recognition as sr
+except ImportError:
+    sr = None
 
 import base64
 
@@ -1960,6 +1964,16 @@ if "🛒 Product Affinity & Bundles" in tab_map:
 
 if "💬 Natural-Language Assistant" in tab_map:
     with tab_map["💬 Natural-Language Assistant"]:
+        # Handle query parameter from voice dictation if present
+        if "vquery" in st.query_params and st.query_params["vquery"]:
+            v_val = str(st.query_params["vquery"]).strip()
+            if v_val:
+                st.session_state['nl_prompt'] = v_val
+            try:
+                del st.query_params["vquery"]
+            except Exception:
+                pass
+
         # Enterprise Header Card
         st.markdown("""
         <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px 26px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);">
@@ -2062,17 +2076,108 @@ if "💬 Natural-Language Assistant" in tab_map:
 
         # Interactive Voice Dictation / Speech Recognition Component
         st.components.v1.html("""
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 8px 16px; margin-bottom: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <button id="micBtn" onclick="toggleVoiceDictation()" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #2563EB; color: #1D4ED8; padding: 6px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.12); transition: all 0.2s ease;">
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 10px 16px; margin-bottom: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+            <div style="display: flex; align-items: center; gap: 14px; width: 100%;">
+                <button id="micBtn" type="button" onclick="toggleVoiceDictation()" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #2563EB; color: #1D4ED8; padding: 7px 18px; border-radius: 8px; font-weight: 700; font-size: 0.86rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.12); transition: all 0.2s ease; white-space: nowrap;">
                     <span id="micIcon" style="font-size: 1.05rem;">🎙️</span> <span id="micText">Speak Query (Voice Mic)</span>
                 </button>
-                <span id="micStatus" style="font-size: 0.84rem; color: #64748B;">Click microphone to speak hands-free</span>
+                <div id="micStatus" style="font-size: 0.85rem; color: #64748B; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    Click microphone to speak your question hands-free
+                </div>
             </div>
         </div>
         <script>
         var recognition = null;
         var isListening = false;
+        var recognizedText = "";
+        var silenceTimeout = null;
+
+        function updateInputAndSubmit(text) {
+            if (!text || !text.trim()) return;
+            var cleanText = text.trim();
+            
+            try {
+                var doc = window.parent.document;
+                var inputs = doc.querySelectorAll('input');
+                var targetInput = null;
+                for (var i = 0; i < inputs.length; i++) {
+                    var aria = inputs[i].getAttribute('aria-label') || '';
+                    var ph = inputs[i].getAttribute('placeholder') || '';
+                    if (aria.toLowerCase().includes('business query') || ph.toLowerCase().includes('ask any question') || ph.toLowerCase().includes('root cause')) {
+                        targetInput = inputs[i];
+                        break;
+                    }
+                }
+                if (!targetInput) {
+                    targetInput = doc.querySelector('div[data-testid="stTextInput"] input');
+                }
+                
+                if (targetInput) {
+                    // Update React 18 state via prototype descriptor
+                    var nativeSetter = Object.getOwnPropertyDescriptor(window.parent.HTMLInputElement.prototype, 'value');
+                    if (nativeSetter && nativeSetter.set) {
+                        nativeSetter.set.call(targetInput, cleanText);
+                    } else {
+                        targetInput.value = cleanText;
+                    }
+                    targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    targetInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    
+                    // Dispatch Enter key
+                    targetInput.focus();
+                    var enterEvt = new KeyboardEvent('keydown', {
+                        key: 'Enter',
+                        code: 'Enter',
+                        keyCode: 13,
+                        which: 13,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    targetInput.dispatchEvent(enterEvt);
+                    targetInput.blur();
+                    
+                    // Click Analyze Query button
+                    setTimeout(function() {
+                        var buttons = doc.querySelectorAll('button');
+                        for (var b = 0; b < buttons.length; b++) {
+                            var btxt = (buttons[b].innerText || buttons[b].textContent || '').trim();
+                            if (btxt.includes('Analyze Query') || btxt.includes('Analyze')) {
+                                buttons[b].click();
+                                break;
+                            }
+                        }
+                    }, 180);
+                    return;
+                }
+            } catch(e) {
+                console.warn('DOM input update failed, falling back to URL search param:', e);
+            }
+            
+            // Reliable fallback via URL search param
+            try {
+                var url = new URL(window.parent.location.href);
+                url.searchParams.set('vquery', cleanText);
+                window.parent.location.href = url.href;
+            } catch(e2) {
+                console.error('URL fallback failed:', e2);
+            }
+        }
+
+        function resetMicUI() {
+            isListening = false;
+            if (silenceTimeout) { clearTimeout(silenceTimeout); silenceTimeout = null; }
+            var btn = document.getElementById('micBtn');
+            var icon = document.getElementById('micIcon');
+            var text = document.getElementById('micText');
+            if (btn) {
+                btn.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)';
+                btn.style.borderColor = '#2563EB';
+                btn.style.color = '#1D4ED8';
+            }
+            if (icon) icon.innerText = '🎙️';
+            if (text) text.innerText = 'Speak Query (Voice Mic)';
+        }
+
         function toggleVoiceDictation() {
             var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
             var statusEl = document.getElementById('micStatus');
@@ -2081,76 +2186,154 @@ if "💬 Natural-Language Assistant" in tab_map:
             var text = document.getElementById('micText');
             
             if (!SpeechRec) {
-                if (statusEl) statusEl.innerHTML = '<span style="color: #D97706;">Microphone speech recognition is not supported in this browser. Please type query above.</span>';
+                if (statusEl) statusEl.innerHTML = '<span style="color: #D97706; font-weight: 600;">Speech recognition is not supported in this browser. Please type or record below.</span>';
                 return;
             }
             
-            if (isListening && recognition) {
-                recognition.stop();
+            // If already listening, finish and submit
+            if (isListening) {
+                if (silenceTimeout) clearTimeout(silenceTimeout);
+                if (recognition) {
+                    try { recognition.stop(); } catch(e) {}
+                }
+                if (recognizedText && recognizedText.trim().length > 0) {
+                    if (statusEl) statusEl.innerHTML = '<strong style="color: #059669;">✅ Analyzing query: "' + recognizedText + '"...</strong>';
+                    updateInputAndSubmit(recognizedText);
+                } else {
+                    if (statusEl) statusEl.innerText = 'Click microphone to speak your question hands-free';
+                }
+                resetMicUI();
                 return;
             }
             
-            recognition = new SpeechRec();
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-            
-            recognition.onstart = function() {
-                isListening = true;
-                if (btn) { btn.style.background = '#FEF2F2'; btn.style.borderColor = '#DC2626'; btn.style.color = '#DC2626'; }
-                if (icon) icon.innerText = '🔴';
-                if (text) text.innerText = 'Listening...';
-                if (statusEl) statusEl.innerHTML = '<strong style="color: #DC2626;">Listening... Speak your business question now</strong>';
-            };
-            
-            recognition.onresult = function(event) {
-                var transcript = event.results[0][0].transcript;
-                if (statusEl) statusEl.innerHTML = '<span style="color: #059669; font-weight: 600;">Transcribed: "' + transcript + '"</span>';
-                
-                var doc = window.parent.document;
-                var inputs = doc.querySelectorAll('input');
-                var targetInput = null;
-                for (var i = 0; i < inputs.length; i++) {
-                    if (inputs[i].getAttribute('aria-label') === 'Enter your business query:' || 
-                        (inputs[i].placeholder && inputs[i].placeholder.toLowerCase().includes('query'))) {
-                        targetInput = inputs[i];
-                        break;
-                    }
-                }
-                if (!targetInput) {
-                    targetInput = doc.querySelector('div[data-testid="stTextInput"] input');
-                }
-                if (targetInput) {
-                    targetInput.value = transcript;
-                    targetInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    targetInput.dispatchEvent(new Event('change', { bubbles: true }));
-                    targetInput.focus();
-                }
-            };
-            
-            recognition.onerror = function(event) {
-                isListening = false;
-                if (btn) { btn.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)'; btn.style.borderColor = '#2563EB'; btn.style.color = '#1D4ED8'; }
-                if (icon) icon.innerText = '🎙️';
-                if (text) text.innerText = 'Speak Query (Voice Mic)';
-                if (statusEl) statusEl.innerText = 'Microphone status: ' + event.error;
-            };
-            
-            recognition.onend = function() {
-                isListening = false;
-                if (btn) { btn.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)'; btn.style.borderColor = '#2563EB'; btn.style.color = '#1D4ED8'; }
-                if (icon) icon.innerText = '🎙️';
-                if (text) text.innerText = 'Speak Query (Voice Mic)';
-            };
-            
+            // Start fresh recognition
+            recognizedText = "";
             try {
+                if (recognition) {
+                    try { recognition.abort(); } catch(e) {}
+                    recognition = null;
+                }
+                recognition = new SpeechRec();
+                recognition.lang = window.navigator.language || 'en-US';
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.maxAlternatives = 1;
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    if (btn) {
+                        btn.style.background = '#FEF2F2';
+                        btn.style.borderColor = '#DC2626';
+                        btn.style.color = '#DC2626';
+                    }
+                    if (icon) icon.innerText = '🔴';
+                    if (text) text.innerText = 'Listening... (Click to finish)';
+                    if (statusEl) statusEl.innerHTML = '<strong style="color: #DC2626;">Listening... Speak your business question now</strong>';
+                };
+                
+                recognition.onresult = function(event) {
+                    var currentTranscript = "";
+                    for (var i = 0; i < event.results.length; ++i) {
+                        currentTranscript += event.results[i][0].transcript;
+                    }
+                    currentTranscript = currentTranscript.trim();
+                    if (currentTranscript.length > 0) {
+                        recognizedText = currentTranscript;
+                        if (statusEl) {
+                            statusEl.innerHTML = '<span style="color: #2563EB; font-weight: 600;">🎙️ Hearing: "' + currentTranscript + '"</span>';
+                        }
+                        
+                        // Live update input box as you speak!
+                        try {
+                            var doc = window.parent.document;
+                            var inputs = doc.querySelectorAll('input');
+                            for (var j = 0; j < inputs.length; j++) {
+                                var aria = inputs[j].getAttribute('aria-label') || '';
+                                if (aria.toLowerCase().includes('business query')) {
+                                    var setter = Object.getOwnPropertyDescriptor(window.parent.HTMLInputElement.prototype, 'value');
+                                    if (setter && setter.set) setter.set.call(inputs[j], currentTranscript);
+                                    else inputs[j].value = currentTranscript;
+                                    inputs[j].dispatchEvent(new Event('input', { bubbles: true }));
+                                    break;
+                                }
+                            }
+                        } catch(err) {}
+
+                        // Auto-submit after 1.6 seconds of silence
+                        if (silenceTimeout) clearTimeout(silenceTimeout);
+                        silenceTimeout = setTimeout(function() {
+                            if (isListening && recognizedText.trim().length > 0) {
+                                if (recognition) { try { recognition.stop(); } catch(e) {} }
+                                if (statusEl) statusEl.innerHTML = '<strong style="color: #059669;">✅ Analyzing query: "' + recognizedText + '"...</strong>';
+                                resetMicUI();
+                                updateInputAndSubmit(recognizedText);
+                            }
+                        }, 1600);
+                    }
+                };
+                
+                recognition.onerror = function(event) {
+                    console.warn('SpeechRecognition error:', event.error);
+                    if (event.error === 'no-speech') {
+                        if (statusEl && !recognizedText) {
+                            statusEl.innerHTML = '<span style="color: #D97706;">No speech detected. Click Speak Query and speak clearly.</span>';
+                        }
+                    } else if (event.error === 'not-allowed') {
+                        if (statusEl) {
+                            statusEl.innerHTML = '<span style="color: #DC2626; font-weight: 600;">⚠️ Microphone permission blocked. Allow microphone in browser address bar.</span>';
+                        }
+                    } else if (event.error === 'network') {
+                        if (statusEl) {
+                            statusEl.innerHTML = '<span style="color: #D97706;">Browser speech service unreachable. You can record audio using the recorder below.</span>';
+                        }
+                    } else {
+                        if (statusEl) {
+                            statusEl.innerText = 'Microphone status: ' + event.error;
+                        }
+                    }
+                    resetMicUI();
+                };
+                
+                recognition.onend = function() {
+                    if (isListening && recognizedText.trim().length > 0) {
+                        updateInputAndSubmit(recognizedText);
+                    }
+                    resetMicUI();
+                };
+                
                 recognition.start();
-            } catch(e) {
-                console.error(e);
+            } catch(err) {
+                console.error('Failed to start recognition:', err);
+                if (statusEl) statusEl.innerText = 'Error initializing microphone: ' + err.message;
+                resetMicUI();
             }
         }
         </script>
-        """, height=52)
+        """, height=56)
+
+        # Alternative Native Hardware Audio Recorder
+        with st.expander("🎙️ Or Record Audio Directly (Streamlit Audio Mic)", expanded=False):
+            st.caption("Alternative voice input: record your voice question using your device microphone.")
+            audio_record = st.audio_input("Record Question Audio", key="direct_voice_recorder")
+            if audio_record is not None:
+                record_id = getattr(audio_record, 'file_id', str(getattr(audio_record, 'size', '1')))
+                if st.session_state.get('last_processed_audio_id') != record_id:
+                    st.session_state['last_processed_audio_id'] = record_id
+                    if sr is not None:
+                        try:
+                            r = sr.Recognizer()
+                            with sr.AudioFile(audio_record) as source:
+                                audio_data = r.record(source)
+                            recognized_text = r.recognize_google(audio_data)
+                            if recognized_text:
+                                st.session_state['nl_prompt'] = recognized_text
+                                st.rerun()
+                        except sr.UnknownValueError:
+                            st.warning("Could not understand audio. Please speak clearly into your microphone.")
+                        except Exception as ex:
+                            st.error(f"Voice recognition error: {ex}")
+                    else:
+                        st.warning("SpeechRecognition library is initializing.")
 
         active_query = query_input.strip() if query_input else st.session_state.get('nl_prompt', '')
         
