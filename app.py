@@ -2173,16 +2173,9 @@ if "💬 Natural-Language Assistant" in tab_map:
             # Executive Response Card
             st.markdown(f"""
             <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #2563EB; border-radius: 12px; padding: 24px 28px; margin-top: 18px; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #F1F5F9; padding-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.4rem;">🤖</span>
-                        <h4 style="margin: 0; color: #1E3A8A; font-weight: 800; font-size: 1.15rem;">MasterMind Executive Decision Memo</h4>
-                    </div>
-                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                        <span style="background: #EEF2FF; color: #3730A3; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 14px; border: 1px solid #C7D2FE;">
-                            🏷️ {ans_res.get('category', 'General')}
-                        </span>
-                    </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; border-bottom: 1px solid #F1F5F9; padding-bottom: 12px;">
+                    <span style="font-size: 1.4rem;">💬</span>
+                    <h4 style="margin: 0; color: #1E3A8A; font-weight: 800; font-size: 1.15rem;">Executive Decision Memo</h4>
                 </div>
                 <div style="font-size: 0.90rem; color: #2563EB; font-weight: 700; margin-bottom: 16px; background: #F8FAFC; padding: 10px 16px; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; align-items: center; gap: 8px;">
                     <span>🔍</span> <span>Analyzed Inquiry:</span> <span style="color: #0F172A; font-weight: 800;">"{active_query}"</span>
@@ -2199,40 +2192,27 @@ if "💬 Natural-Language Assistant" in tab_map:
                 st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 16px 0 6px 0;'>📊 Supporting Data Table:</p>", unsafe_allow_html=True)
                 st.dataframe(sup_data, use_container_width=True, hide_index=True)
             
-            # Polished Voice Narration Panel
+            # Voice Audio Controls
             voice_bytes = generate_voice_bytes(clean_speech)
-            
-            st.markdown("""
-            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px 20px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 1.2rem;">🔊</span>
-                    <strong style="font-size: 0.92rem; color: #1E3A8A;">Voice Narration & Audio Controls:</strong>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            voice_col1, voice_col2 = st.columns([2, 1])
+            voice_col1, voice_col2 = st.columns([3, 1])
             with voice_col1:
                 if voice_bytes:
                     st.audio(voice_bytes, format="audio/mp3", autoplay=auto_voice)
-                else:
-                    st.caption("Voice audio synthesis available via local engine.")
             
             with voice_col2:
-                # Browser Native SpeechSynthesis with Live Audio Feedback
+                # Browser Native SpeechSynthesis
                 clean_json = json.dumps(clean_speech)
                 auto_js = "true" if auto_voice else "false"
                 st.components.v1.html(f"""
-                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding-top: 6px;">
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding-top: 4px;">
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <button id="ttsBtn" onclick="speakResponse()" style="background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%); color: #FFFFFF; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
+                        <button id="ttsBtn" onclick="speakResponse()" style="background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%); color: #FFFFFF; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
                             <span id="ttsIcon">🔊</span> <span id="ttsText">Read Aloud</span>
                         </button>
-                        <button id="stopBtn" onclick="stopSpeech()" style="background: #FFFFFF; color: #475569; border: 1.5px solid #CBD5E1; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                        <button id="stopBtn" onclick="stopSpeech()" style="background: #FFFFFF; color: #475569; border: 1.5px solid #CBD5E1; padding: 7px 14px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
                             ⏹️ Stop
                         </button>
                     </div>
-                    <div id="ttsStatus" style="font-size: 0.80rem; color: #2563EB; margin-top: 6px; font-weight: 600;"></div>
                 </div>
                 <script>
                 var textToSpeak = {clean_json};
@@ -2256,28 +2236,22 @@ if "💬 Natural-Language Assistant" in tab_map:
                     u.onstart = function() {{
                         var txt = document.getElementById('ttsText');
                         var icon = document.getElementById('ttsIcon');
-                        var stat = document.getElementById('ttsStatus');
                         if (txt) txt.innerText = 'Speaking...';
                         if (icon) icon.innerText = '🔊🎶';
-                        if (stat) stat.innerText = '● Voice narration active';
                     }};
                     
                     u.onend = function() {{
                         var txt = document.getElementById('ttsText');
                         var icon = document.getElementById('ttsIcon');
-                        var stat = document.getElementById('ttsStatus');
                         if (txt) txt.innerText = 'Read Aloud';
                         if (icon) icon.innerText = '🔊';
-                        if (stat) stat.innerText = '';
                     }};
                     
                     u.onerror = function() {{
                         var txt = document.getElementById('ttsText');
                         var icon = document.getElementById('ttsIcon');
-                        var stat = document.getElementById('ttsStatus');
                         if (txt) txt.innerText = 'Read Aloud';
                         if (icon) icon.innerText = '🔊';
-                        if (stat) stat.innerText = '';
                     }};
                     
                     window.speechSynthesis.speak(u);
@@ -2288,10 +2262,8 @@ if "💬 Natural-Language Assistant" in tab_map:
                         window.speechSynthesis.cancel();
                         var txt = document.getElementById('ttsText');
                         var icon = document.getElementById('ttsIcon');
-                        var stat = document.getElementById('ttsStatus');
                         if (txt) txt.innerText = 'Read Aloud';
                         if (icon) icon.innerText = '🔊';
-                        if (stat) stat.innerText = '';
                     }}
                 }}
                 
@@ -2299,19 +2271,11 @@ if "💬 Natural-Language Assistant" in tab_map:
                     setTimeout(speakResponse, 400);
                 }}
                 </script>
-                """, height=65)
+                """, height=50)
             
-            # Key Related Metrics
-            if ans_res.get('key_metrics'):
-                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 18px 0 6px 0;'>📊 Key Contextual Metrics:</p>", unsafe_allow_html=True)
-                km_cols = st.columns(len(ans_res['key_metrics']))
-                for idx, (k, v) in enumerate(ans_res['key_metrics'].items()):
-                    with km_cols[idx]:
-                        st.metric(k, str(v))
-                        
             # Clickable Follow-Up Suggestions
             if ans_res.get('suggested_followups'):
-                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 18px 0 8px 0;'>💡 Recommended Follow-Up Investigations:</p>", unsafe_allow_html=True)
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 700; color: #1E3A8A; margin: 18px 0 8px 0;'>Suggested Follow-Up Inquiries:</p>", unsafe_allow_html=True)
                 fq_cols = st.columns(len(ans_res['suggested_followups']))
                 for idx, fq in enumerate(ans_res['suggested_followups']):
                     with fq_cols[idx]:
