@@ -26,8 +26,8 @@ class NaturalLanguageBusinessAssistant:
         self.drift_suite = drift_suite
         # Whitelisted intents and query handlers
         self.intent_patterns = [
-            (r'(top|highest|best|leading|most)\s*(revenue|sales|selling)\s*(categor|product)', 'top_revenue_categories'),
-            (r'(lowest|worst|least)\s*(revenue|sales|selling)\s*(categor|product)', 'lowest_revenue_categories'),
+            (r'(?:lowest|worst|least|minimum|bottom)\s*(?:revenue|sales|selling)?\s*(?:categor|product|item)|(?:product|categor|item).*?(?:lowest|least|worst|bottom|minimum)\s*(?:sales|revenue|amount)|(?:lowest|worst|least|minimum|bottom)\s+(?:sales|revenue|selling|performing)', 'lowest_revenue_categories'),
+            (r'(?:top|highest|best|leading|most|maximum)\s*(?:revenue|sales|selling)?\s*(?:categor|product|item)|(?:product|categor|item).*?(?:top|highest|best|leading|most|maximum)\s*(?:sales|revenue|amount)|(?:highest|top|most)\s+(?:sales|revenue|selling|performing)', 'top_revenue_categories'),
             (r'(churn|attrition|retention|lost)\s*(risk|segment|tier)', 'churn_risk_by_segment'),
             (r'(highest|top|best|projected|future)\s*(clv|customer lifetime value|value)', 'clv_by_segment'),
             (r'(value at risk|retention priority|concierge)', 'clv_retention_risk'),
@@ -130,8 +130,14 @@ class NaturalLanguageBusinessAssistant:
                 break
                 
         if matched_intent is None:
-            # Fallback keyword scan
-            if 'categor' in q_clean or 'revenue' in q_clean or 'sales' in q_clean:
+            # Fallback keyword scan: lowest/least check MUST precede generic sales/revenue
+            if any(w in q_clean for w in ['lowest', 'least', 'worst', 'bottom', 'minimum']) and any(w in q_clean for w in ['categor', 'product', 'item', 'revenue', 'sales', 'selling', 'performing']):
+                matched_intent = 'lowest_revenue_categories'
+            elif any(w in q_clean for w in ['top', 'highest', 'best', 'leading', 'most', 'maximum']) and any(w in q_clean for w in ['categor', 'product', 'item', 'revenue', 'sales', 'selling', 'performing']):
+                matched_intent = 'top_revenue_categories'
+            elif any(w in q_clean for w in ['lowest', 'least', 'worst', 'bottom', 'minimum']):
+                matched_intent = 'lowest_revenue_categories'
+            elif 'categor' in q_clean or 'revenue' in q_clean or 'sales' in q_clean:
                 matched_intent = 'top_revenue_categories'
             elif 'churn' in q_clean:
                 matched_intent = 'churn_risk_by_segment'
@@ -422,28 +428,37 @@ class NaturalLanguageBusinessAssistant:
 
     def _handle_top_revenue_categories(self, question, ctx):
         trans_df = ctx.get('transactions', pd.DataFrame())
-        if trans_df.empty or 'Product_Category' not in trans_df.columns:
-            return self._missing_data_response("Transactions dataset with 'Product_Category' and 'Total_Amount' columns")
-            
-        cat_summary = trans_df.groupby('Product_Category').agg(
-            Total_Revenue=('Total_Amount', 'sum'),
-            Total_Orders=('Order_ID', 'count'),
-            Average_Order_Value=('Total_Amount', 'mean'),
-            Total_Profit=('Profit', 'sum')
-        ).reset_index().sort_values('Total_Revenue', ascending=False)
+        cat_col = next((c for c in ['Product_Category', 'Category', 'Product_Name', 'Item_Name', 'Sub_Category'] if c in trans_df.columns), None)
+        rev_col = next((c for c in ['Total_Amount', 'Amount', 'Sales', 'Price'] if c in trans_df.columns), None)
+        id_col = next((c for c in ['Order_ID', 'InvoiceNo', 'order_id', 'Transaction_ID'] if c in trans_df.columns), None)
         
-        top_cat = cat_summary.iloc[0]['Product_Category']
+        if trans_df.empty or cat_col is None or rev_col is None:
+            return self._missing_data_response("Transactions dataset with Category/Product and Sales/Total_Amount columns")
+            
+        agg_dict = {
+            'Total_Revenue': (rev_col, 'sum'),
+            'Total_Orders': (id_col if id_col else cat_col, 'count'),
+            'Average_Order_Value': (rev_col, 'mean')
+        }
+        if 'Profit' in trans_df.columns:
+            agg_dict['Total_Profit'] = ('Profit', 'sum')
+
+        cat_summary = trans_df.groupby(cat_col).agg(**agg_dict).reset_index().sort_values('Total_Revenue', ascending=False)
+        
+        top_cat = cat_summary.iloc[0][cat_col]
         top_rev = cat_summary.iloc[0]['Total_Revenue']
         tot_rev = cat_summary['Total_Revenue'].sum()
         top_share = (top_rev / max(1.0, tot_rev)) * 100
+        top_orders = cat_summary.iloc[0]['Total_Orders']
+        top_aov = cat_summary.iloc[0]['Average_Order_Value']
         
         ans = (
             f"**{top_cat}** is the highest revenue-generating category, delivering **${top_rev:,.2f}** "
             f"which represents **{top_share:.1f}%** of the entire enterprise revenue stream. "
-            f"It completed {cat_summary.iloc[0]['Total_Orders']:,} orders with an average ticket value of "
-            f"${cat_summary.iloc[0]['Average_Order_Value']:.2f}."
+            f"It completed {top_orders:,} orders with an average ticket value of "
+            f"${top_aov:,.2f}."
         )
-        method = "Aggregated sum of `Total_Amount` and count of `Order_ID` grouped by `Product_Category`."
+        method = f"Aggregated sum of `{rev_col}` and count of orders grouped by `{cat_col}`."
         
         return {
             'intent': 'top_revenue_categories',
@@ -451,37 +466,51 @@ class NaturalLanguageBusinessAssistant:
             'calculation_methodology': method,
             'supporting_data': cat_summary,
             'chart_type': 'bar',
-            'chart_x': 'Product_Category',
+            'chart_x': cat_col,
             'chart_y': 'Total_Revenue',
             'chart_title': 'Enterprise Revenue Contribution by Product Category ($)'
         }
 
     def _handle_lowest_revenue_categories(self, question, ctx):
         trans_df = ctx.get('transactions', pd.DataFrame())
-        if trans_df.empty:
-            return self._missing_data_response("Transactions dataset")
+        cat_col = next((c for c in ['Product_Category', 'Category', 'Product_Name', 'Item_Name', 'Sub_Category'] if c in trans_df.columns), None)
+        rev_col = next((c for c in ['Total_Amount', 'Amount', 'Sales', 'Price'] if c in trans_df.columns), None)
+        id_col = next((c for c in ['Order_ID', 'InvoiceNo', 'order_id', 'Transaction_ID'] if c in trans_df.columns), None)
+
+        if trans_df.empty or cat_col is None or rev_col is None:
+            return self._missing_data_response("Transactions dataset with Category/Product and Sales/Total_Amount columns")
             
-        cat_summary = trans_df.groupby('Product_Category').agg(
-            Total_Revenue=('Total_Amount', 'sum'),
-            Total_Orders=('Order_ID', 'count'),
-            Average_Order_Value=('Total_Amount', 'mean')
-        ).reset_index().sort_values('Total_Revenue', ascending=True)
+        agg_dict = {
+            'Total_Revenue': (rev_col, 'sum'),
+            'Total_Orders': (id_col if id_col else cat_col, 'count'),
+            'Average_Order_Value': (rev_col, 'mean')
+        }
+        if 'Profit' in trans_df.columns:
+            agg_dict['Total_Profit'] = ('Profit', 'sum')
+
+        cat_summary = trans_df.groupby(cat_col).agg(**agg_dict).reset_index().sort_values('Total_Revenue', ascending=True)
         
-        lowest_cat = cat_summary.iloc[0]['Product_Category']
+        lowest_cat = cat_summary.iloc[0][cat_col]
         lowest_rev = cat_summary.iloc[0]['Total_Revenue']
+        tot_rev = cat_summary['Total_Revenue'].sum()
+        lowest_share = (lowest_rev / max(1.0, tot_rev)) * 100
+        lowest_orders = cat_summary.iloc[0]['Total_Orders']
+        lowest_aov = cat_summary.iloc[0]['Average_Order_Value']
         
         ans = (
-            f"**{lowest_cat}** generated the lowest total revenue at **${lowest_rev:,.2f}** "
-            f"across {cat_summary.iloc[0]['Total_Orders']:,} orders. This reflects a low average order value "
-            f"(${cat_summary.iloc[0]['Average_Order_Value']:.2f}) rather than an absence of customer orders."
+            f"**{lowest_cat}** is the lowest sales-generating category, delivering **${lowest_rev:,.2f}** "
+            f"which represents **{lowest_share:.1f}%** of the entire enterprise revenue stream. "
+            f"It completed {lowest_orders:,} orders with an average ticket value of "
+            f"${lowest_aov:,.2f}."
         )
+        method = f"Ascending order of sum(`{rev_col}`) and count of orders grouped by `{cat_col}`."
         return {
             'intent': 'lowest_revenue_categories',
             'answer': ans,
-            'calculation_methodology': "Ascending order of sum(`Total_Amount`) by category.",
+            'calculation_methodology': method,
             'supporting_data': cat_summary,
             'chart_type': 'bar',
-            'chart_x': 'Product_Category',
+            'chart_x': cat_col,
             'chart_y': 'Total_Revenue',
             'chart_title': 'Categories by Revenue Volume ($)'
         }

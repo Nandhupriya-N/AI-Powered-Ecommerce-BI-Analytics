@@ -55,6 +55,33 @@ def get_base64_workspace_bg():
 
 WORKSPACE_BG_B64 = get_base64_workspace_bg()
 
+def clean_text_for_voice(text: str) -> str:
+    """Strips markdown formatting and normalizes currency/percentages for clear text-to-speech audio."""
+    if not text:
+        return ""
+    t = re.sub(r'[*_#`]', '', str(text))
+    t = re.sub(r'\$([0-9,]+(?:\.[0-9]+)?)', r'\1 dollars', t)
+    t = t.replace('%', ' percent')
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
+
+@st.cache_data(show_spinner=False)
+def generate_voice_bytes(speech_text: str) -> bytes:
+    """Generates MP3 audio for assistant speech narration using gTTS."""
+    try:
+        from gtts import gTTS
+        from io import BytesIO
+        clean = clean_text_for_voice(speech_text)
+        if not clean:
+            return b""
+        fp = BytesIO()
+        tts = gTTS(text=clean, lang='en', tld='co.uk', slow=False)
+        tts.write_to_fp(fp)
+        fp.seek(0)
+        return fp.read()
+    except Exception:
+        return b""
+
 # Append directory to sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import importlib
@@ -1932,25 +1959,125 @@ if "🛒 Product Affinity & Bundles" in tab_map:
 
 if "💬 Natural-Language Assistant" in tab_map:
     with tab_map["💬 Natural-Language Assistant"]:
-        st.markdown("### 💬 Executive Natural-Language Business Assistant")
-        st.caption("Ask questions about revenue, customer churn, lifetime value, inventory stockout risks, and demand forecasts in plain English.")
+        st.markdown("### 💬 Executive Natural-Language Business Assistant & Voice AI")
+        st.caption("Ask questions about revenue, product performance, customer churn, lifetime value, inventory stockout risks, and demand forecasts in plain English or use the interactive Voice Assistant.")
         
         st.markdown("##### 💡 Example Quick Prompts:")
-        ex_cols = st.columns(4)
+        ex_cols = st.columns(5)
         with ex_cols[0]:
             if st.button("What is our overall churn rate?", use_container_width=True):
                 st.session_state['nl_prompt'] = "What is our overall churn rate?"
         with ex_cols[1]:
+            if st.button("Which product has lowest sales?", use_container_width=True):
+                st.session_state['nl_prompt'] = "which product has lowest sales?"
+        with ex_cols[2]:
             if st.button("Show me top customers by CLV", use_container_width=True):
                 st.session_state['nl_prompt'] = "Show me top customers by CLV"
-        with ex_cols[2]:
+        with ex_cols[3]:
             if st.button("Which items are at risk of stockout?", use_container_width=True):
                 st.session_state['nl_prompt'] = "Which items are at risk of stockout?"
-        with ex_cols[3]:
+        with ex_cols[4]:
             if st.button("What is the sales demand forecast?", use_container_width=True):
                 st.session_state['nl_prompt'] = "What is the sales demand forecast?"    
-        default_p = st.session_state.get('nl_prompt', "What is our overall churn rate?")
-        query_input = st.text_input("Enter your business query:", value=default_p)
+
+        col_in, col_opt = st.columns([3, 1])
+        with col_opt:
+            st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
+            auto_voice = st.checkbox("🎙️ Auto-Read Voice", value=False, help="Automatically play spoken executive voice narration when responses are generated.")
+            
+        with col_in:
+            default_p = st.session_state.get('nl_prompt', "which product has lowest sales?")
+            query_input = st.text_input("Enter your business query:", value=default_p)
+
+        # Interactive Voice Dictation / Speech Recognition Component
+        st.components.v1.html("""
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+            <button id="micBtn" onclick="toggleVoiceDictation()" style="background: #FFFFFF; border: 1.5px solid #2563EB; color: #2563EB; padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(37,99,235,0.1); transition: all 0.2s ease;">
+                <span id="micIcon" style="font-size: 1.05rem;">🎙️</span> <span id="micText">Speak Query (Voice Mic)</span>
+            </button>
+            <span id="micStatus" style="font-size: 0.84rem; color: #64748B;">Click microphone to speak hands-free</span>
+        </div>
+        <script>
+        var recognition = null;
+        var isListening = false;
+        function toggleVoiceDictation() {
+            var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            var statusEl = document.getElementById('micStatus');
+            var btn = document.getElementById('micBtn');
+            var icon = document.getElementById('micIcon');
+            var text = document.getElementById('micText');
+            
+            if (!SpeechRec) {
+                if (statusEl) statusEl.innerHTML = '<span style="color: #D97706;">Microphone speech recognition is not supported in this browser. Please type query above.</span>';
+                return;
+            }
+            
+            if (isListening && recognition) {
+                recognition.stop();
+                return;
+            }
+            
+            recognition = new SpeechRec();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            
+            recognition.onstart = function() {
+                isListening = true;
+                if (btn) { btn.style.background = '#FEF2F2'; btn.style.borderColor = '#DC2626'; btn.style.color = '#DC2626'; }
+                if (icon) icon.innerText = '🔴';
+                if (text) text.innerText = 'Listening...';
+                if (statusEl) statusEl.innerHTML = '<strong style="color: #DC2626;">Listening... Speak your business question now</strong>';
+            };
+            
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                if (statusEl) statusEl.innerHTML = '<span style="color: #059669; font-weight: 600;">Transcribed: "' + transcript + '"</span>';
+                
+                var doc = window.parent.document;
+                var inputs = doc.querySelectorAll('input');
+                var targetInput = null;
+                for (var i = 0; i < inputs.length; i++) {
+                    if (inputs[i].getAttribute('aria-label') === 'Enter your business query:' || 
+                        (inputs[i].placeholder && inputs[i].placeholder.toLowerCase().includes('query'))) {
+                        targetInput = inputs[i];
+                        break;
+                    }
+                }
+                if (!targetInput) {
+                    targetInput = doc.querySelector('div[data-testid="stTextInput"] input');
+                }
+                if (targetInput) {
+                    targetInput.value = transcript;
+                    targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    targetInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    targetInput.focus();
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                isListening = false;
+                if (btn) { btn.style.background = '#FFFFFF'; btn.style.borderColor = '#2563EB'; btn.style.color = '#2563EB'; }
+                if (icon) icon.innerText = '🎙️';
+                if (text) text.innerText = 'Speak Query (Voice Mic)';
+                if (statusEl) statusEl.innerText = 'Microphone status: ' + event.error;
+            };
+            
+            recognition.onend = function() {
+                isListening = false;
+                if (btn) { btn.style.background = '#FFFFFF'; btn.style.borderColor = '#2563EB'; btn.style.color = '#2563EB'; }
+                if (icon) icon.innerText = '🎙️';
+                if (text) text.innerText = 'Speak Query (Voice Mic)';
+            };
+            
+            try {
+                recognition.start();
+            } catch(e) {
+                console.error(e);
+            }
+        }
+        </script>
+        """, height=48)
         
         if query_input:
             ans_res = nl_assistant.answer_query(
@@ -1962,16 +2089,120 @@ if "💬 Natural-Language Assistant" in tab_map:
                 forecast_res=forecast_res
             )
             
+            answer_text = ans_res.get('answer', '')
+            clean_speech = clean_text_for_voice(answer_text)
+            
             st.markdown(f"""
             <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #2563EB; border-radius: 10px; padding: 20px; margin-top: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
-                <h4 style="margin: 0 0 10px 0; color: #1E3A8A;">🤖 Assistant Response</h4>
-                <p style="font-size: 1.05rem; color: #0F172A; line-height: 1.6; margin: 0 0 14px 0;">{ans_res.get('answer', '')}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="margin: 0; color: #1E3A8A; display: flex; align-items: center; gap: 8px;">
+                        <span>🤖 Assistant Response</span>
+                    </h4>
+                    <span style="background: #EFF6FF; color: #2563EB; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 12px; border: 1px solid #BFDBFE;">
+                        🎙️ Voice Assistant Ready
+                    </span>
+                </div>
+                <p style="font-size: 1.05rem; color: #0F172A; line-height: 1.6; margin: 0 0 14px 0;">{answer_text}</p>
                 <div style="font-size: 0.85rem; color: #64748B;">
                     <strong>Domain:</strong> <code>{ans_res.get('category', 'General')}</code> | 
                     <strong>Confidence:</strong> <code>{ans_res.get('confidence', 'High')}</code>
                 </div>
             </div>
             """, unsafe_allow_html=True)
+            
+            # Voice Audio Player & Interactive Speech Controls
+            voice_bytes = generate_voice_bytes(clean_speech)
+            
+            voice_col1, voice_col2 = st.columns([2, 1])
+            with voice_col1:
+                st.markdown("<p style='font-size: 0.88rem; font-weight: 600; color: #1E3A8A; margin: 12px 0 4px 0;'>🔊 Executive Voice Assistant Narration:</p>", unsafe_allow_html=True)
+                if voice_bytes:
+                    st.audio(voice_bytes, format="audio/mp3", autoplay=auto_voice)
+                else:
+                    st.caption("Voice audio generated via local speech synthesizer.")
+            
+            with voice_col2:
+                # Browser Native SpeechSynthesis with Live Audio Feedback
+                clean_json = json.dumps(clean_speech)
+                auto_js = "true" if auto_voice else "false"
+                st.components.v1.html(f"""
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding-top: 14px;">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button id="ttsBtn" onclick="speakResponse()" style="background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%); color: #FFFFFF; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
+                            <span id="ttsIcon">🔊</span> <span id="ttsText">Read Aloud</span>
+                        </button>
+                        <button id="stopBtn" onclick="stopSpeech()" style="background: #F8FAFC; color: #64748B; border: 1px solid #CBD5E1; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+                            ⏹️ Stop
+                        </button>
+                    </div>
+                    <div id="ttsStatus" style="font-size: 0.80rem; color: #2563EB; margin-top: 6px; font-weight: 500;"></div>
+                </div>
+                <script>
+                var textToSpeak = {clean_json};
+                var autoPlay = {auto_js};
+                
+                function speakResponse() {{
+                    if (!('speechSynthesis' in window)) return;
+                    window.speechSynthesis.cancel();
+                    var u = new SpeechSynthesisUtterance(textToSpeak);
+                    u.rate = 1.0;
+                    u.pitch = 1.0;
+                    
+                    var voices = window.speechSynthesis.getVoices();
+                    for (var i = 0; i < voices.length; i++) {{
+                        if (voices[i].lang.startsWith('en') && (voices[i].name.includes('Natural') || voices[i].name.includes('Google') || voices[i].name.includes('Neural') || voices[i].name.includes('Jenny') || voices[i].name.includes('Samantha'))) {{
+                            u.voice = voices[i];
+                            break;
+                        }}
+                    }}
+                    
+                    u.onstart = function() {{
+                        var txt = document.getElementById('ttsText');
+                        var icon = document.getElementById('ttsIcon');
+                        var stat = document.getElementById('ttsStatus');
+                        if (txt) txt.innerText = 'Speaking...';
+                        if (icon) icon.innerText = '🔊🎶';
+                        if (stat) stat.innerText = '● Voice speaking';
+                    }};
+                    
+                    u.onend = function() {{
+                        var txt = document.getElementById('ttsText');
+                        var icon = document.getElementById('ttsIcon');
+                        var stat = document.getElementById('ttsStatus');
+                        if (txt) txt.innerText = 'Read Aloud';
+                        if (icon) icon.innerText = '🔊';
+                        if (stat) stat.innerText = '';
+                    }};
+                    
+                    u.onerror = function() {{
+                        var txt = document.getElementById('ttsText');
+                        var icon = document.getElementById('ttsIcon');
+                        var stat = document.getElementById('ttsStatus');
+                        if (txt) txt.innerText = 'Read Aloud';
+                        if (icon) icon.innerText = '🔊';
+                        if (stat) stat.innerText = '';
+                    }};
+                    
+                    window.speechSynthesis.speak(u);
+                }}
+                
+                function stopSpeech() {{
+                    if ('speechSynthesis' in window) {{
+                        window.speechSynthesis.cancel();
+                        var txt = document.getElementById('ttsText');
+                        var icon = document.getElementById('ttsIcon');
+                        var stat = document.getElementById('ttsStatus');
+                        if (txt) txt.innerText = 'Read Aloud';
+                        if (icon) icon.innerText = '🔊';
+                        if (stat) stat.innerText = '';
+                    }}
+                }}
+                
+                if (autoPlay) {{
+                    setTimeout(speakResponse, 400);
+                }}
+                </script>
+                """, height=70)
             
             if ans_res.get('key_metrics'):
                 st.markdown("##### Key Related Metrics:")
