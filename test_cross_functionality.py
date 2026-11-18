@@ -237,9 +237,6 @@ def run_all_tests():
         assert pdf_bytes.startswith(b'%PDF-'), "Generated file does not have valid PDF magic bytes"
         print(f"      [Export Report Engine] Generated single all-inclusive PDF: {len(pdf_bytes):,} bytes - SUCCESS")
 
-    # -------------------------------------------------------------
-    # TEST 5: TEXT NLP & SENTIMENT ANALYSIS MODULE
-    # -------------------------------------------------------------
     print("\n[TEST 5] Testing Text NLP, Sentiment Classification & Emotion Engine...")
     test_texts = [
         ("The product arrived broken, late, and customer service was awful!", "Negative"),
@@ -251,7 +248,6 @@ def run_all_tests():
         assert res_sent['label'] == exp_lbl, f"Sentiment mismatch for '{text}': expected {exp_lbl}, got {res_sent['label']}"
         assert 'emotion' in res_sent, "Emotion field missing"
         print(f"  -> Text: '{text[:45]}...' -> Classified as {res_sent['label']} (Emotion: {res_sent['emotion']}) - SUCCESS")
-    # -------------------------------------------------------------
     # TEST 6: NATURAL LANGUAGE ASSISTANT QUERY ROUTER
     # -------------------------------------------------------------
     print("\n[TEST 6] Testing Natural Language Business Assistant Prompts...")
