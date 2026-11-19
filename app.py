@@ -7,23 +7,21 @@ Dual EDA, Sentiment Analysis, Anomaly Detection, Root Cause Diagnosis & Multiple
 
 import os
 import sys
+import streamlit as st
+import pandas as pd
+import numpy as np
 import re
 import json
-import datetime
+import base64
 from datetime import datetime, timedelta
 import joblib
-import numpy as np
-import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import streamlit as st
 try:
     import speech_recognition as sr
 except ImportError:
     sr = None
-
-import base64
 
 # Configure wide page layout with enterprise logo icon
 logo_ico_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'logo.png')
