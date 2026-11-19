@@ -225,6 +225,9 @@ class AutonomousBIAnalyzer:
 
     def _detect_anomalies(self, trans_df):
         df = trans_df.copy()
+        for f in self.anomaly_features:
+            if f not in df.columns:
+                df[f] = 0.0
         X = df[self.anomaly_features].values
         scores = self.anomaly_detector.decision_function(X)
         preds = self.anomaly_detector.predict(X)
@@ -235,7 +238,16 @@ class AutonomousBIAnalyzer:
 
     def _assign_clusters(self, cust_df):
         df = cust_df.copy()
+        if 'Monetary_Spend' not in df.columns and 'Total_Spend' in df.columns:
+            df['Monetary_Spend'] = df['Total_Spend']
+        if 'Frequency_Orders' not in df.columns and 'Total_Orders' in df.columns:
+            df['Frequency_Orders'] = df['Total_Orders']
+        if 'Recency_Days' not in df.columns:
+            df['Recency_Days'] = 30
         features = ['Recency_Days', 'Frequency_Orders', 'Monetary_Spend']
+        for feat in features:
+            if feat not in df.columns:
+                df[feat] = 100.0 if 'Spend' in feat else (3.0 if 'Orders' in feat else 30.0)
         X = df[features].values
         scaled = self.segmentation_scaler.transform(X)
         cluster_ids = self.kmeans_model.predict(scaled)
