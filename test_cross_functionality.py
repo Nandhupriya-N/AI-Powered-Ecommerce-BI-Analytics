@@ -34,9 +34,6 @@ def run_all_tests():
     print("Timestamp:", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print("=" * 70)
 
-    # -------------------------------------------------------------
-    # TEST 1: DATABASE AUTHENTICATION & RBAC ROLES
-    # -------------------------------------------------------------
     print("\n[TEST 1] Verifying SQLite Authentication & Role Management...")
     init_db()
     users = list_users()
@@ -59,9 +56,6 @@ def run_all_tests():
     assert not any(u['Username'] == 'ops' for u in list_users()), "Ops user should be removed from database!"
     print("  -> Verified 'ops' user successfully removed - SUCCESS")
 
-    # -------------------------------------------------------------
-    # TEST 2: ROLE MODULE ASSIGNMENTS (RBAC PERMISSIONS)
-    # -------------------------------------------------------------
     print("\n[TEST 2] Verifying Role-Based Access Control Module Mappings...")
     import ast
     def load_role_modules():
@@ -249,7 +243,6 @@ def run_all_tests():
         assert 'emotion' in res_sent, "Emotion field missing"
         print(f"  -> Text: '{text[:45]}...' -> Classified as {res_sent['label']} (Emotion: {res_sent['emotion']}) - SUCCESS")
     # TEST 6: NATURAL LANGUAGE ASSISTANT QUERY ROUTER
-    # -------------------------------------------------------------
     print("\n[TEST 6] Testing Natural Language Business Assistant Prompts...")
     sample_queries = [
         "What is our overall churn rate?",
@@ -268,7 +261,6 @@ def run_all_tests():
         )
         assert 'answer' in ans and len(ans['answer']) > 10, f"Query '{q}' returned invalid answer"
         print(f"  -> Prompt: '{q}' -> Answer generated: {len(ans['answer'])} chars - SUCCESS")
-
     # -------------------------------------------------------------
     # TEST 7: USER MANAGEMENT, CUSTOM MODULE PROVISIONING & AUDIT LOGS
     # -------------------------------------------------------------
