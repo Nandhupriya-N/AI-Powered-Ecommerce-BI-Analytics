@@ -1,0 +1,588 @@
+<USER_REQUEST>
+# ROLE AND RESPONSIBILITY
+
+Act as an experienced MCA academic project report editor, technical documentation specialist and Microsoft Word formatting expert.
+
+I am uploading only two files:
+
+1. Part B — My existing MCA project report.
+2. DrillBit assessment report of Part B.
+
+Carefully analyse both files completely before starting the revision.
+
+Your responsibility is to revise the written content of Part B using simple, natural, student-friendly academic English while preserving the original document structure, formatting and technical information.
+
+# 1. PROJECT TITLE — STRICT REQUIREMENT
+
+The exact project name is:
+
+**MasterMindAI:AI-Powered E-Commerce Business Intelligence**
+
+Use this exact project name wherever the complete project title is required within the editable document body.
+
+Do not rename the project or introduce alternative project names.
+
+Do not modify the existing header and footer even if they contain a different version of the project title.
+
+# 2. INPUT FILES — IMPORTANT
+
+I am providing only Part B and its DrillBit assessment report.
+
+I will not provide:
+
+- Part A
+- College report template
+- Project source code
+- Additional screenshots
+- Additional datasets
+- Separate implementation files
+
+Use Part B as the primary reference for content, formatting, technical information and project functionality.
+
+Use the DrillBit report to identify highlighted passages, similarity issues and sections requiring review.
+
+Do not assume access to any additional files.
+
+If technical information cannot be verified using the supplied documents, retain the documented information with appropriate qualification and identify it separately for my review.
+
+# 3. START FROM INTRODUCTION ONLY
+
+The uploaded Part B document begins with Chapter 1 — Introduction.
+
+Start the revision directly from the Introduction.
+
+Continue until the final chapter and bibliography.
+
+Do not create or add:
+
+- Cover page
+- Title page
+- Certificate
+- Declaration
+- Acknowledgement
+- Abstract
+- College information
+- Student information
+- Guide information
+- University information
+- Preliminary pages
+
+All these details are already maintained separately in Part A.
+
+Do not generate Part A.
+
+Do not merge Part A and Part B.
+
+The final output must contain only Part B.
+
+# 4. HEADER AND FOOTER — NON-NEGOTIABLE
+
+The original header and footer must remain exactly as provided in the uploaded Part B document.
+
+Do not modify:
+
+- Header text
+- Footer text
+- Header alignment
+- Footer alignment
+- Header font
+- Footer font
+- Font sizes
+- Header spacing
+- Footer spacing
+- Page numbering format
+- Existing borders
+- Existing lines
+- Section breaks
+- Header and footer positions
+
+Do not add any college name, college logo, university name, department name, student name or guide name.
+
+If the existing header or footer is empty, leave it empty.
+
+If it contains information, preserve that information exactly.
+
+Do not apply automatic project title replacement to the header or footer.
+
+# 5. DRILLBIT REPORT ANALYSIS
+
+Carefully study the uploaded DrillBit assessment report.
+
+Identify:
+
+- Highlighted passages requiring review.
+- Generic explanations.
+- Repeated sentences.
+- Unnecessary technical vocabulary.
+- Similarity-matched passages.
+- Sections requiring proper citations.
+- Grammar and readability issues.
+- Sections lacking project-specific explanations.
+
+My desired assessment targets are:
+
+- AI Detection Score: 0%.
+- Institutional AI Detection Requirement: Below 5%.
+- Similarity Score: Below 5%, preferably below 4%.
+- Grammar Quality: Above 90%.
+
+These are assessment targets, not guaranteed outcomes.
+
+Improve originality through accurate project-specific explanations, proper citations and clear descriptions of the documented implementation.
+
+Do not use detector-bypass tricks, hidden characters, intentional grammar mistakes, meaningless paraphrasing or artificial sentence manipulation.
+
+Do not fabricate personal development experiences.
+
+Do not claim that the document has achieved a particular DrillBit score without an actual assessment.
+
+# 6. NATURAL ACADEMIC WRITING STYLE
+
+Write in simple, natural English suitable for an MCA student.
+
+The report should be easy for me to read, understand and explain during my external project viva.
+
+Follow these writing requirements:
+
+- Use simple English.
+- Use familiar vocabulary.
+- Maintain correct grammar.
+- Explain concepts clearly.
+- Use meaningful paragraphs.
+- Maintain natural sentence flow.
+- Avoid repetitive explanations.
+- Avoid unnecessary technical jargon.
+- Avoid promotional language.
+- Avoid exaggerated claims.
+- Preserve the original technical meaning.
+- Focus on the actual project.
+- Explain why each technique is used.
+- Explain how each module works.
+- Explain the inputs and outputs of each module.
+- Explain the practical business benefits.
+
+Do not make the report sound like a corporate product advertisement or an advanced research publication.
+
+# 7. SIMPLE HEADINGS — PROJECT GUIDE REQUIREMENT
+
+My project guide has instructed me to keep all chapter names and section headings simple.
+
+Use straightforward academic headings such as:
+
+- Introduction
+- Project Description
+- Objectives of the Project
+- Scope of the Project
+- Literature Survey
+- Existing System
+- Proposed System
+- Feasibility Study
+- Hardware and Software Requirements
+- Functional Requirements
+- Non-Functional Requirements
+- System Design
+- System Architecture
+- System Modules
+- Data Flow
+- System Workflow
+- Detailed Design
+- Implementation
+- Software Testing
+- Results
+- Conclusion
+- Future Enhancements
+- Bibliography
+
+Preserve the original chapter order and section numbering.
+
+Do not introduce unnecessary chapters.
+
+Avoid complicated headings such as:
+
+- Autonomous Schema Harmonization
+- Prescriptive Executive Decision Synthesis
+- Algorithmic Orchestration
+- Enterprise Intelligence Ecosystem
+- Multi-Horizon Analytical Framework
+- Advanced Predictive Intelligence Architecture
+
+Use simple headings that my project guide and external examiner can easily understand.
+
+# 8. PROJECT SCOPE
+
+The entire report must focus only on:
+
+**MasterMindAI:AI-Powered E-Commerce Business Intelligence**
+
+My project is an e-commerce business intelligence application based on Python, Streamlit, machine learning, data analysis and business decision support.
+
+Explain the following features wherever they are supported by the uploaded Part B document:
+
+- User Authentication
+- Role-Based Access Control
+- CSV Dataset Upload
+- Automatic Column Mapping
+- Data Preprocessing
+- Missing Value Handling
+- Isolation Forest
+- Exploratory Data Analysis
+- Business Intelligence Dashboard
+- Key Performance Indicators
+- RFM Analysis
+- Customer Segmentation
+- Customer Churn Prediction
+- SMOTE
+- Random Forest Classifier
+- Gradient Boosting
+- Logistic Regression
+- Model Performance Comparison
+- Interactive Classification Threshold Simulator
+- Confusion Matrix
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- ROC-AUC
+- Chronos-Bolt
+- Sales Forecasting
+- Regression-Based Forecasting
+- Customer Lifetime Value
+- Apriori Algorithm
+- Market Basket Analysis
+- Inventory Management
+- Safety Stock
+- Reorder Point
+- Silver-Meal Heuristic
+- Business Recommendations
+- Conversational Assistant
+- Text-to-Speech
+- SQLite
+- Interactive Visualizations
+
+Only explain features documented in the uploaded report.
+
+Do not add unrelated functionality.
+
+Do not introduce Power BI integration, Tableau integration, blockchain, IoT, computer vision, robotics or unrelated technologies.
+
+# 9. TECHNICAL EXPLANATIONS
+
+Explain every existing algorithm using simple academic English.
+
+For each algorithm, explain:
+
+1. What the algorithm or technique is.
+2. Why it is used in my project.
+3. What problem it solves.
+4. What input it receives.
+5. How it processes the data.
+6. What output it generates.
+7. How the output helps an e-commerce business.
+8. Its limitations.
+
+Pay particular attention to the following techniques:
+
+## Isolation Forest
+
+Explain how unusual transactions are identified during data preprocessing.
+
+Mention that unusual transactions are not necessarily incorrect transactions.
+
+## RFM Analysis
+
+Explain Recency, Frequency and Monetary features and their role in understanding customer purchasing behaviour.
+
+## SMOTE
+
+Explain class imbalance and synthetic minority-class sample generation.
+
+Clearly mention that SMOTE is a resampling technique, not a classification algorithm.
+
+Explain that it should be applied only to training data.
+
+## Random Forest
+
+Explain how multiple decision trees are combined to predict customer churn.
+
+## Chronos-Bolt
+
+Explain pretrained time-series forecasting, historical sales patterns, zero-shot forecasting and future sales prediction.
+
+## Silver-Meal Heuristic
+
+Explain how ordering costs and holding costs are balanced to determine suitable inventory replenishment quantities.
+
+## Classification Threshold Simulator
+
+Explain how changing the probability threshold affects churn classification, precision and recall without requiring model retraining.
+
+## ROC-AUC
+
+Explain how ROC-AUC measures the model's ability to distinguish between churn and non-churn customers.
+
+Do not confuse ROC-AUC with classification accuracy.
+
+# 10. MODEL RESULTS AND TECHNICAL ACCURACY
+
+Preserve all verified numerical values available in the uploaded document.
+
+Do not invent or artificially improve:
+
+- Model accuracy
+- Precision
+- Recall
+- F1-Score
+- ROC-AUC
+- Confusion matrix values
+- Dataset sizes
+- Training times
+- Testing results
+- Forecasting accuracy
+- Performance benchmarks
+- Business revenue improvements
+- Financial savings
+
+Check whether the documented evaluation metrics agree with the confusion matrix.
+
+If different sections contain conflicting model results, identify the inconsistency separately rather than inventing replacement values.
+
+Since source code is not being provided, do not claim that you have independently verified the implementation.
+
+# 11. PRESERVE ALL EXISTING DOCUMENT ELEMENTS
+
+Modify only the written explanations and unnecessarily complicated headings.
+
+Preserve everything else, including:
+
+- Original chapter order
+- Section numbering
+- Page numbering settings
+- Font family
+- Font sizes
+- Margins
+- Page size
+- Paragraph alignment
+- Line spacing
+- Paragraph indentation
+- Page borders
+- Section breaks
+- Header
+- Footer
+- Tables
+- Table contents
+- Table borders
+- Diagrams
+- System architecture diagrams
+- UML diagrams
+- Flowcharts
+- Data flow diagrams
+- Activity diagrams
+- Class diagrams
+- Sequence diagrams
+- Use case diagrams
+- Application screenshots
+- Graphs
+- Charts
+- Mathematical formulas
+- Equations
+- Source code
+- Figure captions
+- Table captions
+- References
+- Citations
+- Bibliography
+
+Do not recreate existing diagrams.
+
+Do not generate replacement screenshots.
+
+Do not modify source code.
+
+Do not change numerical table values without evidence.
+
+Do not remove any important technical information.
+
+Do not redesign the document.
+
+# 12. CHAPTER-WISE REVISION
+
+Follow the exact chapter structure of the uploaded Part B document.
+
+Begin with Chapter 1 — Introduction.
+
+Revise every existing chapter completely.
+
+Where additional explanations are required, expand the existing content meaningfully.
+
+For each existing module, explain its purpose, inputs, processing steps, outputs and practical business applications.
+
+For every existing diagram, explain its purpose and workflow without changing the diagram.
+
+For every existing screenshot, explain what the screen displays and how it helps the user.
+
+For implementation sections, explain the existing code without modifying it.
+
+For testing sections, preserve actual test cases and documented results.
+
+For the conclusion, summarize the actual project functionality and documented outcomes.
+
+For future enhancements, retain realistic improvements related to the existing application.
+
+Preserve all bibliography entries and necessary citations.
+
+# 13. DOCUMENT LENGTH — STRICT REQUIREMENT
+
+Part B alone must exceed 50 properly formatted A4 pages.
+
+Preferred final length: **55–60 pages or more**, provided the additional content is meaningful.
+
+Do not count Part A or the DrillBit report towards the page count.
+
+Increase the length through:
+
+- Detailed project-specific explanations.
+- Existing module descriptions.
+- Algorithm working principles.
+- Dataset explanations.
+- Data preprocessing explanations.
+- Implementation details.
+- Business use cases.
+- Screenshot explanations.
+- Testing observations.
+- Technical limitations.
+- Practical examples.
+
+Do not increase the page count using:
+
+- Empty pages
+- Excessive blank lines
+- Increased font sizes
+- Increased margins
+- Unnecessary paragraph spacing
+- Enlarged images
+- Duplicate paragraphs
+- Repeated explanations
+- Unrelated topics
+- Artificial filler
+
+Maintain the original formatting throughout the document.
+
+# 14. WORD DOCUMENT FORMATTING
+
+Work directly on a copy of the uploaded Part B Word document whenever possible.
+
+Do not rebuild the entire report from scratch.
+
+Preserve the original document's formatting, styles, section settings, embedded images and page layout.
+
+Ensure that:
+
+- No text overlaps.
+- No images are cropped.
+- No tables exceed the margins.
+- No diagrams are missing.
+- No unexpected blank pages appear.
+- Headings remain correctly positioned.
+- Page numbering continues correctly.
+- Headers and footers remain unchanged.
+- All chapters remain in their original order.
+
+Allow revised paragraphs to flow naturally across pages.
+
+If the uploaded document is PDF-only and exact formatting preservation is not possible, disclose this limitation before making layout changes.
+
+# 15. FINAL OUTPUT
+
+Generate the following files:
+
+**Part_B_MasterMindAI_Final_Report.docx**
+
+**Part_B_MasterMindAI_Final_Report.pdf**
+
+Both files must contain the same revised content.
+
+The Word document must be fully editable.
+
+The PDF must be suitable for printing and submission.
+
+Do not generate Part A.
+
+Do not generate preliminary pages.
+
+Do not insert college branding.
+
+The final document must start directly from Chapter 1 — Introduction.
+
+# 16. FINAL QUALITY VERIFICATION
+
+Before delivering the files, verify the following:
+
+- Project title is exactly MasterMindAI:AI-Powered E-Commerce Business Intelligence.
+- The document begins with Introduction.
+- Part A has not been recreated.
+- No preliminary pages have been added.
+- Header remains unchanged.
+- Footer remains unchanged.
+- No college name or logo has been added.
+- Original formatting is preserved.
+- All diagrams are preserved.
+- All screenshots are preserved.
+- All tables are preserved.
+- All formulas are preserved.
+- All code snippets are preserved.
+- All chapters are included.
+- All references are preserved.
+- Technical explanations are accurate.
+- Headings are simple.
+- English is natural and understandable.
+- No unsupported results are introduced.
+- No unnecessary information is included.
+- Part B exceeds 50 pages.
+
+Render and visually inspect the completed document if your environment supports it.
+
+Provide a separate completion summary mentioning the final page count, sections revised, formatting limitations and technical inconsistencies requiring my review.
+
+Do not insert this summary into the academic report.
+
+# FINAL NON-NEGOTIABLE INSTRUCTIONS
+
+USE THE EXACT PROJECT NAME:
+
+**MasterMindAI:AI-Powered E-Commerce Business Intelligence**
+
+USE ONLY THE TWO UPLOADED FILES.
+
+START FROM CHAPTER 1 — INTRODUCTION.
+
+DO NOT GENERATE PART A.
+
+DO NOT ADD PRELIMINARY PAGES.
+
+DO NOT ADD COLLEGE NAME OR LOGO.
+
+DO NOT MODIFY THE HEADER.
+
+DO NOT MODIFY THE FOOTER.
+
+DO NOT MODIFY THE ORIGINAL DOCUMENT TEMPLATE.
+
+DO NOT MODIFY DIAGRAMS OR SCREENSHOTS.
+
+DO NOT MODIFY THE PROJECT IMPLEMENTATION.
+
+DO NOT INVENT TECHNICAL RESULTS.
+
+REWRITE ONLY THE NECESSARY CONTENT USING SIMPLE, NATURAL, STUDENT-FRIENDLY ACADEMIC ENGLISH.
+
+KEEP ALL TOPICS SIMPLE AND DIRECTLY RELATED TO MY PROJECT.
+
+COMPLETE EVERY CHAPTER.
+
+DELIVER THE COMPLETE REVISED PART B DOCUMENT EXCEEDING 50 PAGES.
+
+Do not provide only an outline, sample chapter, suggestions or revision instructions. Complete the actual document and deliver the final files.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-24T21:02:32+05:30.
+</ADDITIONAL_METADATA>
